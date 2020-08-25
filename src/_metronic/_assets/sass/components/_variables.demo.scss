@@ -1,0 +1,20 @@
+//
+// To make future updates easier consider overriding the global variables from _variables.bootstrap.scss and _variables.custom.scss for current demo in this file.
+// Note that this file is included first and variables defined in _variables.bootstrap.scss and _variables.custom.scss
+// are not accessible in this file but you can override any global variable as shown below:
+//
+
+// Theme colors
+// Override primary color variants
+$primary:       									  rgb(0,70,104); // Bootstrap variable
+$primary-hover:    									lighten($primary, 4%); // Custom variable
+$primary-light:    									#E1F0FF; // Custom variable
+$primary-inverse:  									#FFFFFF; // Custom variable
+
+
+$secondary:     								  	rgb(182,32,37); // Bootstrap variable
+$secondary-hover:  									lighten($secondary, 4%); // Custom variable
+
+
+$info:         		 								rgb(55, 168, 224); // Bootstrap variable
+$info-hover:   		 								darken($info, 4%);; // Custom variable
