@@ -1,8 +1,8 @@
 /* eslint-disable no-script-url,jsx-a11y/anchor-is-valid */
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import SVG from "react-inlinesvg";
-import {toAbsoluteUrl} from "../../../_helpers";
+import { toAbsoluteUrl } from "../../../_helpers";
 
 export function AdvanceTablesWidget2({ className }) {
   const [key, setKey] = useState("Month");
@@ -13,52 +13,9 @@ export function AdvanceTablesWidget2({ className }) {
       <div className="card-header border-0 pt-5">
         <h3 className="card-title align-items-start flex-column">
           <span className="card-label font-weight-bolder text-dark">
-            New Arrivals
-          </span>
-          <span className="text-muted mt-3 font-weight-bold font-size-sm">
-            More than 400+ new members
+            Atividades em Andamento
           </span>
         </h3>
-        <div className="card-toolbar">
-          <Tab.Container defaultActiveKey={key}>
-            <Nav
-              as="ul"
-              onSelect={_key => setKey(_key)}
-              className="nav nav-pills nav-pills-sm nav-dark-75"
-            >
-              <Nav.Item className="nav-item" as="li">
-                <Nav.Link
-                  eventKey="Month"
-                  className={`nav-link py-2 px-4 ${
-                    key === "Month" ? "active" : ""
-                  }`}
-                >
-                  Month
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item className="nav-item" as="li">
-                <Nav.Link
-                  eventKey="Week"
-                  className={`nav-link py-2 px-4 ${
-                    key === "Week" ? "active" : ""
-                  }`}
-                >
-                  Week
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item className="nav-item" as="li">
-                <Nav.Link
-                  eventKey="Day"
-                  className={`nav-link py-2 px-4 ${
-                    key === "Day" ? "active" : ""
-                  }`}
-                >
-                  Day
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
-          </Tab.Container>
-        </div>
       </div>
       {/* Body */}
       <div className="card-body pt-3 pb-0">
@@ -91,32 +48,25 @@ export function AdvanceTablesWidget2({ className }) {
                     href="#"
                     className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
                   >
-                    Sant Outstanding
+                    Cadastro de Cliente
                   </a>
-                  <div>
-                    <span className="font-weight-bolder">Email:</span>{" "}
-                    <a
-                      className="text-muted font-weight-bold text-hover-primary"
-                      href="#"
-                    >
-                      bprow@bnc.cc
-                    </a>
-                  </div>
                 </td>
                 <td className="text-right">
                   <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
-                    $2,000,000
+                    CredPago
                   </span>
-                  <span className="text-muted font-weight-bold">Paid</span>
+                  <span className="text-muted font-weight-bold">
+                    Curitiba, PR
+                  </span>
                 </td>
                 <td className="text-right">
                   <span className="text-muted font-weight-500">
-                    ReactJs, HTML
+                    Administrativo
                   </span>
                 </td>
                 <td className="text-right">
                   <span className="label label-lg label-light-primary label-inline">
-                    Approved
+                    Aguardando Aprovação
                   </span>
                 </td>
                 <td className="text-right pr-0">
@@ -165,32 +115,25 @@ export function AdvanceTablesWidget2({ className }) {
                     href="#"
                     className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
                   >
-                    Application Development
+                    Nova Obra
                   </a>
-                  <div>
-                    <span className="font-weight-bolder">Email:</span>{" "}
-                    <a
-                      className="text-muted font-weight-bold text-hover-primary"
-                      href="#"
-                    >
-                      app@dev.com
-                    </a>
-                  </div>
                 </td>
                 <td className="text-right">
                   <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
-                    $4,600,000
+                    Cliente 002
                   </span>
-                  <span className="text-muted font-weight-bold">Paid</span>
+                  <span className="text-muted font-weight-bold">
+                    Araucária, PR
+                  </span>
                 </td>
                 <td className="text-right">
                   <span className="text-muted font-weight-500">
-                    Python, MySQL
+                    Administrativo
                   </span>
                 </td>
                 <td className="text-right">
                   <span className="label label-lg label-light-warning label-inline">
-                    In Progress
+                    Enviado a Receita
                   </span>
                 </td>
                 <td className="text-right pr-0">
@@ -239,32 +182,25 @@ export function AdvanceTablesWidget2({ className }) {
                     href="#"
                     className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
                   >
-                    Payrol Application
+                    Protocolo
                   </a>
-                  <div>
-                    <span className="font-weight-bolder">Email:</span>{" "}
-                    <a
-                      className="text-muted font-weight-bold text-hover-primary"
-                      href="#"
-                    >
-                      company@dev.com
-                    </a>
-                  </div>
                 </td>
                 <td className="text-right">
                   <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
-                    $560,000
+                    Cliente 004
                   </span>
-                  <span className="text-muted font-weight-bold">Paid</span>
+                  <span className="text-muted font-weight-bold">
+                    Curitiba, PR
+                  </span>
                 </td>
                 <td className="text-right">
                   <span className="text-muted font-weight-500">
-                    Laravel, Metronic
+                    Administrativo
                   </span>
                 </td>
                 <td className="text-right">
                   <span className="label label-lg label-light-success label-inline">
-                    Success
+                    Finalizado
                   </span>
                 </td>
                 <td className="text-right pr-0">
@@ -313,32 +249,25 @@ export function AdvanceTablesWidget2({ className }) {
                     href="#"
                     className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
                   >
-                    HR Management System
+                    Certificado Digital
                   </a>
-                  <div>
-                    <span className="font-weight-bolder">Email:</span>{" "}
-                    <a
-                      className="text-muted font-weight-bold text-hover-primary"
-                      href="#"
-                    >
-                      hr@demo.com
-                    </a>
-                  </div>
                 </td>
                 <td className="text-right">
                   <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
-                    $57,000
+                    Cliente 003
                   </span>
-                  <span className="text-muted font-weight-bold">Paid</span>
+                  <span className="text-muted font-weight-bold">
+                    Joinville, SC
+                  </span>
                 </td>
                 <td className="text-right">
                   <span className="text-muted font-weight-bold">
-                    AngularJS, C#
+                    Recursos Humanos
                   </span>
                 </td>
                 <td className="text-right">
                   <span className="label label-lg label-light-danger label-inline">
-                    Rejected
+                    Cancelado
                   </span>
                 </td>
                 <td className="text-right pr-0">
@@ -389,9 +318,9 @@ export function AdvanceTablesWidget2({ className }) {
                     href="#"
                     className="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg"
                   >
-                    KTR Mobile Application
+                    CPOM
                   </a>
-                  <div>
+                  {/* <div>
                     <span className="font-weight-bolder">Email:</span>{" "}
                     <a
                       className="text-muted font-weight-bold text-hover-primary"
@@ -399,22 +328,24 @@ export function AdvanceTablesWidget2({ className }) {
                     >
                       ktr@demo.com
                     </a>
-                  </div>
+                  </div> */}
                 </td>
                 <td className="text-right">
                   <span className="text-dark-75 font-weight-bolder d-block font-size-lg">
-                    $45,200,000
+                    Cliente 005
                   </span>
-                  <span className="text-muted font-weight-bold">Paid</span>
+                  <span className="text-muted font-weight-bold">
+                    São Paulo, SP
+                  </span>
                 </td>
                 <td className="text-right">
                   <span className="text-muted font-weight-500">
-                    ReactJS, Ruby
+                    Administrativo
                   </span>
                 </td>
                 <td className="text-right">
                   <span className="label label-lg label-light-warning label-inline">
-                    In Progress
+                    Em andamento
                   </span>
                 </td>
                 <td className="text-right pr-0">

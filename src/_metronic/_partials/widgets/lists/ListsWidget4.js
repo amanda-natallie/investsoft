@@ -1,7 +1,11 @@
 /* eslint-disable no-script-url,jsx-a11y/anchor-is-valid */
 import React from "react";
-import {Dropdown} from "react-bootstrap";
-import {DropdownCustomToggler, DropdownMenu1, DropdownMenu2} from "../../dropdowns";
+import { Dropdown } from "react-bootstrap";
+import {
+  DropdownCustomToggler,
+  DropdownMenu1,
+  DropdownMenu2,
+} from "../../dropdowns";
 
 export function ListsWidget4({ className }) {
   return (
@@ -9,19 +13,22 @@ export function ListsWidget4({ className }) {
       <div className={`card card-custom ${className}`}>
         {/* Head */}
         <div className="card-header border-0">
-          <h3 className="card-title font-weight-bolder text-dark">Todo</h3>
+          <h3 className="card-title font-weight-bolder text-dark">
+            Agenda Online
+          </h3>
           <div className="card-toolbar">
             <Dropdown className="dropdown-inline" drop="down" alignRight>
-                <Dropdown.Toggle
-                  id="dropdown-toggle-top2"
-                  variant="transparent"
-                  className="btn btn-light btn-sm font-size-sm font-weight-bolder dropdown-toggle text-dark-75">
-                  Create
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                  <DropdownMenu2 />
-                </Dropdown.Menu>
-              </Dropdown>
+              <Dropdown.Toggle
+                id="dropdown-toggle-top2"
+                variant="transparent"
+                className="btn btn-light btn-sm font-size-sm font-weight-bolder dropdown-toggle text-dark-75"
+              >
+                Adicionar Atividade
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                <DropdownMenu2 />
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </div>
         {/* Body */}
@@ -39,9 +46,9 @@ export function ListsWidget4({ className }) {
                 href="#"
                 className="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1"
               >
-                Create FireStone Logo
+                Ligar para CredPago
               </a>
-              <span className="text-muted font-weight-bold">Due in 2 Days</span>
+              <span className="text-muted font-weight-bold">Em 2 Days</span>
             </div>
             <ItemDropdown item="" />
           </div>
@@ -59,9 +66,9 @@ export function ListsWidget4({ className }) {
                 href="#"
                 className="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1"
               >
-                Stakeholder Meeting
+                Fazer relatório para Aline
               </a>
-              <span className="text-muted font-weight-bold">Due in 3 Days</span>
+              <span className="text-muted font-weight-bold">Em 3 Days</span>
             </div>
             <ItemDropdown item="" />
           </div>
@@ -79,9 +86,9 @@ export function ListsWidget4({ className }) {
                 href="#"
                 className="text-dark-75 text-hover-primary font-size-sm font-weight-bold font-size-lg mb-1"
               >
-                Scoping & Estimations
+                Enviar e-mail para clientes sobre mudança de imposto
               </a>
-              <span className="text-muted font-weight-bold">Due in 5 Days</span>
+              <span className="text-muted font-weight-bold">Em 5 Days</span>
             </div>
             <ItemDropdown item="" />
           </div>
@@ -99,9 +106,9 @@ export function ListsWidget4({ className }) {
                 href="#"
                 className="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1"
               >
-                Sprint Showcase
+                Gerar certidão negativa de Cliente 2
               </a>
-              <span className="text-muted font-weight-bold">Due in 1 Day</span>
+              <span className="text-muted font-weight-bold">Amanhã</span>
             </div>
             <ItemDropdown item="" />
           </div>
@@ -113,17 +120,6 @@ export function ListsWidget4({ className }) {
               <input type="checkbox" value="1" onChange={() => {}} />
               <span></span>
             </label>
-            <div className="d-flex flex-column flex-grow-1">
-              <a
-                href="#"
-                className="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1"
-              >
-                Project Retro
-              </a>
-              <span className="text-muted font-weight-bold">
-                Due in 12 Days
-              </span>
-            </div>
             <ItemDropdown item="" />
           </div>
         </div>
@@ -132,19 +128,22 @@ export function ListsWidget4({ className }) {
   );
 }
 
-const ItemDropdown = ({item}) => {
-  return (<>
-  <Dropdown className="dropdown-inline" alignRight>
-    <Dropdown.Toggle
-      variant="transparent"
-      id="dropdown-toggle-top"
-      className="btn btn-hover-light-primary btn-sm btn-icon"
-      as={DropdownCustomToggler}>
-      <i className="ki ki-bold-more-hor" />
-    </Dropdown.Toggle>
-    <Dropdown.Menu className="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-      <DropdownMenu1 />
-    </Dropdown.Menu>
-  </Dropdown>
-  </>);
+const ItemDropdown = ({ item }) => {
+  return (
+    <>
+      <Dropdown className="dropdown-inline" alignRight>
+        <Dropdown.Toggle
+          variant="transparent"
+          id="dropdown-toggle-top"
+          className="btn btn-hover-light-primary btn-sm btn-icon"
+          as={DropdownCustomToggler}
+        >
+          <i className="ki ki-bold-more-hor" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu className="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+          <DropdownMenu1 />
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
+  );
 };

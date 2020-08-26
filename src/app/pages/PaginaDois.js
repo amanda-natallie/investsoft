@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Paper, Grid, TextField } from "@material-ui/core/";
 import { FormDois } from "../components/pagina-um/FormDois";
+import { FileTable } from "../components/pagina-um/FileTable";
 import SearchIcon from "@material-ui/icons/Search";
 
 const useStyles = makeStyles((theme) => ({
-  
   paper: {
     width: "90%",
     margin: "0 auto",
@@ -73,6 +73,7 @@ export const PaginaDois = () => {
         </Grid>
       </Paper>
       <FormDois />
+      <FileTable />
     </>
   );
 };

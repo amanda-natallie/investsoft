@@ -13,13 +13,13 @@ import {
 } from "@material-ui/core/";
 import { FormUm } from "../components/pagina-um/FormUm";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { CustomersPage } from "../../app/modules/ECommerce/pages/customers/CustomersPage";
+import { FileTable } from "../components/pagina-um/FileTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "90%",
     margin: "0 auto",
-    display: "table"
+    display: "table",
   },
   paper: {
     padding: theme.spacing(3, 2),
@@ -60,7 +60,7 @@ export const PaginaUm = () => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const getSteps = () => {
-    return ["Atividade Passo 1", "Atividade Passo 2", "Atividade Passo 3"];
+    return ["Cadastro Inicial", "Aprovação", "Finalização"];
   };
 
   const getStepContent = (step) => {
@@ -69,7 +69,7 @@ export const PaginaUm = () => {
         return (
           <>
             <FormUm formDisabled={formDisabled} />
-            <CustomersPage />
+            <FileTable />
           </>
         );
       case 1:
@@ -112,19 +112,19 @@ export const PaginaUm = () => {
         <Grid container className="justify-content-between align-self-center">
           <div>
             <Typography variant="h5" component="h3">
-              Este é um exemplo de formulário de atividades
+              Cadastro de Novo Cliente
             </Typography>
             <Typography component="p">
-              Você poderá criar atividades a partir do menu e visualizar aqui o
-              resultado.
+              Preencha todas informações de clique em próximo.
             </Typography>
           </div>
           <Button
             variant="contained"
             color="primary"
             className={classes.button1}
-            onClick={() => setFormDisabled(!formDisabled)}>
-            Editar estas informações
+            onClick={() => setFormDisabled(!formDisabled)}
+          >
+            Cancelar
             <DeleteIcon className={classes.rightIcon} />
           </Button>
         </Grid>
