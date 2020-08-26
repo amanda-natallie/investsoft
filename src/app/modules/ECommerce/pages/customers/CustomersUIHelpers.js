@@ -18,5 +18,5 @@ export const initialFilter = {
   sortOrder: "asc", // asc||desc
   sortField: "id",
   pageNumber: 1,
-  pageSize: 5
+  pageSize: 15
 };

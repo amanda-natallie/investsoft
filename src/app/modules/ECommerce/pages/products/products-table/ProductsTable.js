@@ -69,19 +69,8 @@ export function ProductsTable() {
       sort: true,
       sortCaret: sortCaret,
     },
-    {
-      dataField: "modelYear",
-      text: "Model Year",
-      sort: true,
-      sortCaret: sortCaret,
-    },
-    {
-      dataField: "color",
-      text: "Color",
-      sort: true,
-      sortCaret: sortCaret,
-      formatter: columnFormatters.ColorColumnFormatter,
-    },
+ 
+   
     {
       dataField: "price",
       text: "Price",
@@ -96,13 +85,7 @@ export function ProductsTable() {
       sortCaret: sortCaret,
       formatter: columnFormatters.StatusColumnFormatter,
     },
-    {
-      dataField: "condition",
-      text: "Condition",
-      sort: true,
-      sortCaret: sortCaret,
-      formatter: columnFormatters.ConditionColumnFormatter,
-    },
+   
     {
       dataField: "action",
       text: "Actions",

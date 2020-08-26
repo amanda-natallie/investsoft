@@ -7,11 +7,11 @@ const prepareFilter = (queryParams, values) => {
   const { status, condition, searchText } = values;
   const newQueryParams = { ...queryParams };
   const filter = {};
-  // Filter by status
+  // Filtrar by status
   filter.status = status !== "" ? +status : undefined;
-  // Filter by condition
+  // Filtrar by condition
   filter.condition = condition !== "" ? +condition : undefined;
-  // Filter by all fields
+  // Filtrar by all fields
   filter.model = searchText;
   if (searchText) {
     filter.manufacture = searchText;
@@ -64,7 +64,7 @@ export function ProductsFilter({ listLoading }) {
                 <select
                   className="form-control"
                   name="status"
-                  placeholder="Filter by Status"
+                  placeholder="Filtrar por Status"
                   onChange={(e) => {
                     setFieldValue("status", e.target.value);
                     handleSubmit();
@@ -72,18 +72,18 @@ export function ProductsFilter({ listLoading }) {
                   onBlur={handleBlur}
                   value={values.status}
                 >
-                  <option value="">All</option>
-                  <option value="0">Selling</option>
-                  <option value="1">Sold</option>
+                  <option value="">Tudo</option>
+                  <option value="0">Ativo</option>
+                  <option value="1">Inativo</option>
                 </select>
                 <small className="form-text text-muted">
-                  <b>Filter</b> by Status
+                  <b>Filtrar</b> por Status
                 </small>
               </div>
               <div className="col-lg-2">
                 <select
                   className="form-control"
-                  placeholder="Filter by Type"
+                  placeholder="Filtrar by Type"
                   name="condition"
                   onBlur={handleBlur}
                   onChange={(e) => {
@@ -93,11 +93,11 @@ export function ProductsFilter({ listLoading }) {
                   value={values.condition}
                 >
                   <option value="">All</option>
-                  <option value="0">New</option>
-                  <option value="1">Used</option>
+                  <option value="0">Opção 1</option>
+                  <option value="1">Opção 2</option>
                 </select>
                 <small className="form-text text-muted">
-                  <b>Filter</b> by Condition
+                  <b>Filtrar</b> por Valor
                 </small>
               </div>
               <div className="col-lg-2">
@@ -114,7 +114,7 @@ export function ProductsFilter({ listLoading }) {
                   }}
                 />
                 <small className="form-text text-muted">
-                  <b>Search</b> in all fields
+                  <b>Buscar</b> em todos os campos
                 </small>
               </div>
             </div>

@@ -13,11 +13,13 @@ import {
 } from "@material-ui/core/";
 import { FormUm } from "../components/pagina-um/FormUm";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {CustomersPage} from "../../app/modules/ECommerce/pages/customers/CustomersPage"
+import { CustomersPage } from "../../app/modules/ECommerce/pages/customers/CustomersPage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "90%",
+    margin: "0 auto",
+    display: "table"
   },
   paper: {
     padding: theme.spacing(3, 2),
@@ -64,7 +66,12 @@ export const PaginaUm = () => {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return (<><FormUm formDisabled={formDisabled} /><CustomersPage /></>)
+        return (
+          <>
+            <FormUm formDisabled={formDisabled} />
+            <CustomersPage />
+          </>
+        );
       case 1:
         return "Passo 2";
       case 2:
@@ -98,14 +105,12 @@ export const PaginaUm = () => {
       }}
     />
   );
-      useEffect(()=>{},[formDisabled])
+  useEffect(() => {}, [formDisabled]);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Grid container className="justify-content-between align-self-center">
-          
           <div>
-
             <Typography variant="h5" component="h3">
               Este é um exemplo de formulário de atividades
             </Typography>
@@ -114,16 +119,14 @@ export const PaginaUm = () => {
               resultado.
             </Typography>
           </div>
-         
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button1}
-              onClick={() => setFormDisabled(!formDisabled)}>
-              Editar estas informações
-              <DeleteIcon className={classes.rightIcon} />
-            </Button>
-        
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button1}
+            onClick={() => setFormDisabled(!formDisabled)}>
+            Editar estas informações
+            <DeleteIcon className={classes.rightIcon} />
+          </Button>
         </Grid>
 
         <Stepper activeStep={activeStep} connector={connector}>

@@ -26,13 +26,13 @@ export function HeaderMenu({ layoutProps }) {
             </li>
             <li className={`menu-item menu-item-rel ${getMenuItemActive('/pagina-um')}`}>
                 <NavLink className="menu-link" to="/pagina-um">
-                    <span className="menu-text">Menu item 1</span>
+                    <span className="menu-text">Cadastro de Atividade</span>
                     
                 </NavLink>
             </li>
             <li className={`menu-item menu-item-rel ${getMenuItemActive('/pagina-dois')}`}>
                 <NavLink className="menu-link" to="/pagina-dois">
-                    <span className="menu-text">Menu item 2</span>
+                    <span className="menu-text">Consulta de Atividade</span>
                     
                 </NavLink>
             </li>

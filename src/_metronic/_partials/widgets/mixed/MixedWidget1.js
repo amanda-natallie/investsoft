@@ -53,14 +53,14 @@ export function MixedWidget1({ className }) {
     <div className={`card card-custom bg-gray-100 ${className}`}>
       {/* Header */}
       <div className="card-header border-0 bg-danger py-5">
-        <h3 className="card-title font-weight-bolder text-white">Sales Stat</h3>
+        <h3 className="card-title font-weight-bolder text-white">Consultar Relatórios</h3>
         <div className="card-toolbar">
           <Dropdown className="dropdown-inline" drop="down" alignRight>
             <Dropdown.Toggle
               className="btn btn-transparent-white btn-sm font-weight-bolder dropdown-toggle px-5"
               variant="transparent"
               id="dropdown-toggle-top">
-              Export
+              Exportar
             </Dropdown.Toggle>
             <Dropdown.Menu className="dropdown-menu dropdown-menu-sm dropdown-menu-right">
               <DropdownMenu2 />
@@ -72,7 +72,7 @@ export function MixedWidget1({ className }) {
       <div className="card-body p-0 position-relative overflow-hidden">
         {/* Chart */}
         <div
-          id="kt_mixed_widget_1_chart"
+          id=""
           className="card-rounded-bottom bg-danger"
           style={{ height: "200px" }}
         ></div>
@@ -90,7 +90,7 @@ export function MixedWidget1({ className }) {
                 href="#"
                 className="text-warning font-weight-bold font-size-h6"
               >
-                Weekly Sales
+                Item 1
               </a>
             </div>
             <div className="col bg-light-primary px-6 py-8 rounded-xl mb-7">
