@@ -29,9 +29,9 @@ function Registration(props) {
         })
       ),
     email: Yup.string()
-      .email("Wrong email format")
-      .min(3, "Minimum 3 symbols")
-      .max(50, "Maximum 50 symbols")
+      .email("e-mail inválido")
+      .min(3, "Mínimo de 3 letras")
+      .max(50, "máximo de 50 letras")
       .required(
         intl.formatMessage({
           id: "AUTH.VALIDATION.REQUIRED_FIELD",

@@ -9,8 +9,6 @@ var KTLayoutQuickPanel = function() {
     var _element;
     var _offcanvasObject;
     var _notificationsElement;
-    var _logsElement;
-    var _settingsElement;
 
     // Private functions
     var _getContentHeight = function() {
@@ -61,33 +59,11 @@ var KTLayoutQuickPanel = function() {
         });
     }
 
-    var _initLogs = function() {
-        KTUtil.scrollInit(_logsElement, {
-            mobileNativeScroll: true,
-            resetHeightOnDestroy: true,
-            handleWindowResize: true,
-            height: function() {
-                return _getContentHeight();
-            }
-        });
-    }
 
-    var _initSettings = function() {
-        KTUtil.scrollInit(_settingsElement, {
-            mobileNativeScroll: true,
-            resetHeightOnDestroy: true,
-            handleWindowResize: true,
-            height: function() {
-                return _getContentHeight();
-            }
-        });
-    }
 
     var _updateScrollbars = function() {
         $(_element).find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             KTUtil.scrollUpdate(_notificationsElement);
-            KTUtil.scrollUpdate(_logsElement);
-            KTUtil.scrollUpdate(_settingsElement);
         });
     }
 
@@ -96,13 +72,9 @@ var KTLayoutQuickPanel = function() {
         init: function(id) {
             _element = KTUtil.getById(id);
             _notificationsElement = KTUtil.getById('kt_quick_panel_notifications');
-            _logsElement = KTUtil.getById('kt_quick_panel_logs');
-            _settingsElement = KTUtil.getById('kt_quick_panel_settings');
 
             _init();
             _initNotifications();
-            _initLogs();
-            _initSettings();
 
             
         }

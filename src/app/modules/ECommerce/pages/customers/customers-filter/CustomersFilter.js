@@ -76,13 +76,13 @@ export function CustomersFilter({ listLoading }) {
                   onBlur={handleBlur}
                   value={values.status}
                 >
-                  <option value="">All</option>
-                  <option value="0">Susspended</option>
-                  <option value="1">Active</option>
-                  <option value="2">Pending</option>
+                  <option value="">Tudo</option>
+                  <option value="0">Suspenso</option>
+                  <option value="1">Ativo</option>
+                  <option value="2">Pendente</option>
                 </select>
                 <small className="form-text text-muted">
-                  <b>Filter</b> by Status
+                  <b>Filtrar</b> por Status
                 </small>
               </div>
               <div className="col-lg-2">
@@ -97,12 +97,12 @@ export function CustomersFilter({ listLoading }) {
                   }}
                   value={values.type}
                 >
-                  <option value="">All</option>
+                  <option value="">Tudo</option>
                   <option value="0">Business</option>
                   <option value="1">Individual</option>
                 </select>
                 <small className="form-text text-muted">
-                  <b>Filter</b> by Type
+                  <b>Filtrar</b> por Tipo
                 </small>
               </div>
               <div className="col-lg-2">
@@ -119,7 +119,7 @@ export function CustomersFilter({ listLoading }) {
                   }}
                 />
                 <small className="form-text text-muted">
-                  <b>Search</b> in all fields
+                  <b>Buscar</b> em todos os campos
                 </small>
               </div>
             </div>

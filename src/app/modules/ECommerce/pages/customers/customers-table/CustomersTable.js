@@ -60,20 +60,7 @@ export function CustomersTable() {
       sortCaret: sortCaret,
       headerSortingClasses,
     },
-    {
-      dataField: "firstName",
-      text: "Firstname",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
-    {
-      dataField: "lastName",
-      text: "Lastname",
-      sort: true,
-      sortCaret: sortCaret,
-      headerSortingClasses,
-    },
+    
     {
       dataField: "email",
       text: "Email",
@@ -81,12 +68,7 @@ export function CustomersTable() {
       sortCaret: sortCaret,
       headerSortingClasses,
     },
-    {
-      dataField: "gender",
-      text: "Gender",
-      sort: false,
-      sortCaret: sortCaret,
-    },
+   
     {
       dataField: "status",
       text: "Status",

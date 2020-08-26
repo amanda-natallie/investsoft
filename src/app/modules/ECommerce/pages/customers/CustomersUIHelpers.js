@@ -1,5 +1,5 @@
 export const CustomerStatusCssClasses = ["danger", "success", "info", ""];
-export const CustomerStatusTitles = ["Suspended", "Active", "Pending", ""];
+export const CustomerStatusTitles = ["Suspenso", "Ativo", "Pendente", ""];
 export const CustomerTypeCssClasses = ["success", "primary", ""];
 export const CustomerTypeTitles = ["Business", "Individual", ""];
 export const defaultSorted = [{ dataField: "id", order: "asc" }];
@@ -18,5 +18,5 @@ export const initialFilter = {
   sortOrder: "asc", // asc||desc
   sortField: "id",
   pageNumber: 1,
-  pageSize: 10
+  pageSize: 5
 };

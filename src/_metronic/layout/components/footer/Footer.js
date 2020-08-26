@@ -23,38 +23,38 @@ export function Footer() {
         <div className="text-dark order-2 order-md-1">
           <span className="text-muted font-weight-bold mr-2">{today.toString()}</span> &copy;{" "}
           <a
-            href="http://keenthemes.com/metronic"
+            href="http://www.investcont.net/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-dark-75 text-hover-primary"
           >
-            Keenthemes
+            InvestCont
           </a>
         </div>
         <div className="nav nav-dark order-1 order-md-2">
           <a
-            href="http://keenthemes.com/metronic"
+            href="http://www.investcont.net/empresa/"
             target="_blank"
             rel="noopener noreferrer"
             className="nav-link pr-3 pl-0"
           >
-            About
+            Sobre nós
           </a>
           <a
-            href="http://keenthemes.com/metronic"
+            href="http://www.investcont.net/blog/"
             target="_blank"
             rel="noopener noreferrer"
             className="nav-link px-3"
           >
-            Team
+            Blog
           </a>
           <a
-            href="http://keenthemes.com/metronic"
+            href="http://www.investcont.net/fale-conosco/"
             target="_blank"
             rel="noopener noreferrer"
             className="nav-link pl-3 pr-0"
           >
-            Contact
+            Fale Conosco
           </a>
         </div>
       </div>

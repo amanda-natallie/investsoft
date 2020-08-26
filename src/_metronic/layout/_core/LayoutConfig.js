@@ -64,8 +64,8 @@ export function getInitLayoutConfig() {
     loader: {
       enabled: true,
       type: "", // default|spinner-message|spinner-logo
-      logo: toAbsoluteUrl("/media/logos/logo-dark-sm.png"),
-      message: "Please wait..."
+      logo: toAbsoluteUrl("/media/logos/logo-dark.png"),
+      message: "Aguarde um momento..."
     },
     // page toolbar
     toolbar: {
@@ -74,7 +74,7 @@ export function getInitLayoutConfig() {
     header: {
       self: {
         width: "fluid", // fixed|fluid
-        theme: "light", // light|dark
+        theme: "dark", // light|dark
         fixed: {
           desktop: true,
           mobile: true
@@ -84,7 +84,7 @@ export function getInitLayoutConfig() {
         self: {
           display: true,
           layout: "default", // tab/default
-          "root-arrow": false,
+          "root-arrow": true,
           "icon-style": "duotone" // duotone, line, bold, solid
         },
         desktop: {
@@ -158,14 +158,14 @@ export function getInitLayoutConfig() {
     },
     extras: {
       search: {
-        display: true,
+        display: false,
         layout: "dropdown", // offcanvas, dropdown
         offcanvas: {
           direction: "right"
         }
       },
       notifications: {
-        display: true,
+        display: false,
         layout: "dropdown", // offcanvas, dropdown
         dropdown: {
           style: "dark" // light, dark
@@ -175,7 +175,7 @@ export function getInitLayoutConfig() {
         }
       },
       "quick-actions": {
-        display: true,
+        display: false,
         layout: "dropdown", // offcanvas, dropdown,
         dropdown: {
           style: "dark", // light, dark
@@ -195,10 +195,10 @@ export function getInitLayoutConfig() {
         }
       },
       languages: {
-        display: true
+        display: false
       },
       cart: {
-        display: true,
+        display: false,
         dropdown: {
           style: "dark", // ligth, dark
         }
@@ -210,7 +210,7 @@ export function getInitLayoutConfig() {
         }
       },
       chat: {
-        display: true
+        display: false
       },
       toolbar: {
         display: true

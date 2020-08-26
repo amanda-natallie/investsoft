@@ -19,8 +19,8 @@ export function QuickUser() {
       <div id="kt_quick_user" className="offcanvas offcanvas-right offcanvas p-10">
         <div className="offcanvas-header d-flex align-items-center justify-content-between pb-5">
           <h3 className="font-weight-bold m-0">
-            User Profile
-            <small className="text-muted font-size-sm ml-2">12 messages</small>
+            Perfil do usuário
+            
           </h3>
           <a
               href="#"
@@ -50,9 +50,9 @@ export function QuickUser() {
                   href="#"
                   className="font-weight-bold font-size-h5 text-dark-75 text-hover-primary"
               >
-                James Jones
+                Sean Jones
               </a>
-              <div className="text-muted mt-1">Application Developer</div>
+              <div className="text-muted mt-1">Gerente de RH</div>
               <div className="navi mt-2">
                 <a href="#" className="navi-item">
                 <span className="navi-link p-0 pb-2">
@@ -66,7 +66,7 @@ export function QuickUser() {
                     </span>
                   </span>
                   <span className="navi-text text-muted text-hover-primary">
-                    jm@softplus.com
+                    james@investcont.com.br
                   </span>
                 </span>
                 </a>
@@ -74,7 +74,7 @@ export function QuickUser() {
               {/* <Link to="/logout" className="btn btn-light-primary btn-bold">
                 Sign Out
               </Link> */}
-              <button className="btn btn-light-primary btn-bold" onClick={logoutClick}>Sign out</button>
+              <button className="btn btn-light-primary btn-bold" onClick={logoutClick}>Desconectar-se</button>
             </div>
           </div>
 
@@ -95,13 +95,10 @@ export function QuickUser() {
                   </div>
                 </div>
                 <div className="navi-text">
-                  <div className="font-weight-bold">My Profile</div>
+                  <div className="font-weight-bold">Meu Perfil</div>
                   <div className="text-muted">
-                    Account settings and more
-                    {" "}
-                    <span className="label label-light-danger label-inline font-weight-bold">
-                    update
-                  </span>
+                    Configurações de conta e mais
+                    
                   </div>
                 </div>
               </div>
@@ -121,8 +118,8 @@ export function QuickUser() {
                   </div>
                 </div>
                 <div className="navi-text">
-                  <div className="font-weight-bold">My Messages</div>
-                  <div className="text-muted">Inbox and tasks</div>
+                <div className="font-weight-bold">Minhas mensagens</div>
+                  <div className="text-muted">Inbox e tarefas</div>
                 </div>
               </div>
             </a>
@@ -141,8 +138,8 @@ export function QuickUser() {
                   </div>
                 </div>
                 <div className="navi-text">
-                  <div className="font-weight-bold">My Activities</div>
-                  <div className="text-muted">Logs and notifications</div>
+                  <div className="font-weight-bold">Minha atividade</div>
+                  <div className="text-muted">Logs e notificações</div>
                 </div>
               </div>
             </a>
@@ -161,8 +158,8 @@ export function QuickUser() {
                   </div>
                 </div>
                 <div className="navi-text">
-                  <div className="font-weight-bold">My Tasks</div>
-                  <div className="text-muted">latest tasks and projects</div>
+                  <div className="font-weight-bold">Minhas tarefas</div>
+                  <div className="text-muted">Últimas atividades e projetos</div>
                 </div>
               </div>
             </a>
@@ -170,101 +167,7 @@ export function QuickUser() {
 
           <div className="separator separator-dashed my-7"></div>
 
-          <div>
-            <h5 className="mb-5">Recent Notifications</h5>
-
-            <div className="d-flex align-items-center bg-light-warning rounded p-5 gutter-b">
-            <span className="svg-icon svg-icon-warning mr-5">
-              <SVG
-                  src={toAbsoluteUrl("/media/svg/icons/Home/Library.svg")}
-                  className="svg-icon svg-icon-lg"
-              ></SVG>
-            </span>
-
-              <div className="d-flex flex-column flex-grow-1 mr-2">
-                <a
-                    href="#"
-                    className="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1"
-                >
-                  Another purpose persuade
-                </a>
-                <span className="text-muted font-size-sm">Due in 2 Days</span>
-              </div>
-
-              <span className="font-weight-bolder text-warning py-1 font-size-lg">
-              +28%
-            </span>
-            </div>
-
-            <div className="d-flex align-items-center bg-light-success rounded p-5 gutter-b">
-            <span className="svg-icon svg-icon-success mr-5">
-              <SVG
-                  src={toAbsoluteUrl("/media/svg/icons/Communication/Write.svg")}
-                  className="svg-icon svg-icon-lg"
-              ></SVG>
-            </span>
-              <div className="d-flex flex-column flex-grow-1 mr-2">
-                <a
-                    href="#"
-                    className="font-weight-normal text-dark-75 text-hover-primary font-size-lg mb-1"
-                >
-                  Would be to people
-                </a>
-                <span className="text-muted font-size-sm">Due in 2 Days</span>
-              </div>
-
-              <span className="font-weight-bolder text-success py-1 font-size-lg">
-              +50%
-            </span>
-            </div>
-
-            <div className="d-flex align-items-center bg-light-danger rounded p-5 gutter-b">
-            <span className="svg-icon svg-icon-danger mr-5">
-              <SVG
-                  src={toAbsoluteUrl(
-                      "/media/svg/icons/Communication/Group-chat.svg"
-                  )}
-                  className="svg-icon svg-icon-lg"
-              ></SVG>
-            </span>
-              <div className="d-flex flex-column flex-grow-1 mr-2">
-                <a
-                    href="#"
-                    className="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1"
-                >
-                  Purpose would be to persuade
-                </a>
-                <span className="text-muted font-size-sm">Due in 2 Days</span>
-              </div>
-
-              <span className="font-weight-bolder text-danger py-1 font-size-lg">
-              -27%
-            </span>
-            </div>
-
-            <div className="d-flex align-items-center bg-light-info rounded p-5">
-            <span className="svg-icon svg-icon-info mr-5">
-              <SVG
-                  src={toAbsoluteUrl("/media/svg/icons/General/Attachment2.svg")}
-                  className="svg-icon svg-icon-lg"
-              ></SVG>
-            </span>
-
-              <div className="d-flex flex-column flex-grow-1 mr-2">
-                <a
-                    href="#"
-                    className="font-weight-normel text-dark-75 text-hover-primary font-size-lg mb-1"
-                >
-                  The best product
-                </a>
-                <span className="text-muted font-size-sm">Due in 2 Days</span>
-              </div>
-
-              <span className="font-weight-bolder text-info py-1 font-size-lg">
-              +8%
-            </span>
-            </div>
-          </div>
+      
         </div>
       </div>
   );
