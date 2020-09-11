@@ -4,6 +4,8 @@ import {LayoutSplashScreen, ContentRoute} from "../_metronic/layout";
 import {BuilderPage} from "./pages/BuilderPage";
 import {PaginaUm} from "./pages/PaginaUm";
 import {PaginaDois} from "./pages/PaginaDois";
+import {GerenciarClientesPage} from "./pages/clients/GerenciarClientesPage";
+import {CadastrarClientesPage} from "./pages/clients/CadastrarClientesPage";
 import {DashboardPage} from "./pages/DashboardPage";
 
 const GoogleMaterialPage = lazy(() =>
@@ -13,7 +15,7 @@ const ReactBootstrapPage = lazy(() =>
   import("./modules/ReactBootstrapExamples/ReactBootstrapPage")
 );
 const ECommercePage = lazy(() =>
-  import("./modules/ECommerce/pages/eCommercePage")
+  import("./modules/ECommerce/pages/eCommercePage")  
 );
 
 export default function BasePage() {
@@ -33,6 +35,8 @@ export default function BasePage() {
                 <ContentRoute path="/builder" component={BuilderPage}/>
                 <ContentRoute path="/pagina-um" component={PaginaUm}/>
                 <ContentRoute path="/pagina-dois" component={PaginaDois}/>
+                <ContentRoute path="/gerenciar-clientes" component={GerenciarClientesPage}/>
+                <ContentRoute path="/cadastrar-clientes" component={CadastrarClientesPage}/>
                 <Route path="/google-material" component={GoogleMaterialPage}/>
                 <Route path="/react-bootstrap" component={ReactBootstrapPage}/>
                 <Route path="/e-commerce" component={ECommercePage}/>
