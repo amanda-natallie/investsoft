@@ -6,7 +6,7 @@ export default ({ data, columns }) => (
   <>
     <BootstrapTable
       wrapperClasses="table-responsive"
-      bordered={true}
+      bordered={false}
       classes="table table-head-custom table-vertical-center overflow-hidden"
       bootstrap4
       keyField="id"
