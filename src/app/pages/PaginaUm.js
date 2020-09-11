@@ -15,6 +15,8 @@ import { FormUm } from "../components/pagina-um/FormUm";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { FileTable } from "../components/pagina-um/FileTable";
 
+import CustomizatedExampleTable from "../components/CustomTable/CustomizatedExampleTable";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "90%",
@@ -70,6 +72,7 @@ export const PaginaUm = () => {
           <>
             <FormUm formDisabled={formDisabled} />
             <FileTable />
+            <CustomizatedExampleTable />
           </>
         );
       case 1:
