@@ -1,14 +1,7 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Divider,
-  TextField,
-  Grid,
-  InputLabel,
-  Fab,
-  Tooltip,
-} from "@material-ui/core";
+import { TextField, Grid, Fab, Tooltip } from "@material-ui/core";
 
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";

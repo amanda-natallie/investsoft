@@ -3,17 +3,12 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   MenuItem,
-  Switch,
   Divider,
   TextField,
   Grid,
   InputLabel,
-  Fab,
-  Tooltip,
 } from "@material-ui/core";
 
-import AddIcon from "@material-ui/icons/Add";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { CustomDropzone } from "../../../components/Dropzone/CustomDropzone";
 
 const useStyles = makeStyles((theme) => ({
@@ -105,43 +100,7 @@ export const RepresentanteLegal = () => {
 
     setRepresentante(newArray);
   };
-  const addOption = () => {
-    const id = representante.length;
-    const optionLine = {
-      id: id,
-      tipo: "",
-      representante: "",
-      nome: "",
-      cpf: "",
-      rg: "",
-      orgaoEmissorRg: "",
-      ufRg: "",
-      carteiraProfissional: "",
-      orgaoEmissorCarteira: "",
-      ufCarteira: "",
-      nacionalidade: "",
-      naturalidade: "",
-      estadoCivil: "",
-      nomeConjuge: "",
-      cpfConjuge: "",
-      profissao: "",
-      dataNascimento: "",
-      cep: "",
-      logradouro: "",
-      bairro: "",
-      municipio: "",
-      complemento: "",
-      uf: "",
-      telefone: "",
-      email: "",
-    };
 
-    setRepresentante([...representante, optionLine]);
-  };
-
-  const deleteOption = (index) => {
-    setRepresentante(representante.filter((_, i) => i !== index));
-  };
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
