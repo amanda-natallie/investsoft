@@ -19,6 +19,7 @@ import {
 import * as columnFormatters from "./column-formatters";
 import { Pagination } from "../../../../../../_metronic/_partials/controls";
 import { useProductsUIContext } from "../ProductsUIContext";
+import { Paper } from "@material-ui/core/";
 
 export function ProductsTable() {
   // Products UI Context
@@ -69,8 +70,7 @@ export function ProductsTable() {
       sort: true,
       sortCaret: sortCaret,
     },
- 
-   
+
     {
       dataField: "price",
       text: "Price",
@@ -85,7 +85,7 @@ export function ProductsTable() {
       sortCaret: sortCaret,
       formatter: columnFormatters.StatusColumnFormatter,
     },
-   
+
     {
       dataField: "action",
       text: "Actions",
@@ -110,41 +110,36 @@ export function ProductsTable() {
     page: productsUIProps.queryParams.pageNumber,
   };
   return (
-    <>
-      <PaginationProvider pagination={paginationFactory(paginationOptions)}>
-        {({ paginationProps, paginationTableProps }) => {
-          return (
-            <Pagination
-              isLoading={listLoading}
-              paginationProps={paginationProps}
+    <PaginationProvider pagination={paginationFactory(paginationOptions)}>
+      {({ paginationProps, paginationTableProps }) => {
+        return (
+          <Pagination isLoading={listLoading} paginationProps={paginationProps}>
+            <BootstrapTable
+              wrapperClasses="table-responsive"
+              classes="table table-head-custom table-vertical-center overflow-hidden"
+              bootstrap4
+              bordered={false}
+              remote
+              keyField="id"
+              data={entities === null ? [] : entities}
+              columns={columns}
+              defaultSorted={uiHelpers.defaultSorted}
+              onTableChange={getHandlerTableChange(
+                productsUIProps.setQueryParams
+              )}
+              selectRow={getSelectRow({
+                entities,
+                ids: productsUIProps.ids,
+                setIds: productsUIProps.setIds,
+              })}
+              {...paginationTableProps}
             >
-              <BootstrapTable
-                wrapperClasses="table-responsive"
-                classes="table table-head-custom table-vertical-center overflow-hidden"
-                bootstrap4
-                bordered={false}
-                remote
-                keyField="id"
-                data={entities === null ? [] : entities}
-                columns={columns}
-                defaultSorted={uiHelpers.defaultSorted}
-                onTableChange={getHandlerTableChange(
-                  productsUIProps.setQueryParams
-                )}
-                selectRow={getSelectRow({
-                  entities,
-                  ids: productsUIProps.ids,
-                  setIds: productsUIProps.setIds,
-                })}
-                {...paginationTableProps}
-              >
-                <PleaseWaitMessage entities={entities} />
-                <NoRecordsFoundMessage entities={entities} />
-              </BootstrapTable>
-            </Pagination>
-          );
-        }}
-      </PaginationProvider>
-    </>
+              <PleaseWaitMessage entities={entities} />
+              <NoRecordsFoundMessage entities={entities} />
+            </BootstrapTable>
+          </Pagination>
+        );
+      }}
+    </PaginationProvider>
   );
 }

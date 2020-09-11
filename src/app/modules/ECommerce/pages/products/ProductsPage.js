@@ -11,45 +11,45 @@ import { ProductsUIProvider } from "./ProductsUIContext";
 export function ProductsPage({ history }) {
   const productsUIEvents = {
     newProductButtonClick: () => {
-      history.push("/pagina-dois/new");
+      history.push("/gerenciar-clientes/new");
     },
     openEditProductPage: (id) => {
-      history.push(`/pagina-dois/${id}/edit`);
+      history.push(`/gerenciar-clientes/${id}/edit`);
     },
     openDeleteProductDialog: (id) => {
-      history.push(`/pagina-dois/${id}/delete`);
+      history.push(`/gerenciar-clientes/${id}/delete`);
     },
     openDeleteProductsDialog: () => {
-      history.push(`/pagina-dois/deleteProducts`);
+      history.push(`/gerenciar-clientes/deleteProducts`);
     },
     openFetchProductsDialog: () => {
-      history.push(`/pagina-dois/fetch`);
+      history.push(`/gerenciar-clientes/fetch`);
     },
     openUpdateProductsStatusDialog: () => {
-      history.push("/pagina-dois/updateStatus");
+      history.push("/gerenciar-clientes/updateStatus");
     },
   };
 
   return (
     <ProductsUIProvider productsUIEvents={productsUIEvents}>
       <ProductsLoadingDialog />
-      <Route path="/pagina-dois/deleteProducts">
+      <Route path="/gerenciar-clientes/deleteProducts">
         {({ history, match }) => (
           <ProductsDeleteDialog
             show={match != null}
             onHide={() => {
-              history.push("/pagina-dois");
+              history.push("/gerenciar-clientes");
             }}
           />
         )}
       </Route>
-      <Route path="/pagina-dois/:id/delete">
+      <Route path="/gerenciar-clientes/:id/delete">
         {({ history, match }) => (
           <ProductDeleteDialog
             show={match != null}
             id={match && match.params.id}
             onHide={() => {
-              history.push("/pagina-dois");
+              history.push("/gerenciar-clientes");
             }}
           />
         )}
@@ -64,12 +64,12 @@ export function ProductsPage({ history }) {
           />
         )}
       </Route>
-      <Route path="/pagina-dois/updateStatus">
+      <Route path="/gerenciar-clientes/updateStatus">
         {({ history, match }) => (
           <ProductsUpdateStatusDialog
             show={match != null}
             onHide={() => {
-              history.push("/pagina-dois");
+              history.push("/gerenciar-clientes");
             }}
           />
         )}

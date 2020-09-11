@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 import {
   Card,
   CardBody,
@@ -27,7 +27,7 @@ export function ProductsCard() {
   }, [productsUIContext]);
 
   return (
-    <Card>
+    <Card style={{ marginTop: 40 }}>
       <CardHeader title="Lista de Atividades">
         <CardHeaderToolbar>
           <button

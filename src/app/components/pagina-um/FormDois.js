@@ -1,10 +1,10 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {  TextField, Grid, Paper } from "@material-ui/core/";
+import { TextField, Grid, Paper } from "@material-ui/core/";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
-
 import { ProductsPage } from "../../modules/ECommerce/pages/products/ProductsPage";
+import { FileTable } from "../../components/pagina-um/FileTable";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -50,26 +50,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const FormDois = (formDisabled) => {
+export const FormDois = (props) => {
   const classes = useStyles();
-  const [values, setValues] = useState({
-    codigo: "#65416548196-41",
-    nome: "Nome da empresa",
-    tipo: "Domésticos",
-    cnpj: "27.211.888/0001-70",
-    razaoSocial: "Nome da empresa EIRELI",
-    nomeFantasia: "Nome da empresa",
-    dataAbertura: "24/12/1994",
-    cep: "04638-120",
-    logradouro: "Rua Desire Contier",
-    numero: 39,
-    bairro: "Jardim Petrópolis",
-    municipio: "São Paulo",
-    complemento: "Rua do Ragazzo",
-    email: "jose@villadapaz.com.br",
-    telefone: "(41) 98998-9898",
-    empresa: "Vallori Solutions",
-  });
+  const [formDisabled, setFormDisabled] = useState(true);
+  const [values, setValues] = useState(props.selectedCliente[0]);
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -77,166 +61,210 @@ export const FormDois = (formDisabled) => {
 
   return (
     <>
-      <Paper className={classes.paper}>
-        <h4>Código do cliente: {values.codigo}</h4>
-        <form className={classes.container} noValidate autoComplete="off">
-          <Grid container spacing={3}>
-            <Grid item md={9}>
-              <div className="d-flex align-items-center justify-content-between">
-                <TextField
-                  disabled={formDisabled}
-                  label="Nome"
-                  value={values.nome}
-                  onChange={handleChange("nome")}
-                  className={classes.textField}
-                  margin="normal"
-                />
-
-                <TextField
-                  id="standard-name"
-                  label="Número do CNPJ: "
-                  className={classes.textField}
-                  value={values.cnpj}
-                  onChange={handleChange("cnpj")}
-                  disabled={formDisabled}
-                  margin="normal"
-                />
-              </div>
-              <div className="d-flex align-items-center justify-content-between">
-                <TextField
-                  disabled={formDisabled}
-                  label="Razão Social"
-                  value={values.razaoSocial}
-                  onChange={handleChange("razaoSocial")}
-                  className={classes.textField}
-                  margin="normal"
-                />
-                <TextField
-                  disabled={formDisabled}
-                  label="Nome Fantasia"
-                  value={values.nomeFantasia}
-                  onChange={handleChange("nomeFantasia")}
-                  className={classes.textField}
-                  margin="normal"
-                />
-
-                <TextField
-                  id="standard-name"
-                  label="Data de Abertura: "
-                  className={classes.textField}
-                  value={values.dataAbertura}
-                  onChange={handleChange("dataAbertura")}
-                  disabled={formDisabled}
-                  margin="normal"
-                />
-              </div>
-              <h5 className={classes.subheader}>Localização</h5>
+      <h4>Código do cliente: {values.codigo}</h4>
+      <form className={classes.container} noValidate autoComplete="off">
+        <Grid container spacing={3}>
+          <Grid item md={9}>
+            <div className="d-flex align-items-center justify-content-between">
               <TextField
                 disabled={formDisabled}
-                label="CEP"
-                value={values.cep}
-                onChange={handleChange("cep")}
+                label="Razão Social"
+                value={values.razao_social}
+                onChange={handleChange("razao_social")}
                 className={classes.textField}
-                style={{ maxWidth: 200 }}
                 margin="normal"
               />
-              <div className="d-flex align-items-center justify-content-between">
-                <TextField
-                  disabled={formDisabled}
-                  label="Logradouro"
-                  value={values.logradouro}
-                  onChange={handleChange("logradouro")}
-                  className={classes.textField}
-                  margin="normal"
-                />
-                <TextField
-                  disabled={formDisabled}
-                  label="Número"
-                  value={values.numero}
-                  onChange={handleChange("numero")}
-                  className={classes.textField}
-                  margin="normal"
-                />
-                <TextField
-                  disabled={formDisabled}
-                  label="Bairro"
-                  value={values.bairro}
-                  onChange={handleChange("bairro")}
-                  className={classes.textField}
-                  margin="normal"
-                />
 
-                <TextField
-                  id="standard-name"
-                  label="Município"
-                  className={classes.textField}
-                  value={values.municipio}
-                  onChange={handleChange("municipio")}
-                  disabled={formDisabled}
-                  margin="normal"
-                />
-
-                <TextField
-                  id="standard-name"
-                  label="Complemento"
-                  className={classes.textField}
-                  value={values.complemento}
-                  onChange={handleChange("complemento")}
-                  disabled={formDisabled}
-                  margin="normal"
-                />
-              </div>
-            </Grid>
-            <Grid item md={3} className="text-center">
-              <img
-                src={toAbsoluteUrl("/media/client-logos/logo4.png")}
-                alt="yu"
-                className={classes.roundedAvatar}
-              />
-              <button className="btn btn-primary mt-2">Editar dados</button>
-            </Grid>
-          </Grid>
-          <Grid container spacing={3}>
-            <Grid item md={4}>
               <TextField
                 id="standard-name"
-                label="E-mail: "
-                fullWidth
+                label="Nome Fantasia"
                 className={classes.textField}
-                value={values.email}
-                onChange={handleChange("email")}
+                value={values.nome_fantasia}
+                onChange={handleChange("nome_fantasia")}
                 disabled={formDisabled}
                 margin="normal"
               />
-            </Grid>
-            <Grid item md={4}>
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <TextField
+                disabled={formDisabled}
+                label="CNPJ"
+                value={values.cnpj}
+                onChange={handleChange("cnpj")}
+                className={classes.textField}
+                margin="normal"
+              />
+              <TextField
+                disabled={formDisabled}
+                label="Incrição Estadual"
+                value={values.inscricao_estadual}
+                onChange={handleChange("inscricao_estadual")}
+                className={classes.textField}
+                margin="normal"
+              />
+
+              <TextField
+                id="standard-name"
+                label="Inscrição Municipal"
+                className={classes.textField}
+                value={values.inscricao_municipal}
+                onChange={handleChange("inscricao_municipal")}
+                disabled={formDisabled}
+                margin="normal"
+              />
+            </div>
+            <h5 className={classes.subheader}>Informações Adicionais</h5>
+            <TextField
+              disabled={formDisabled}
+              label="Situação"
+              value={values.situacao}
+              onChange={handleChange("situacao")}
+              className={classes.textField}
+              style={{ maxWidth: 200 }}
+              margin="normal"
+            />
+            <div className="d-flex align-items-center justify-content-between">
+              <TextField
+                disabled={formDisabled}
+                label="Contato Principal"
+                value={values.pessoa_contato_1}
+                onChange={handleChange("pessoa_contato_1")}
+                className={classes.textField}
+                margin="normal"
+              />
+              <TextField
+                disabled={formDisabled}
+                label="Setor/Função"
+                value={values.setor_funcao_1}
+                onChange={handleChange("setor_funcao_1")}
+                className={classes.textField}
+                margin="normal"
+              />
               <TextField
                 disabled={formDisabled}
                 label="Telefone"
-                fullWidth
-                value={values.telefone}
-                onChange={handleChange("telefone")}
+                value={values.fone_1}
+                onChange={handleChange("fone_1")}
                 className={classes.textField}
                 margin="normal"
               />
-            </Grid>
-            <Grid item md={4}>
+
+              <TextField
+                id="standard-name"
+                label="E-mail"
+                className={classes.textField}
+                value={values.email_1}
+                onChange={handleChange("email_1")}
+                disabled={formDisabled}
+                margin="normal"
+              />
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
               <TextField
                 disabled={formDisabled}
-                label="Empresa"
-                fullWidth
-                value={values.empresa}
-                onChange={handleChange("empresa")}
+                label="Contato Principal"
+                value={values.pessoa_contato_2}
+                onChange={handleChange("pessoa_contato_2")}
                 className={classes.textField}
                 margin="normal"
               />
-            </Grid>
+              <TextField
+                disabled={formDisabled}
+                label="Setor/Função"
+                value={values.setor_funcao_2}
+                onChange={handleChange("setor_funcao_2")}
+                className={classes.textField}
+                margin="normal"
+              />
+              <TextField
+                disabled={formDisabled}
+                label="Telefone"
+                value={values.fone_2}
+                onChange={handleChange("fone_2")}
+                className={classes.textField}
+                margin="normal"
+              />
+
+              <TextField
+                id="standard-name"
+                label="E-mail"
+                className={classes.textField}
+                value={values.email_2}
+                onChange={handleChange("email_2")}
+                disabled={formDisabled}
+                margin="normal"
+              />
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <TextField
+                disabled={formDisabled}
+                label="Contato Principal"
+                value={values.pessoa_contato_3}
+                onChange={handleChange("pessoa_contato_3")}
+                className={classes.textField}
+                margin="normal"
+              />
+              <TextField
+                disabled={formDisabled}
+                label="Setor/Função"
+                value={values.setor_funcao_3}
+                onChange={handleChange("setor_funcao_3")}
+                className={classes.textField}
+                margin="normal"
+              />
+              <TextField
+                disabled={formDisabled}
+                label="Telefone"
+                value={values.fone_3}
+                onChange={handleChange("fone_3")}
+                className={classes.textField}
+                margin="normal"
+              />
+
+              <TextField
+                id="standard-name"
+                label="E-mail"
+                className={classes.textField}
+                value={values.email_3}
+                onChange={handleChange("email_3")}
+                disabled={formDisabled}
+                margin="normal"
+              />
+            </div>
           </Grid>
-        </form>
-      </Paper>
-      <div className={classes.wrapper}>
+          <Grid item md={3} className="text-center">
+            <img
+              src={toAbsoluteUrl("/media/client-logos/logo4.png")}
+              alt="yu"
+              className={classes.roundedAvatar}
+            />
+            <button
+              onClick={() => setFormDisabled(!formDisabled)}
+              className="btn btn-primary mt-2"
+            >
+              Editar dados
+            </button>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3}>
+          <Grid item md={12}>
+            <TextField
+              id="standard-name"
+              label="Observações: "
+              fullWidth
+              className={classes.textField}
+              value={values.observacoes}
+              onChange={handleChange("observacoes")}
+              disabled={formDisabled}
+              margin="normal"
+            />
+          </Grid>
+        </Grid>
+      </form>
+      <Paper>
         <ProductsPage />
-      </div>
+        <FileTable />
+      </Paper>
     </>
   );
 };
