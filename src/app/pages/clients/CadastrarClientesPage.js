@@ -14,6 +14,9 @@ import {
 import { CadastrarClientesForm } from "./components/CadastrarClientesForm";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { FileTable } from "../../components/pagina-um/FileTable";
+import { InformacoesJuridicasForm } from "./components/InformacoesJuridicasForm";
+import { EnderecoLocalizacaoForm } from "./components/EnderecoLocalizacaoForm";
+import { AlvaraAtividades } from "./components/AlvaraAtividades";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,23 +61,28 @@ const useStyles = makeStyles((theme) => ({
 export const CadastrarClientesPage = () => {
   const [formDisabled, setFormDisabled] = useState(true);
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(2);
+
   const getSteps = () => {
-    return ["Cadastro Inicial", "Aprovação", "Finalização"];
+    return [
+      "Informações Jurídicas",
+      "Endereço & Localização",
+      "Alvará & Atividades",
+      "Regime Tributário",
+      "Contatos",
+      "Sócios",
+      "Representante",
+    ];
   };
 
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return (
-          <>
-            <CadastrarClientesForm formDisabled={formDisabled} />
-          </>
-        );
+        return <InformacoesJuridicasForm />
       case 1:
-        return "Passo 2";
+        return <EnderecoLocalizacaoForm />
       case 2:
-        return "Passo 3";
+        return <AlvaraAtividades />
       default:
         return "Unknown step";
     }
@@ -108,7 +116,7 @@ export const CadastrarClientesPage = () => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Grid container className="justify-content-between align-self-center">
+        <Grid container className="justify-content-between align-self-center mb-5">
           <div>
             <Typography variant="h5" component="h3">
               Cadastro de Novo Cliente
@@ -135,7 +143,7 @@ export const CadastrarClientesPage = () => {
             </Step>
           ))}
         </Stepper>
-        <div className="d-flex align-items-center">
+        <div>
           {activeStep === steps.length ? (
             <div>
               <Typography className={classes.instructions}>
@@ -146,11 +154,9 @@ export const CadastrarClientesPage = () => {
               </Button>
             </div>
           ) : (
-            <div>
-              <Typography className={classes.instructions}>
-                {getStepContent(activeStep)}
-              </Typography>
-              <div>
+            <>
+              <Grid container>{getStepContent(activeStep)}</Grid>
+              <Grid container>
                 <Button
                   disabled={activeStep === 0}
                   onClick={handleBack}
@@ -166,8 +172,8 @@ export const CadastrarClientesPage = () => {
                 >
                   {activeStep === steps.length - 1 ? "Finalizar" : "Próximo"}
                 </Button>
-              </div>
-            </div>
+              </Grid>
+            </>
           )}
         </div>
       </Paper>
