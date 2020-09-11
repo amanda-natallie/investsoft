@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 export const CadastrarClientesPage = () => {
   const [formDisabled, setFormDisabled] = useState(true);
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(6);
+  const [activeStep, setActiveStep] = useState(0);
 
   const getSteps = () => {
     return [
@@ -131,7 +131,7 @@ export const CadastrarClientesPage = () => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Grid container className="justify-content-between align-self-center mb-5">
+        <Grid container className="justify-content-between align-self-center mb-5 pl-2">
           <div>
             <Typography variant="h5" component="h3">
               Cadastro de Novo Cliente
@@ -151,7 +151,7 @@ export const CadastrarClientesPage = () => {
           </Button>
         </Grid>
 
-        <Stepper activeStep={activeStep} connector={connector}>
+        <Stepper activeStep={activeStep} connector={connector} style={{padding: "10px 0"}}>
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>

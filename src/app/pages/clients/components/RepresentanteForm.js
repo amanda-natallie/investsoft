@@ -475,7 +475,7 @@ export const RepresentanteForm = () => {
           </>
         ))}
       <Grid container>
-        <Grid lg={3} className={classes.plusButton} onClick={() => addOption()}>
+        <Grid lg={6} className={classes.plusButton} onClick={() => addOption()}>
           <Fab size="small" color="primary">
             <AddIcon />
           </Fab>
