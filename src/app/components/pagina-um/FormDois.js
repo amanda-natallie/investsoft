@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Divider, TextField, Grid, Paper } from "@material-ui/core/";
+import {  TextField, Grid, Paper } from "@material-ui/core/";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 
 import { ProductsPage } from "../../modules/ECommerce/pages/products/ProductsPage";
