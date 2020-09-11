@@ -17,6 +17,33 @@ import { FileTable } from "../components/pagina-um/FileTable";
 
 import CustomizatedExampleTable from "../components/CustomTable/CustomizatedExampleTable";
 
+const products = [
+  {
+    id: "1",
+    tipo: "teste1",
+    cnpj: "teste1",
+    razaoSocial: "teste1",
+    emailContato: "teste1",
+    pessoaContato: "teste1",
+  },
+  {
+    id: "2",
+    tipo: "teste2",
+    cnpj: "teste2",
+    razaoSocial: "teste2",
+    emailContato: "teste2",
+    pessoaContato: "teste2",
+  },
+  {
+    id: "3",
+    tipo: "teste3",
+    cnpj: "teste3",
+    razaoSocial: "teste3",
+    emailContato: "teste3",
+    pessoaContato: "teste3",
+  },
+];
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "90%",
@@ -72,7 +99,7 @@ export const PaginaUm = () => {
           <>
             <FormUm formDisabled={formDisabled} />
             <FileTable />
-            <CustomizatedExampleTable />
+            <CustomizatedExampleTable products={products} />
           </>
         );
       case 1:

@@ -6,33 +6,6 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-const products = [
-  {
-    id: "1",
-    tipo: "teste1",
-    cnpj: "teste1",
-    razaoSocial: "teste1",
-    emailContato: "teste1",
-    pessoaContato: "teste1",
-  },
-  {
-    id: "2",
-    tipo: "teste2",
-    cnpj: "teste2",
-    razaoSocial: "teste2",
-    emailContato: "teste2",
-    pessoaContato: "teste2",
-  },
-  {
-    id: "3",
-    tipo: "teste3",
-    cnpj: "teste3",
-    razaoSocial: "teste3",
-    emailContato: "teste3",
-    pessoaContato: "teste3",
-  },
-];
-
 const headerStyle = {
   backgroundColor: "#F3F6F9",
   border: 0,
@@ -114,7 +87,7 @@ const columns = [
   },
 ];
 
-const CustomizatedExampleTable = () => {
+const CustomizatedExampleTable = ({ products }) => {
   return (
     <BootstrapTable
       headerClasses="testeTabela"
