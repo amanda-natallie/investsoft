@@ -11,12 +11,16 @@ import {
   Paper,
   Grid,
 } from "@material-ui/core/";
-import { CadastrarClientesForm } from "./components/CadastrarClientesForm";
+
 import DeleteIcon from "@material-ui/icons/Delete";
-import { FileTable } from "../../components/pagina-um/FileTable";
 import { InformacoesJuridicasForm } from "./components/InformacoesJuridicasForm";
 import { EnderecoLocalizacaoForm } from "./components/EnderecoLocalizacaoForm";
 import { AlvaraAtividades } from "./components/AlvaraAtividades";
+import RegimeTributario from "./components/RegimeTributario";
+import { ContatosForm } from "./components/ContatosForm";
+import { SociosForm } from "./components/SociosForm";
+import { RepresentanteForm } from "./components/RepresentanteForm";
+import { RepresentanteLegal } from "./components/RepresentanteLegal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 export const CadastrarClientesPage = () => {
   const [formDisabled, setFormDisabled] = useState(true);
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(6);
 
   const getSteps = () => {
     return [
@@ -71,7 +75,8 @@ export const CadastrarClientesPage = () => {
       "Regime Tributário",
       "Contatos",
       "Sócios",
-      "Representante",
+      "Representantes",
+      "Representante Legal",
     ];
   };
 
@@ -83,8 +88,18 @@ export const CadastrarClientesPage = () => {
         return <EnderecoLocalizacaoForm />
       case 2:
         return <AlvaraAtividades />
+      case 3:
+        return <RegimeTributario />
+      case 4:
+        return <ContatosForm />
+      case 5:
+        return <SociosForm />
+      case 6:
+        return <RepresentanteForm />
+      case 7:
+        return <RepresentanteLegal />
       default:
-        return "Unknown step";
+        return "Página desconhecida";
     }
   };
 

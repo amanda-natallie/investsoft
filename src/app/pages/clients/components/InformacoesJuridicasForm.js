@@ -1,15 +1,7 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Divider,
-  TextField,
-  Grid,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
-} from "@material-ui/core";
+import { Divider, TextField, Grid, MenuItem } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -51,8 +43,10 @@ export const InformacoesJuridicasForm = () => {
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
-      <p className="ml-3 font-weight-bold">Passo 01: Informe os dados básicos </p>
-      <Grid container  spacing={3}>
+      <p className="ml-3 font-weight-bold">
+        Passo 01: Informe os dados básicos{" "}
+      </p>
+      <Grid container spacing={3}>
         <Grid item xs={6}>
           <TextField
             disabled={false}
@@ -82,7 +76,7 @@ export const InformacoesJuridicasForm = () => {
             <MenuItem value="Doméstico">Doméstico</MenuItem>
           </TextField>
         </Grid>
-     
+
         <Grid item xs={6}>
           <TextField
             disabled={false}
@@ -105,7 +99,7 @@ export const InformacoesJuridicasForm = () => {
             variant="outlined"
           />
         </Grid>
-      
+
         <Grid item xs={6}>
           <TextField
             disabled={false}

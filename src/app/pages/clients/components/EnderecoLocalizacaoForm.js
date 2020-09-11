@@ -1,15 +1,7 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Divider,
-  TextField,
-  Grid,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
-} from "@material-ui/core";
+import { Divider, TextField, Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -40,7 +32,7 @@ export const EnderecoLocalizacaoForm = () => {
     cep: "",
     logradouro: "",
     numero: "",
-    bairro : "",
+    bairro: "",
     municipio: "",
     complemento: "",
   });
@@ -51,8 +43,10 @@ export const EnderecoLocalizacaoForm = () => {
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
-      <p className="ml-3 font-weight-bold">Passo 02: Informe os dados de endereço do cliente </p>
-      <Grid container  spacing={3}>
+      <p className="ml-3 font-weight-bold">
+        Passo 02: Informe os dados de endereço do cliente{" "}
+      </p>
+      <Grid container spacing={3}>
         <Grid item xs={4}>
           <TextField
             disabled={false}
@@ -67,7 +61,7 @@ export const EnderecoLocalizacaoForm = () => {
         <Grid item xs={4}></Grid>
         <Grid item xs={4}></Grid>
         <Grid item xs={7}>
-        <TextField
+          <TextField
             disabled={false}
             label="Logradouro"
             fullWidth
@@ -77,7 +71,7 @@ export const EnderecoLocalizacaoForm = () => {
             variant="outlined"
           />
         </Grid>
-     
+
         <Grid item xs={5}>
           <TextField
             disabled={false}
@@ -100,7 +94,7 @@ export const EnderecoLocalizacaoForm = () => {
             variant="outlined"
           />
         </Grid>
-      
+
         <Grid item xs={4}>
           <TextField
             disabled={false}

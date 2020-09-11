@@ -5,11 +5,9 @@ import {
   Divider,
   TextField,
   Grid,
-  MenuItem,
-  FormControl,
   InputLabel,
-  Select,
   Fab,
+  Tooltip,
 } from "@material-ui/core";
 import { CustomDropzone } from "../../../components/Dropzone/CustomDropzone";
 import AddIcon from "@material-ui/icons/Add";
@@ -188,19 +186,21 @@ export const AlvaraAtividades = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <Fab
-                color="primary"
-                aria-label="Deletar Opção"
-                onClick={() => deleteOption(index)}
-              >
-                <DeleteIcon />
-              </Fab>
+              <Tooltip title="Deletar Opção">
+                <Fab
+                  color="primary"
+                  aria-label="Deletar Opção"
+                  onClick={() => deleteOption(index)}
+                >
+                  <DeleteIcon />
+                </Fab>
+              </Tooltip>
             </Grid>
           </Grid>
         ))}
       <Grid container>
         <Grid lg={3} className={classes.plusButton} onClick={() => addOption()}>
-          <Fab size="small"  color="primary">
+          <Fab size="small" color="primary">
             <AddIcon />
           </Fab>
           <span className="ml-4">Adicionar Atividade</span>

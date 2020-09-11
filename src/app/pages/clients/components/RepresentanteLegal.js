@@ -48,15 +48,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SociosForm = () => {
+export const RepresentanteLegal = () => {
   const classes = useStyles();
 
   const [estadoCivil, setEstadoCivil] = useState("");
-  const [socios, setSocios] = useState([
+  const [representante, setRepresentante] = useState([
     {
       id: 0,
-      tipo: "",
-      representante: "",
       nome: "",
       cpf: "",
       rg: "",
@@ -84,7 +82,7 @@ export const SociosForm = () => {
   ]);
 
   const addInformationOption = (type, index, e) => {
-    const newArray = JSON.parse(JSON.stringify(socios));
+    const newArray = JSON.parse(JSON.stringify(representante));
 
     switch (type) {
       case "pessoaContato":
@@ -105,10 +103,10 @@ export const SociosForm = () => {
         break;
     }
 
-    setSocios(newArray);
+    setRepresentante(newArray);
   };
   const addOption = () => {
-    const id = socios.length;
+    const id = representante.length;
     const optionLine = {
       id: id,
       tipo: "",
@@ -138,66 +136,26 @@ export const SociosForm = () => {
       email: "",
     };
 
-    setSocios([...socios, optionLine]);
+    setRepresentante([...representante, optionLine]);
   };
 
   const deleteOption = (index) => {
-    setSocios(socios.filter((_, i) => i !== index));
+    setRepresentante(representante.filter((_, i) => i !== index));
   };
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <p className="ml-3 font-weight-bold">
-        Passo 06: Informe os dados de sócios. Você pode adicionar quantos
+        Passo 06: Informe os dados de representante. Você pode adicionar quantos
         quiser. O primeiro é obrigatório.
       </p>
 
-      {socios &&
-        socios.map((item, index) => (
+      {representante &&
+        representante.map((item, index) => (
           <>
             <Grid container key={index} spacing={2} className="mb-5 mt-5">
-              <Grid item xs={12} className="ml-3">
-                <InputLabel>
-                  <strong>Tipo de Sócio</strong>
-                </InputLabel>
-              </Grid>
-              <Grid item md={6}>
-                <TextField
-                  disabled={false}
-                  fullWidth
-                  className={classes.textField}
-                  variant="outlined"
-                  id="select"
-                  label="Escolha um tipo de sócio"
-                  select
-                >
-                  <MenuItem value="SOCIO_ADMINISTRADOR">
-                    Sócio Administrador
-                  </MenuItem>
-                  <MenuItem value="SoCIO">Sócio</MenuItem>
-                  <MenuItem value="ADMINISTRADOR_NAO_SOCIO">
-                    Administrador não sócio
-                  </MenuItem>
-                  <MenuItem value="DIRETOR">Diretor</MenuItem>
-                  <MenuItem value="CONSELHEIRO_DE_ADMINISTRACAO">
-                    Conselheiro de Administração
-                  </MenuItem>
-                </TextField>
-              </Grid>
-              <Grid
-                item
-                md={6}
-                className="pl-5 d-flex w-full align-items-center justify-content-center"
-              >
-                <InputLabel className="mr-5">
-                  Representante perante a RBF?{" "}
-                </InputLabel>
-                <span>Não</span>
-                <Switch defaultChecked color="default" />
-                <span>Sim</span>
-              </Grid>
-              <Grid item xs={12} className="ml-3 mt-5">
-                <Divider className={classes.divider} />
+              
+              <Grid item xs={12} className="ml-3 ">
                 <InputLabel>
                   <strong>Dados Pessoais</strong>
                 </InputLabel>
@@ -494,36 +452,17 @@ export const SociosForm = () => {
                   variant="outlined"
                 />
               </Grid>
+              
               <Grid item xs={12} className="pl-6 mt-4">
                 <InputLabel>
                   <strong>Adicione aqui os anexos de documentos do sócio.</strong>
                 </InputLabel>
                 <CustomDropzone />
               </Grid>
-              {socios.length > 1 && (
-                <Grid item xs={1}>
-                  <Tooltip title="Deletar Opção">
-                    <Fab
-                      color="primary"
-                      aria-label="Deletar Opção"
-                      onClick={() => deleteOption(index)}
-                    >
-                      <DeleteIcon />
-                    </Fab>
-                  </Tooltip>
-                </Grid>
-              )}
             </Grid>
           </>
         ))}
-      <Grid container>
-        <Grid lg={3} className={classes.plusButton} onClick={() => addOption()}>
-          <Fab size="small" color="primary">
-            <AddIcon />
-          </Fab>
-          <span className="ml-4">Adicionar novo sócio </span>
-        </Grid>
-      </Grid>
+      
     </form>
   );
 };
