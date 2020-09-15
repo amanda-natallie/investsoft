@@ -52,6 +52,13 @@ export const SociosForm = () => {
   const classes = useStyles();
 
   const [estadoCivil, setEstadoCivil] = useState("");
+  const [contatos, setContatos] = useState([
+    {
+      id: 0,
+      telefoneContato: "",
+      emailContato: "",
+    },
+  ]);
   const [socios, setSocios] = useState([
     {
       id: 0,
@@ -87,10 +94,6 @@ export const SociosForm = () => {
     const newArray = JSON.parse(JSON.stringify(socios));
 
     switch (type) {
-      case "pessoaContato":
-        newArray[index].pessoaContato = e.target.value;
-
-        break;
       case "telefoneContato":
         newArray[index].telefoneContato = e.target.value;
 
@@ -98,15 +101,29 @@ export const SociosForm = () => {
       case "emailContato":
         newArray[index].emailContato = e.target.value;
         break;
-      case "departamento":
-        newArray[index].departamento = e.target.value;
-        break;
+
       default:
         break;
     }
 
     setSocios(newArray);
   };
+
+  const addContactOption = () => {
+    const id = contatos.length;
+    const optionLine = {
+      id: id,
+      telefoneContato: "",
+      emailContato: "",
+    };
+
+    setContatos([...contatos, optionLine]);
+  };
+
+  const deleteContactOption = (index) => {
+    setContatos(contatos.filter((_, i) => i !== index));
+  };
+
   const addOption = () => {
     const id = socios.length;
     const optionLine = {
@@ -474,36 +491,63 @@ export const SociosForm = () => {
                   <strong>Contato</strong>
                 </InputLabel>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  disabled={false}
-                  label="Telefone"
-                  fullWidth
-                  onChange={(e) =>
-                    addInformationOption("telefoneContato", index, e)
-                  }
-                  className={classes.textField}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  disabled={false}
-                  label="E-mail"
-                  fullWidth
-                  onChange={(e) =>
-                    addInformationOption("emailContato", index, e)
-                  }
-                  className={classes.textField}
-                  variant="outlined"
-                />
-              </Grid>
+
+              {contatos &&
+                contatos.map((item, index) => (
+                  <Grid
+                    container
+                    key={index}
+                    spacing={2}
+                    className="mb-5"
+                    alignItems="center"
+                  >
+                    <Grid item xs>
+                      <TextField
+                        disabled={false}
+                        label="Telefone"
+                        fullWidth
+                        onChange={(e) =>
+                          addInformationOption("telefoneContato", index, e)
+                        }
+                        className={classes.textField}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid item xs>
+                      <TextField
+                        disabled={false}
+                        label="E-mail"
+                        fullWidth
+                        onChange={(e) =>
+                          addInformationOption("emailContato", index, e)
+                        }
+                        className={classes.textField}
+                        variant="outlined"
+                      />
+                    </Grid>
+
+                    {contatos.length > 1 && (
+                      <Grid item xs={1}>
+                        <Tooltip title="Deletar Opção">
+                          <Fab
+                            size="small"
+                            color="primary"
+                            aria-label="Deletar Opção"
+                            onClick={() => deleteContactOption(index)}
+                          >
+                            <DeleteIcon />
+                          </Fab>
+                        </Tooltip>
+                      </Grid>
+                    )}
+                  </Grid>
+                ))}
 
               <Grid container>
                 <Grid
                   lg={3}
                   className={classes.plusButton}
-                  onClick={() => addOption()}
+                  onClick={() => addContactOption()}
                 >
                   <Fab size="small" color="primary">
                     <AddIcon />
