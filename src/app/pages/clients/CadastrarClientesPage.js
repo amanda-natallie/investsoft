@@ -19,8 +19,6 @@ import { AlvaraAtividades } from "./components/AlvaraAtividades";
 import RegimeTributario from "./components/RegimeTributario";
 import { ContatosForm } from "./components/ContatosForm";
 import { SociosForm } from "./components/SociosForm";
-import { RepresentanteForm } from "./components/RepresentanteForm";
-import { RepresentanteLegal } from "./components/RepresentanteLegal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,29 +73,23 @@ export const CadastrarClientesPage = () => {
       "Regime Tributário",
       "Contatos",
       "Sócios",
-      "Representantes",
-      "Representante Legal",
     ];
   };
 
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return <InformacoesJuridicasForm />
+        return <InformacoesJuridicasForm />;
       case 1:
-        return <EnderecoLocalizacaoForm />
+        return <EnderecoLocalizacaoForm />;
       case 2:
-        return <AlvaraAtividades />
+        return <AlvaraAtividades />;
       case 3:
-        return <RegimeTributario />
+        return <RegimeTributario />;
       case 4:
-        return <ContatosForm />
+        return <ContatosForm />;
       case 5:
-        return <SociosForm />
-      case 6:
-        return <RepresentanteForm />
-      case 7:
-        return <RepresentanteLegal />
+        return <SociosForm />;
       default:
         return "Página desconhecida";
     }
@@ -131,7 +123,10 @@ export const CadastrarClientesPage = () => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <Grid container className="justify-content-between align-self-center mb-5 pl-2">
+        <Grid
+          container
+          className="justify-content-between align-self-center mb-5 pl-2"
+        >
           <div>
             <Typography variant="h5" component="h3">
               Cadastro de Novo Cliente
@@ -151,7 +146,11 @@ export const CadastrarClientesPage = () => {
           </Button>
         </Grid>
 
-        <Stepper activeStep={activeStep} connector={connector} style={{padding: "10px 0"}}>
+        <Stepper
+          activeStep={activeStep}
+          connector={connector}
+          style={{ padding: "10px 0" }}
+        >
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
