@@ -103,8 +103,8 @@ export const AlvaraAtividades = () => {
       <p className="ml-3 font-weight-bold">
         Passo 03: Informe os dados de Alvará & Atividades{" "}
       </p>
-      <Grid container spacing={3}>
-        <Grid item xs={4}>
+      <Grid container spacing={4}>
+        <Grid item xs={3}>
           <TextField
             disabled={false}
             label="Número do Alvará"
@@ -115,7 +115,7 @@ export const AlvaraAtividades = () => {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <TextField
             disabled={false}
             label="Inscrição Municipal"
@@ -126,7 +126,7 @@ export const AlvaraAtividades = () => {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <TextField
             disabled={false}
             label="Inscrição Estadual"
@@ -138,10 +138,22 @@ export const AlvaraAtividades = () => {
           />
         </Grid>
 
+        <Grid item xs={3}>
+          <TextField
+            disabled={false}
+            label="NIRE"
+            fullWidth
+            value={values.nire}
+            onChange={handleChange("inscricaoEstadual")}
+            className={classes.textField}
+            variant="outlined"
+          />
+        </Grid>
+
         <Grid item xs={12} className="pl-6">
-          <InputLabel>NIRE</InputLabel>
           <CustomDropzone />
         </Grid>
+
         <Grid item xs={12} className="pl-6 mb-4">
           <Divider className={classes.divider} />
           <InputLabel className="mt-4">Atividades da Empresa</InputLabel>

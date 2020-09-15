@@ -11,7 +11,7 @@ import {
 import FolderIcon from "@material-ui/icons/Folder";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     margin: "20px 0",
+    overflowY: "scroll",
 
     "& ul li": {
       listStyle: "none",
@@ -64,7 +65,6 @@ export const CustomDropzone = (props) => {
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
-    
   ));
 
   return (
