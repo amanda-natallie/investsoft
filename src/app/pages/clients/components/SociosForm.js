@@ -479,7 +479,9 @@ export const SociosForm = () => {
                   disabled={false}
                   label="Telefone"
                   fullWidth
-                  onChange={(e) => addInformationOption("telefone", index, e)}
+                  onChange={(e) =>
+                    addInformationOption("telefoneContato", index, e)
+                  }
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -489,14 +491,32 @@ export const SociosForm = () => {
                   disabled={false}
                   label="E-mail"
                   fullWidth
-                  onChange={(e) => addInformationOption("email", index, e)}
+                  onChange={(e) =>
+                    addInformationOption("emailContato", index, e)
+                  }
                   className={classes.textField}
                   variant="outlined"
                 />
               </Grid>
+
+              <Grid container>
+                <Grid
+                  lg={3}
+                  className={classes.plusButton}
+                  onClick={() => addOption()}
+                >
+                  <Fab size="small" color="primary">
+                    <AddIcon />
+                  </Fab>
+                  <span className="ml-4">Adicionar novo Contato </span>
+                </Grid>
+              </Grid>
+
               <Grid item xs={12} className="pl-6 mt-4">
                 <InputLabel>
-                  <strong>Adicione aqui os anexos de documentos do sócio.</strong>
+                  <strong>
+                    Adicione aqui os anexos de documentos do sócio.
+                  </strong>
                 </InputLabel>
                 <CustomDropzone />
               </Grid>
