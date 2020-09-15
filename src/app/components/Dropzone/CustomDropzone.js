@@ -51,7 +51,29 @@ export const CustomDropzone = (props) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const classes = useStyles();
 
-  const files = acceptedFiles.map((file) => (
+  const [arrayFiles, setArrayFiles] = useState(acceptedFiles);
+
+  function checkingIdenticalFiles(files) {
+    files.map((file) => {
+      const findFileIndex = arrayFiles.findIndex(
+        (arrayFile) => arrayFile.name === file.name
+      );
+      console.log(findFileIndex);
+      if (findFileIndex !== -1) arrayFiles.splice(findFileIndex, 1);
+    });
+  }
+
+  useEffect(() => {
+    if (acceptedFiles === undefined) return;
+
+    const files = acceptedFiles.map((files) => files);
+
+    checkingIdenticalFiles(files);
+
+    setArrayFiles([...arrayFiles, ...files]);
+  }, [acceptedFiles]);
+
+  const files = arrayFiles.map((file) => (
     <ListItem key={file.path} disableGutters>
       <ListItemAvatar>
         <Avatar>
