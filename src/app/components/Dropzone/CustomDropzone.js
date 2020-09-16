@@ -11,7 +11,7 @@ import {
 import FolderIcon from "@material-ui/icons/Folder";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     margin: "20px 0",
+    overflowY: "scroll",
 
     "& ul li": {
       listStyle: "none",
@@ -50,7 +51,29 @@ export const CustomDropzone = (props) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const classes = useStyles();
 
-  const files = acceptedFiles.map((file) => (
+  const [arrayFiles, setArrayFiles] = useState(acceptedFiles);
+
+  function checkingIdenticalFiles(files) {
+    files.map((file) => {
+      const findFileIndex = arrayFiles.findIndex(
+        (arrayFile) => arrayFile.name === file.name
+      );
+      console.log(findFileIndex);
+      if (findFileIndex !== -1) arrayFiles.splice(findFileIndex, 1);
+    });
+  }
+
+  useEffect(() => {
+    if (acceptedFiles === undefined) return;
+
+    const files = acceptedFiles.map((files) => files);
+
+    checkingIdenticalFiles(files);
+
+    setArrayFiles([...arrayFiles, ...files]);
+  }, [acceptedFiles]);
+
+  const files = arrayFiles.map((file) => (
     <ListItem key={file.path} disableGutters>
       <ListItemAvatar>
         <Avatar>
@@ -64,7 +87,6 @@ export const CustomDropzone = (props) => {
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>
-    
   ));
 
   return (
