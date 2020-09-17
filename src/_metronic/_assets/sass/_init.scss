@@ -24,3 +24,11 @@
 
 // Theme layout variables
 @import "layout/variables";
+
+@import "../../../app/components/ImageUpload/image_upload.scss";
+
+.MuiTooltip-popper * {
+  font-size: 13px;
+  font-weight: 300;
+  color: white;
+}

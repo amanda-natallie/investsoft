@@ -20,6 +20,7 @@ import RegimeTributario from "./components/RegimeTributario";
 import { ContatosForm } from "./components/ContatosForm";
 import { SociosForm } from "./components/SociosForm";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "90%",
@@ -147,6 +148,7 @@ export const CadastrarClientesPage = () => {
         </Grid>
 
         <Stepper
+        
           activeStep={activeStep}
           connector={connector}
           style={{ padding: "10px 0" }}

@@ -11,10 +11,11 @@ import {
   Fab,
   Tooltip,
 } from "@material-ui/core";
-
+import { DatePicker } from "@material-ui/pickers";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { CustomDropzone } from "../../../components/Dropzone/CustomDropzone";
+import InfoIcon from "@material-ui/icons/Info";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -52,6 +53,9 @@ export const SociosForm = () => {
   const classes = useStyles();
 
   const [estadoCivil, setEstadoCivil] = useState("");
+  const [representante, setRepresentante] = useState(false);
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
   const [contatos, setContatos] = useState([
     {
       id: 0,
@@ -129,7 +133,7 @@ export const SociosForm = () => {
     const optionLine = {
       id: id,
       tipo: "",
-      representante: "",
+      representante: false,
       nome: "",
       cpf: "",
       rg: "",
@@ -161,7 +165,9 @@ export const SociosForm = () => {
   const deleteOption = (index) => {
     setSocios(socios.filter((_, i) => i !== index));
   };
-
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <p className="ml-3 font-weight-bold">
@@ -178,7 +184,7 @@ export const SociosForm = () => {
                   <strong>Tipo de Sócio</strong>
                 </InputLabel>
               </Grid>
-              <Grid item md={6}>
+              <Grid item md={representante ? 4 : 6}>
                 <TextField
                   disabled={false}
                   fullWidth
@@ -201,18 +207,38 @@ export const SociosForm = () => {
                   </MenuItem>
                 </TextField>
               </Grid>
-              <Grid
-                item
-                md={6}
-                className="pl-5 d-flex w-full align-items-center justify-content-center"
-              >
-                <InputLabel className="mr-5">
-                  Representante perante a RBF?{" "}
-                </InputLabel>
-                <span>Não</span>
-                <Switch defaultChecked color="default" />
-                <span>Sim</span>
-              </Grid>
+             
+                <Grid
+                  item
+                  md={representante ? 4 : 6}
+                  className="pl-5 d-flex w-full align-items-center justify-content-center">
+                  <InputLabel className="mr-5">
+                    Representante perante a RBF?{" "}
+                  </InputLabel>
+                  <span>Não</span>
+                  <Switch
+                    disabled={socios.some(socio => socio.representante === true)}
+                    onChange={() => setRepresentante(!representante)}
+                    color="default"
+                  />
+                  <span>Sim</span>
+                </Grid>
+             
+                {representante && (
+                  <Grid item md={4}>
+                    <TextField
+                      fullWidth
+                      id="date"
+                      label="Data de registro do Representante"
+                      variant="outlined"
+                      type="date"
+                      format="DD-MM-YYYY"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  </Grid>
+                )}
               <Grid item xs={12} className="ml-3 mt-5">
                 <Divider className={classes.divider} />
                 <InputLabel>
@@ -560,6 +586,9 @@ export const SociosForm = () => {
                 <InputLabel>
                   <strong>
                     Adicione aqui os anexos de documentos do sócio.
+                    <Tooltip title="Documentos anexos dos sócios e representantes">
+                      <InfoIcon />
+                    </Tooltip>
                   </strong>
                 </InputLabel>
                 <CustomDropzone />
