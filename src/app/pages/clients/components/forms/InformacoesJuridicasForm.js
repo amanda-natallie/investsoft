@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, TextField, Grid, MenuItem } from "@material-ui/core";
-import ImageUpload from "../../../components/ImageUpload/ImageUpload";
+import ImageUpload from "../../../../components/ImageUpload/ImageUpload";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -49,7 +49,7 @@ export const InformacoesJuridicasForm = () => {
       <p className="ml-3 font-weight-bold">
         Passo 01: Informe os dados básicos{" "}
       </p>
-      <Grid container justify="space-between" spacing={3} className="mt-5">
+      <Grid container justify="space-between" spacing={3} className="mt-5 ml-0">
         <Grid md={9}>
           <Grid container spacing={3}>
             <Grid item xs={6}>

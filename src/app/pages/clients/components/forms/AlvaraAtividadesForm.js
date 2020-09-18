@@ -9,7 +9,7 @@ import {
   Fab,
   Tooltip,
 } from "@material-ui/core";
-import { CustomDropzone } from "../../../components/Dropzone/CustomDropzone";
+import { CustomDropzone } from "../../../../components/Dropzone/CustomDropzone";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const AlvaraAtividades = () => {
+export const AlvaraAtividadesForm = () => {
   const classes = useStyles();
   const [values, setValues] = useState({
     numeroAlvara: "",

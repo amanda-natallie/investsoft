@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { Fab } from "@material-ui/core";
-import CustomTable from "../../../components/CustomTable/CustomTable";
-import { StatusColumnFormatter } from "./StatusColumnFormatter";
+import CustomTable from "../../../../components/CustomTable/CustomTable";
+import { StatusColumnFormatter } from "./utils/StatusColumnFormatter";
 
 const headerStyle = {
   backgroundColor: "#F3F6F9",

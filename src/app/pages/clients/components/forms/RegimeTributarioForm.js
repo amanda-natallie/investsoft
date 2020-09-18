@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 var d = new Date();
 d.setFullYear(d.getFullYear() - 1);
 
-const RegimeTributario = () => {
+export const RegimeTributarioForm = () => {
   const classes = useStyles();
   const [values, setValues] = useState([
     { id: 0, ano: "", regimeTributario: "" },
@@ -122,4 +122,4 @@ const RegimeTributario = () => {
     </form>
   );
 };
-export default RegimeTributario;
+

@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import {  TextField, Grid, Paper } from "@material-ui/core/";
 import { toAbsoluteUrl } from "../../../_metronic/_helpers";
 
-import { ProductsPage } from "../../modules/ECommerce/pages/products/ProductsPage";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -234,9 +233,7 @@ export const FormDois = (formDisabled) => {
           </Grid>
         </form>
       </Paper>
-      <div className={classes.wrapper}>
-        <ProductsPage />
-      </div>
+     
     </>
   );
 };

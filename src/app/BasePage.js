@@ -5,7 +5,7 @@ import { BuilderPage } from "./pages/BuilderPage";
 import { PaginaUm } from "./pages/PaginaUm";
 import { PaginaDois } from "./pages/PaginaDois";
 import { GerenciarClientesPage } from "./pages/clients/GerenciarClientesPage";
-import { AlteratedGerenciarClientesPage } from "./pages/clients/AlteratedGerenciarClientesPage";
+
 import { CadastrarClientesPage } from "./pages/clients/CadastrarClientesPage";
 import { DashboardPage } from "./pages/DashboardPage";
 
@@ -39,11 +39,6 @@ export default function BasePage() {
         <ContentRoute
           path="/gerenciar-clientes"
           component={GerenciarClientesPage}
-        />
-
-        <ContentRoute
-          path="/gerenciar-clientes2"
-          component={AlteratedGerenciarClientesPage}
         />
 
         <ContentRoute

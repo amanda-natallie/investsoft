@@ -14,7 +14,7 @@ import {
 import { DatePicker } from "@material-ui/pickers";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { CustomDropzone } from "../../../components/Dropzone/CustomDropzone";
+import { CustomDropzone } from "../../../../components/Dropzone/CustomDropzone";
 import InfoIcon from "@material-ui/icons/Info";
 
 const useStyles = makeStyles((theme) => ({

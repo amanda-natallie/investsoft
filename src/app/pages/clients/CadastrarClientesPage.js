@@ -13,12 +13,12 @@ import {
 } from "@material-ui/core/";
 
 import DeleteIcon from "@material-ui/icons/Delete";
-import { InformacoesJuridicasForm } from "./components/InformacoesJuridicasForm";
-import { EnderecoLocalizacaoForm } from "./components/EnderecoLocalizacaoForm";
-import { AlvaraAtividades } from "./components/AlvaraAtividades";
-import RegimeTributario from "./components/RegimeTributario";
-import { ContatosForm } from "./components/ContatosForm";
-import { SociosForm } from "./components/SociosForm";
+import { InformacoesJuridicasForm } from "./components/forms/InformacoesJuridicasForm";
+import { EnderecoLocalizacaoForm } from "./components/forms/EnderecoLocalizacaoForm";
+import { AlvaraAtividadesForm } from "./components/forms/AlvaraAtividadesForm";
+import { RegimeTributarioForm } from "./components/forms/RegimeTributarioForm";
+import { ContatosForm } from "./components/forms/ContatosForm";
+import { SociosForm } from "./components/forms/SociosForm";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -84,9 +84,9 @@ export const CadastrarClientesPage = () => {
       case 1:
         return <EnderecoLocalizacaoForm />;
       case 2:
-        return <AlvaraAtividades />;
+        return <AlvaraAtividadesForm />;
       case 3:
-        return <RegimeTributario />;
+        return <RegimeTributarioForm />;
       case 4:
         return <ContatosForm />;
       case 5:
