@@ -16,6 +16,7 @@ import { EnderecoLocalizacaoForm } from "../components/forms/EnderecoLocalizacao
 import { ContatosForm } from "../components/forms/ContatosForm";
 import { AlvaraAtividadesForm } from "../components/forms/AlvaraAtividadesForm";
 import TabelaSenhaAcessos from "./tables/TabelaSenhaAcessos";
+import TabelaArquivos from "./tables/TabelaArquivos";
 
 const useStylesTable = makeStyles((theme) => ({
   root: {
@@ -103,13 +104,35 @@ const GerenciarClientesTab = (id) => {
 
   const classesTable = useStylesTable();
 
-  const dataTable = [
+  const dataTableSenhaAcessos = [
     {
       name: "Marcus",
       url: "teste",
-      dataField: "21",
-      user: "a",
-      password: "a",
+      dataField: "21/09/2020",
+      user: "teste",
+      password: "123123",
+    },
+    {
+      name: "Teste",
+      url: "teste",
+      dataField: "21/09/2020",
+      user: "teste",
+      password: "123123",
+    },
+  ];
+
+  const dataTableArquivos = [
+    {
+      description: "teste",
+      name: "Marcus",
+      user: "teste",
+      use: "a",
+    },
+    {
+      description: "teste",
+      name: "Marcus",
+      user: "teste",
+      use: "a",
     },
   ];
 
@@ -160,10 +183,11 @@ const GerenciarClientesTab = (id) => {
               </TabPanel>
               <TabPanel value={value} index={3} dir={theme.direction}>
                 <h4>Arquivos</h4>
+                <TabelaArquivos data={dataTableArquivos} />
               </TabPanel>
               <TabPanel value={value} index={4} dir={theme.direction}>
                 <h4>Senha e Acessos</h4>
-                <TabelaSenhaAcessos data={dataTable} />
+                <TabelaSenhaAcessos data={dataTableSenhaAcessos} />
               </TabPanel>
             </SwipeableViews>
           </div>
