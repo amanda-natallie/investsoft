@@ -8,7 +8,14 @@ import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import { AppBar, Tabs, Tab, Box } from "@material-ui/core/";
 import { data } from "../../../../helpers/utils";
-import {InformacoesJuridicasForm} from "../components/forms/InformacoesJuridicasForm"
+
+import { InformacoesJuridicasForm } from "../components/forms/InformacoesJuridicasForm";
+import { SociosForm } from "../components/forms/SociosForm";
+import { RegimeTributarioForm } from "../components/forms/RegimeTributarioForm";
+import { EnderecoLocalizacaoForm } from "../components/forms/EnderecoLocalizacaoForm";
+import { ContatosForm } from "../components/forms/ContatosForm";
+import { AlvaraAtividadesForm } from "../components/forms/AlvaraAtividadesForm";
+import TabelaSenhaAcessos from "./tables/TabelaSenhaAcessos";
 
 const useStylesTable = makeStyles((theme) => ({
   root: {
@@ -96,6 +103,16 @@ const GerenciarClientesTab = (id) => {
 
   const classesTable = useStylesTable();
 
+  const dataTable = [
+    {
+      name: "Marcus",
+      url: "teste",
+      dataField: "21",
+      user: "a",
+      password: "a",
+    },
+  ];
+
   return (
     <div className={classesTable.root}>
       <Paper className={classesTable.paper}>
@@ -134,16 +151,19 @@ const GerenciarClientesTab = (id) => {
                 <InformacoesJuridicasForm />
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
-                Socios
+                <h4>Socios</h4>
+                <SociosForm />
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
-                Atividades
+                <h4>Atividades</h4>
+                <AlvaraAtividadesForm />
               </TabPanel>
               <TabPanel value={value} index={3} dir={theme.direction}>
-                Arquivos
+                <h4>Arquivos</h4>
               </TabPanel>
               <TabPanel value={value} index={4} dir={theme.direction}>
-                Senha e Acessos
+                <h4>Senha e Acessos</h4>
+                <TabelaSenhaAcessos data={dataTable} />
               </TabPanel>
             </SwipeableViews>
           </div>
