@@ -17,9 +17,14 @@ import { login } from "../_redux/authCrud";
   https://jaredpalmer.com/formik/docs/tutorial#getfieldprops
 */
 
+// const initialValues = {
+//   email: "admin@demo.com",
+//   password: "demo",
+// };
+
 const initialValues = {
-  email: "admin@demo.com",
-  password: "demo",
+  email: "alancamargo50@gmail.com",
+  password: "123456",
 };
 
 function Login(props) {
@@ -72,9 +77,9 @@ function Login(props) {
       enableLoading();
       setTimeout(() => {
         login(values.email, values.password)
-          .then(({ data: { accessToken } }) => {
+          .then(({ data: { user, token } }) => {
             disableLoading();
-            props.login(accessToken);
+            props.login(token);
           })
           .catch(() => {
             disableLoading();

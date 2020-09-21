@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import api, { token } from "../../../../../services/api";
+import api from "../../../../../services/api";
+import { useSelector } from "react-redux";
 // eslint-disable-next-line no-restricted-imports
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -62,11 +63,13 @@ export const GerenciarClientes = () => {
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
   const [name, setName] = useState("");
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const config = {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${user.token}` },
     };
+
     let active = true;
 
     if (!loading) {
@@ -75,8 +78,8 @@ export const GerenciarClientes = () => {
 
     (async () => {
       await api
-        .get("clients/filter", { buscar: name }, config)
-        .then((response) => console.log("data da api ", response.data))
+        .get("/clients/filter", { buscar: name }, config)
+        .then((response) => console.log(response.data))
         .catch((err) => {
           console.error("ops! ocorreu um erro: " + err);
         });
@@ -98,11 +101,12 @@ export const GerenciarClientes = () => {
   }, [open]);
 
   useEffect(() => {
-    console.log("name", name);
+    console.log(name);
   }, [name]);
 
   return (
     <>
+      <GerenciarClientesTab />
       <Paper className={classes.paper}>
         <Grid
           container
