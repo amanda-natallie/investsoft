@@ -76,33 +76,27 @@ export const GerenciarClientes = () => {
       return undefined;
     }
 
-    (async () => {
-      await api
-        .get("/clients/filter", { buscar: name }, config)
-        .then((response) => console.log(response.data))
-        .catch((err) => {
-          console.error("ops! ocorreu um erro: " + err);
-        });
-
-      // if (active) {
-      //   setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-      // }
-    })();
+    api
+      .get("/clients", { params: { buscar: name } }, config)
+      .then((response) => {
+        setOptions(response.data);
+        console.log("RESPONSE");
+      })
+      .catch((err) => {
+        console.error("ops! ocorreu um erro: " + err);
+      });
 
     return () => {
       active = false;
     };
-  }, [name, loading]);
+  }, [name, loading, options, open]);
 
   useEffect(() => {
     if (!open) {
+      setName("");
       setOptions([]);
     }
   }, [open]);
-
-  useEffect(() => {
-    console.log(name);
-  }, [name]);
 
   return (
     <>
@@ -148,17 +142,11 @@ export const GerenciarClientes = () => {
               fullWidth
               getOptionSelected={(option, value) => option.name === value.name}
               getOptionLabel={(option) =>
-                option.cnpj + " - " + option.razaoSocial
+                `CNPJ: ${option.cnpj} / Nome Fantasia: ${option.nomeFantasia}`
               }
               options={options}
               loading={loading}
               autoHighlight
-              renderOption={(option) => (
-                <React.Fragment>
-                  <span>{option.cnpj}</span>
-                  {option.razaoSocial} ({option.emailContato})
-                </React.Fragment>
-              )}
               renderInput={(params) => (
                 <TextField
                   onChange={(event) => {
