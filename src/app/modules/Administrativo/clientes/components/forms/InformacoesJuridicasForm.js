@@ -166,6 +166,16 @@ export const InformacoesJuridicasForm = ({ clientData }) => {
             setPicture={setPicture}
           />
         </Grid>
+
+        <Grid item xs={6}>
+          <TextField
+            disabled={true}
+            multiline
+            rows={6}
+            label="Observações do cliente"
+            variant="outlined"
+          />
+        </Grid>
       </Grid>
       <Divider />
     </form>
