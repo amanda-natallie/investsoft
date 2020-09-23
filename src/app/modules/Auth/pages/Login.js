@@ -23,8 +23,8 @@ import { login } from "../_redux/authCrud";
 // };
 
 const initialValues = {
-  email: "alancamargo50@gmail.com",
-  password: "123456",
+  email: "admin@demo.com",
+  password: "demo",
 };
 
 function Login(props) {
