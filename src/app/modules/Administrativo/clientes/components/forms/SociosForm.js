@@ -17,6 +17,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
 import InfoIcon from "@material-ui/icons/Info";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -51,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const SociosForm = () => {
   const classes = useStyles();
+  const inputState = useSelector((state) => state.client);
+  const dispatch = useDispatch();
 
   const [estadoCivil, setEstadoCivil] = useState("");
   const [representante, setRepresentante] = useState(false);
@@ -168,6 +173,11 @@ export const SociosForm = () => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
+  const handleEditButton = () => {
+    dispatch(setIsDisable(inputState));
+  };
+
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <p className="ml-3 font-weight-bold">
@@ -186,7 +196,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={representante ? 4 : 6}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   fullWidth
                   className={classes.textField}
                   variant="outlined"
@@ -207,38 +217,41 @@ export const SociosForm = () => {
                   </MenuItem>
                 </TextField>
               </Grid>
-             
-                <Grid
-                  item
-                  md={representante ? 4 : 6}
-                  className="pl-5 d-flex w-full align-items-center justify-content-center">
-                  <InputLabel className="mr-5">
-                    Representante perante a RBF?{" "}
-                  </InputLabel>
-                  <span>Não</span>
-                  <Switch
-                    disabled={socios.some(socio => socio.representante === true)}
-                    onChange={() => setRepresentante(!representante)}
-                    color="default"
+
+              <Grid
+                item
+                md={representante ? 4 : 6}
+                className="pl-5 d-flex w-full align-items-center justify-content-center"
+              >
+                <InputLabel className="mr-5">
+                  Representante perante a RBF?{" "}
+                </InputLabel>
+                <span>Não</span>
+                <Switch
+                  disabled={socios.some(
+                    (socio) => socio.representante === true
+                  )}
+                  onChange={() => setRepresentante(!representante)}
+                  color="default"
+                />
+                <span>Sim</span>
+              </Grid>
+
+              {representante && (
+                <Grid item md={4}>
+                  <TextField
+                    fullWidth
+                    id="date"
+                    label="Data de registro do Representante"
+                    variant="outlined"
+                    type="date"
+                    format="DD-MM-YYYY"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
-                  <span>Sim</span>
                 </Grid>
-             
-                {representante && (
-                  <Grid item md={4}>
-                    <TextField
-                      fullWidth
-                      id="date"
-                      label="Data de registro do Representante"
-                      variant="outlined"
-                      type="date"
-                      format="DD-MM-YYYY"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  </Grid>
-                )}
+              )}
               <Grid item xs={12} className="ml-3 mt-5">
                 <Divider className={classes.divider} />
                 <InputLabel>
@@ -247,7 +260,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Nome"
                   fullWidth
                   onChange={(e) => addInformationOption("nome", index, e)}
@@ -257,7 +270,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="CPF"
                   fullWidth
                   onChange={(e) => addInformationOption("cpf", index, e)}
@@ -267,7 +280,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Data de Nascimento"
                   fullWidth
                   onChange={(e) =>
@@ -280,7 +293,7 @@ export const SociosForm = () => {
 
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="RG"
                   fullWidth
                   onChange={(e) => addInformationOption("rg", index, e)}
@@ -290,7 +303,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Órgão Emissor (RG)"
                   fullWidth
                   onChange={(e) =>
@@ -302,7 +315,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Uf de origem (RG)"
                   fullWidth
                   onChange={(e) => addInformationOption("ufRg", index, e)}
@@ -313,7 +326,7 @@ export const SociosForm = () => {
 
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Carteira Profissional"
                   fullWidth
                   onChange={(e) =>
@@ -325,7 +338,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Órgão Emissor (Carteira)"
                   fullWidth
                   onChange={(e) =>
@@ -337,7 +350,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Uf de origem (Carteira)"
                   fullWidth
                   onChange={(e) => addInformationOption("ufCarteira", index, e)}
@@ -348,7 +361,7 @@ export const SociosForm = () => {
 
               <Grid item md={6}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Nacionalidade"
                   fullWidth
                   onChange={(e) =>
@@ -360,7 +373,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={6}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Naturalidade"
                   fullWidth
                   onChange={(e) =>
@@ -378,7 +391,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   fullWidth
                   className={classes.textField}
                   variant="outlined"
@@ -399,7 +412,7 @@ export const SociosForm = () => {
                 <>
                   <Grid item md={4}>
                     <TextField
-                      disabled={false}
+                      disabled={inputState.isDisable}
                       label="Nome do Cônjuge"
                       fullWidth
                       onChange={(e) =>
@@ -411,7 +424,7 @@ export const SociosForm = () => {
                   </Grid>
                   <Grid item md={4}>
                     <TextField
-                      disabled={false}
+                      disabled={inputState.isDisable}
                       label="CPF do Cônjuge"
                       fullWidth
                       onChange={(e) =>
@@ -431,7 +444,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={12}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Profissão"
                   fullWidth
                   onChange={(e) => addInformationOption("profissao", index, e)}
@@ -447,7 +460,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="CEP"
                   fullWidth
                   onChange={(e) => addInformationOption("cep", index, e)}
@@ -459,7 +472,7 @@ export const SociosForm = () => {
               <Grid item xs={4}></Grid>
               <Grid item xs={7}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Logradouro"
                   fullWidth
                   onChange={(e) => addInformationOption("logradouro", index, e)}
@@ -470,7 +483,7 @@ export const SociosForm = () => {
 
               <Grid item xs={5}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Número"
                   fullWidth
                   onChange={(e) => addInformationOption("numero", index, e)}
@@ -480,7 +493,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Bairro"
                   fullWidth
                   onChange={(e) => addInformationOption("bairro", index, e)}
@@ -491,7 +504,7 @@ export const SociosForm = () => {
 
               <Grid item xs={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Município"
                   fullWidth
                   onChange={(e) => addInformationOption("municipio", index, e)}
@@ -501,7 +514,7 @@ export const SociosForm = () => {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  disabled={false}
+                  disabled={inputState.isDisable}
                   label="Complemento"
                   fullWidth
                   onChange={(e) =>
@@ -529,7 +542,7 @@ export const SociosForm = () => {
                   >
                     <Grid item xs>
                       <TextField
-                        disabled={false}
+                        disabled={inputState.isDisable}
                         label="Telefone"
                         fullWidth
                         onChange={(e) =>
@@ -541,7 +554,7 @@ export const SociosForm = () => {
                     </Grid>
                     <Grid item xs>
                       <TextField
-                        disabled={false}
+                        disabled={inputState.isDisable}
                         label="E-mail"
                         fullWidth
                         onChange={(e) =>

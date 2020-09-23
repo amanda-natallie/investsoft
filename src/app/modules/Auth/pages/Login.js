@@ -17,14 +17,9 @@ import { login } from "../_redux/authCrud";
   https://jaredpalmer.com/formik/docs/tutorial#getfieldprops
 */
 
-// const initialValues = {
-//   email: "admin@demo.com",
-//   password: "demo",
-// };
-
 const initialValues = {
-  email: "alancamargo50@gmail.com",
-  password: "123456",
+  email: "admin@demo.com",
+  password: "demo",
 };
 
 function Login(props) {

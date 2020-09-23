@@ -13,6 +13,9 @@ import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzon
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -45,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const AlvaraAtividadesForm = () => {
+  const inputState = useSelector((state) => state.client);
+  const dispatch = useDispatch();
+
   const classes = useStyles();
   const [values, setValues] = useState({
     numeroAlvara: "",
@@ -78,6 +84,7 @@ export const AlvaraAtividadesForm = () => {
 
     setAtividades(newArray);
   };
+
   const addOption = () => {
     const id = atividades.length;
     const optionLine = {
@@ -98,6 +105,10 @@ export const AlvaraAtividadesForm = () => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleEditButton = () => {
+    dispatch(setIsDisable(inputState));
+  };
+
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <p className="ml-3 font-weight-bold">
@@ -106,7 +117,7 @@ export const AlvaraAtividadesForm = () => {
       <Grid container spacing={4}>
         <Grid item xs={3}>
           <TextField
-            disabled={false}
+            disabled={inputState.isDisable}
             label="Número do Alvará"
             fullWidth
             value={values.numeroAlvara}
@@ -117,7 +128,7 @@ export const AlvaraAtividadesForm = () => {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            disabled={false}
+            disabled={inputState.isDisable}
             label="Inscrição Municipal"
             fullWidth
             value={values.inscricaoMunicipal}
@@ -128,7 +139,7 @@ export const AlvaraAtividadesForm = () => {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            disabled={false}
+            disabled={inputState.isDisable}
             label="Inscrição Estadual"
             fullWidth
             value={values.inscricaoEstadual}
@@ -140,7 +151,7 @@ export const AlvaraAtividadesForm = () => {
 
         <Grid item xs={3}>
           <TextField
-            disabled={false}
+            disabled={inputState.isDisable}
             label="NIRE"
             fullWidth
             value={values.nire}
@@ -164,7 +175,7 @@ export const AlvaraAtividadesForm = () => {
           <Grid container key={index} spacing={5} className="mb-5">
             <Grid item xs>
               <TextField
-                disabled={false}
+                disabled={inputState.isDisable}
                 label="CNAE"
                 fullWidth
                 value={item[index]}
@@ -175,7 +186,7 @@ export const AlvaraAtividadesForm = () => {
             </Grid>
             <Grid item xs>
               <TextField
-                disabled={false}
+                disabled={inputState.isDisable}
                 label="Principal ou Secundaria"
                 fullWidth
                 value={item[index]}
@@ -188,7 +199,7 @@ export const AlvaraAtividadesForm = () => {
             </Grid>
             <Grid item xs>
               <TextField
-                disabled={false}
+                disabled={inputState.isDisable}
                 label="Item de Servico"
                 fullWidth
                 value={item[index]}

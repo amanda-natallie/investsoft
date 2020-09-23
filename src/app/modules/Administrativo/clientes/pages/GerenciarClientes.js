@@ -62,8 +62,10 @@ export const GerenciarClientes = () => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
-  const [name, setName] = useState("");
   const { user } = useSelector((state) => state.auth);
+
+  const [name, setName] = useState("");
+  const [inputValue, setInputValue] = React.useState("");
 
   useEffect(() => {
     const config = {
@@ -76,37 +78,32 @@ export const GerenciarClientes = () => {
       return undefined;
     }
 
-    (async () => {
-      await api
-        .get("/clients/filter", { buscar: name }, config)
-        .then((response) => console.log(response.data))
-        .catch((err) => {
-          console.error("ops! ocorreu um erro: " + err);
-        });
-
-      // if (active) {
-      //   setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-      // }
-    })();
+    api
+      .get("/clients", { params: { buscar: name } }, config)
+      .then((response) => {
+        setOptions(response.data);
+      })
+      .catch((err) => {
+        console.error("ops! ocorreu um erro: " + err);
+      });
 
     return () => {
       active = false;
     };
   }, [name, loading]);
 
-  useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (!open) {
+  //     setOptions([]);
+  //   }
+  // }, [open]);
 
-  useEffect(() => {
-    console.log(name);
-  }, [name]);
+  // useEffect(() => {
+  //   console.log(name);
+  // }, [name]);
 
   return (
     <>
-      <GerenciarClientesTab />
       <Paper className={classes.paper}>
         <Grid
           container
@@ -138,6 +135,13 @@ export const GerenciarClientes = () => {
         <Grid container>
           <Grid item lg={12}>
             <Autocomplete
+              onChange={(event, newValue) => {
+                setName(newValue);
+              }}
+              inputValue={inputValue ? inputValue : ""}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
+              }}
               open={open}
               onOpen={() => {
                 setOpen(true);
@@ -145,25 +149,17 @@ export const GerenciarClientes = () => {
               onClose={() => {
                 setOpen(false);
               }}
+              disabled={loading}
               fullWidth
               getOptionSelected={(option, value) => option.name === value.name}
               getOptionLabel={(option) =>
-                option.cnpj + " - " + option.razaoSocial
+                `${option.cnpj}${option.nomeFantasia}`
               }
               options={options}
               loading={loading}
               autoHighlight
-              renderOption={(option) => (
-                <React.Fragment>
-                  <span>{option.cnpj}</span>
-                  {option.razaoSocial} ({option.emailContato})
-                </React.Fragment>
-              )}
               renderInput={(params) => (
                 <TextField
-                  onChange={(event) => {
-                    setName(event.target.value);
-                  }}
                   {...params}
                   label="Digite o nome, endereço, cnpj ou empresa"
                   variant="outlined"
@@ -185,7 +181,7 @@ export const GerenciarClientes = () => {
           </Grid>
         </Grid>
       </Paper>
-      {/* {name && <GerenciarClientesTab id={name.id} />} */}
+      {name && <GerenciarClientesTab clientData={name} />}
     </>
   );
 };
