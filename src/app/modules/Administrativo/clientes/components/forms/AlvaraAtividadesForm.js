@@ -9,6 +9,7 @@ import {
   Fab,
   Tooltip,
 } from "@material-ui/core";
+import InfoIcon from "@material-ui/icons/Info";
 import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -162,6 +163,15 @@ export const AlvaraAtividadesForm = () => {
         </Grid>
 
         <Grid item xs={12} className="pl-6">
+          <InputLabel>
+            <strong>
+              Anexar o contrato social da empresa e alterações contratuiais
+              existentes.
+              <Tooltip title="Documentos anexos contrato social da empresa e alterações contratuiais existentes">
+                <InfoIcon />
+              </Tooltip>
+            </strong>
+          </InputLabel>
           <CustomDropzone />
         </Grid>
 
