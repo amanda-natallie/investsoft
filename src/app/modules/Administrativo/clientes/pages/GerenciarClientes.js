@@ -62,8 +62,10 @@ export const GerenciarClientes = () => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
-  const [name, setName] = useState("");
   const { user } = useSelector((state) => state.auth);
+
+  const [name, setName] = useState("");
+  const [inputValue, setInputValue] = React.useState("");
 
   useEffect(() => {
     const config = {
@@ -80,7 +82,6 @@ export const GerenciarClientes = () => {
       .get("/clients", { params: { buscar: name } }, config)
       .then((response) => {
         setOptions(response.data);
-        console.log("RESPONSE");
       })
       .catch((err) => {
         console.error("ops! ocorreu um erro: " + err);
@@ -89,18 +90,20 @@ export const GerenciarClientes = () => {
     return () => {
       active = false;
     };
-  }, [name, loading, options, open]);
+  }, [name, loading]);
 
-  useEffect(() => {
-    if (!open) {
-      setName("");
-      setOptions([]);
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (!open) {
+  //     setOptions([]);
+  //   }
+  // }, [open]);
+
+  // useEffect(() => {
+  //   console.log(name);
+  // }, [name]);
 
   return (
     <>
-      <GerenciarClientesTab />
       <Paper className={classes.paper}>
         <Grid
           container
@@ -132,6 +135,13 @@ export const GerenciarClientes = () => {
         <Grid container>
           <Grid item lg={12}>
             <Autocomplete
+              onChange={(event, newValue) => {
+                setName(newValue);
+              }}
+              inputValue={inputValue ? inputValue : ""}
+              onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
+              }}
               open={open}
               onOpen={() => {
                 setOpen(true);
@@ -139,19 +149,17 @@ export const GerenciarClientes = () => {
               onClose={() => {
                 setOpen(false);
               }}
+              disabled={loading}
               fullWidth
               getOptionSelected={(option, value) => option.name === value.name}
               getOptionLabel={(option) =>
-                `CNPJ: ${option.cnpj} / Nome Fantasia: ${option.nomeFantasia}`
+                `${option.cnpj}${option.nomeFantasia}`
               }
               options={options}
               loading={loading}
               autoHighlight
               renderInput={(params) => (
                 <TextField
-                  onChange={(event) => {
-                    setName(event.target.value);
-                  }}
                   {...params}
                   label="Digite o nome, endereço, cnpj ou empresa"
                   variant="outlined"
@@ -173,7 +181,7 @@ export const GerenciarClientes = () => {
           </Grid>
         </Grid>
       </Paper>
-      {/* {name && <GerenciarClientesTab id={name.id} />} */}
+      {name && <GerenciarClientesTab clientData={name} />}
     </>
   );
 };

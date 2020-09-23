@@ -89,7 +89,7 @@ const useStylesTabs = makeStyles((theme) => ({
   },
 }));
 
-const GerenciarClientesTab = (id) => {
+const GerenciarClientesTab = ({ clientData }) => {
   const classesTabs = useStylesTabs();
   const theme = useTheme();
   const [value, setValue] = useState(0);
@@ -171,7 +171,7 @@ const GerenciarClientesTab = (id) => {
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
                 <h4>Informações Jurídicas</h4>
-                <InformacoesJuridicasForm />
+                <InformacoesJuridicasForm clientData={clientData} />
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 <h4>Socios</h4>

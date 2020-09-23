@@ -1,8 +1,16 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Divider, TextField, Grid, MenuItem } from "@material-ui/core";
+import {
+  Divider,
+  TextField,
+  Grid,
+  MenuItem,
+  TextareaAutosize,
+} from "@material-ui/core";
 import ImageUpload from "../../../../../components/ImageUpload/ImageUpload";
+import { format } from "date-fns/esm";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,8 +35,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const InformacoesJuridicasForm = () => {
+export const InformacoesJuridicasForm = ({ clientData }) => {
   const classes = useStyles();
+  const [optionsOpen, handleAvatarClick] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [picture, setPicture] = useState("/media/client-logos/brand.png");
+
   const [values, setValues] = useState({
     codigo: "",
     tipo: "",
@@ -38,12 +50,27 @@ export const InformacoesJuridicasForm = () => {
     dataAbertura: "",
   });
 
+  useEffect(() => {
+    const formattedDate = clientData.dataAbertura
+      ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
+      : "";
+
+    setValues({
+      codigo: "",
+      tipo: clientData.tipoCliente,
+      cnpj: clientData.cnpj,
+      razaoSocial: clientData.razaoSocial,
+      nomeFantasia: clientData.nomeFantasia,
+      dataAbertura: formattedDate,
+    });
+
+    setPicture(clientData.logo);
+  }, [clientData]);
+
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
-  const [optionsOpen, handleAvatarClick] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [picture, setPicture] = useState("/media/client-logos/brand.png");
+
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <p className="ml-3 font-weight-bold">
@@ -54,7 +81,7 @@ export const InformacoesJuridicasForm = () => {
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField
-                disabled={false}
+                disabled={true}
                 label="Código do Cliente"
                 fullWidth
                 value={values.nome}
@@ -65,7 +92,7 @@ export const InformacoesJuridicasForm = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={false}
+                disabled={true}
                 fullWidth
                 value={values.tipo}
                 onChange={handleChange("tipo")}
@@ -84,7 +111,7 @@ export const InformacoesJuridicasForm = () => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={false}
+                disabled={true}
                 label="Número do CNPJ"
                 fullWidth
                 value={values.cnpj}
@@ -95,7 +122,7 @@ export const InformacoesJuridicasForm = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={false}
+                disabled={true}
                 label="Razão Social"
                 fullWidth
                 value={values.razaoSocial}
@@ -107,7 +134,7 @@ export const InformacoesJuridicasForm = () => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={false}
+                disabled={true}
                 label="Nome Fantasia"
                 fullWidth
                 value={values.nomeFantasia}
@@ -118,7 +145,7 @@ export const InformacoesJuridicasForm = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={false}
+                disabled={true}
                 label="Data de Abertura"
                 fullWidth
                 value={values.dataAbertura}
