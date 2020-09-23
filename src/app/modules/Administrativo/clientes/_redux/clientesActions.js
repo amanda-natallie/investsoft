@@ -9,3 +9,7 @@ export const createCliente = (props) => {
 export const clearClientes = (props) => {
   return { type: "CLIENTES_CLEAR_DATA", props };
 };
+
+export const setIsDisable = (props) => {
+  return { type: "CLIENTES_IS_DISABLE", props };
+};

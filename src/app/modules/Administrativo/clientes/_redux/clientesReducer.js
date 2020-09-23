@@ -10,9 +10,10 @@ const clientesReducer = (state = initialState, action) => {
   switch (action.type) {
     case "CLIENTES_IS_DISABLE":
       return {
-        isDisable: action.isDisable,
-        clienteInformation: { ...state.clienteInformation },
+        ...state,
+        isDisable: !action.props.isDisable,
       };
+
     case "CLIENTES_IS_LOADING":
       return {
         isLoading: action.isLoading,
