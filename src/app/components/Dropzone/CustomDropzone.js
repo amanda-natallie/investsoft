@@ -113,7 +113,7 @@ export const CustomDropzone = (props) => {
                   id: "outlined-age-native-simple",
                 }}
               >
-                <option aria-label="None" value="" />
+                <option disabled selected aria-label="None" value="" />
                 <option value={"CPF"}>CPF</option>
                 <option value={"CNPJ"}>CNPJ</option>
                 <option value={"PDF"}>PDF</option>
