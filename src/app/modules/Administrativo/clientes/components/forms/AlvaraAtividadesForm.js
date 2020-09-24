@@ -206,11 +206,21 @@ export const AlvaraAtividadesForm = () => {
             <Grid item xs={1}>
               <Tooltip title="Deletar Opção">
                 <Fab
+                  style={{
+                    width: "26px",
+                    height: "26px",
+                    fontSize: "1.5rem",
+                  }}
                   color="primary"
                   aria-label="Deletar Opção"
                   onClick={() => deleteOption(index)}
                 >
-                  <DeleteIcon />
+                  <DeleteIcon
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                    }}
+                  />
                 </Fab>
               </Tooltip>
             </Grid>
@@ -218,7 +228,15 @@ export const AlvaraAtividadesForm = () => {
         ))}
       <Grid container>
         <Grid lg={3} className={classes.plusButton} onClick={() => addOption()}>
-          <Fab size="small" color="primary">
+          <Fab
+            style={{
+              width: "24px",
+              height: "24px",
+              fontSize: "1.5rem",
+            }}
+            size="small"
+            color="primary"
+          >
             <AddIcon />
           </Fab>
           <span className="ml-4">Adicionar Atividade</span>

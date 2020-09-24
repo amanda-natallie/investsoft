@@ -11,6 +11,12 @@ import {
 import FolderIcon from "@material-ui/icons/Folder";
 import DeleteIcon from "@material-ui/icons/Delete";
 
+import InputLabel from "@material-ui/core/InputLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import NativeSelect from "@material-ui/core/NativeSelect";
+
 import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 const useStyles = makeStyles((theme) => ({
@@ -48,11 +54,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export const CustomDropzone = (props) => {
+  const [testeState, setTesteState] = useState("");
+
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const classes = useStyles();
   const [renderFiles, setRenderFiles] = useState([]);
 
   const [arrayFiles, setArrayFiles] = useState(acceptedFiles);
+
+  console.log();
+
+  const handleChange = (event, file) => {
+    setArrayFiles((state) => [
+      ...state,
+      (file.archiveType = event.target.value),
+    ]);
+
+    setArrayFiles(arrayFiles);
+    console.log(arrayFiles);
+  };
 
   function checkingIdenticalFiles(files) {
     files.map((file) => {
@@ -74,6 +94,32 @@ export const CustomDropzone = (props) => {
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={`${file.path} - ${file.size} bytes`} />
+          <div style={{ width: "30%", margin: "0 auto" }}>
+            <FormControl
+              style={{ width: "100%" }}
+              variant="outlined"
+              className={classes.formControl}
+            >
+              <InputLabel htmlFor="outlined-age-native-simple">
+                Tipo de arquivo
+              </InputLabel>
+              <Select
+                native
+                value={arrayFiles.archiveType}
+                onChange={(event) => handleChange(event, file)}
+                label="Tipo de arquivo"
+                inputProps={{
+                  name: "tipoArquivo",
+                  id: "outlined-age-native-simple",
+                }}
+              >
+                <option aria-label="None" value="" />
+                <option value={"CPF"}>CPF</option>
+                <option value={"CNPJ"}>CNPJ</option>
+                <option value={"PDF"}>PDF</option>
+              </Select>
+            </FormControl>
+          </div>
           <ListItemSecondaryAction>
             <IconButton
               edge="end"
@@ -100,7 +146,7 @@ export const CustomDropzone = (props) => {
 
   useEffect(() => {
     renderingFiles();
-  }, [arrayFiles, acceptedFiles]);
+  }, [arrayFiles, acceptedFiles, testeState]);
 
   function handleDeleteButton(name) {
     const fileIndex = arrayFiles.findIndex((file) => file.name === name);
