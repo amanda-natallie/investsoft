@@ -583,16 +583,18 @@ export const SociosForm = () => {
                 ))}
 
               <Grid container>
-                <Grid
-                  lg={3}
-                  className={classes.plusButton}
-                  onClick={() => addContactOption()}
-                >
-                  <Fab size="small" color="primary">
-                    <AddIcon />
-                  </Fab>
-                  <span className="ml-4">Adicionar novo Contato </span>
-                </Grid>
+                {!inputState.isDisable && (
+                  <Grid
+                    lg={3}
+                    className={classes.plusButton}
+                    onClick={() => addContactOption()}
+                  >
+                    <Fab size="small" color="primary">
+                      <AddIcon />
+                    </Fab>
+                    <span className="ml-4">Adicionar novo Contato </span>
+                  </Grid>
+                )}
               </Grid>
 
               <Grid item xs={12} className="pl-6 mt-4">
@@ -623,12 +625,18 @@ export const SociosForm = () => {
           </>
         ))}
       <Grid container>
-        <Grid lg={3} className={classes.plusButton} onClick={() => addOption()}>
-          <Fab size="small" color="primary">
-            <AddIcon />
-          </Fab>
-          <span className="ml-4">Adicionar novo sócio </span>
-        </Grid>
+        {!inputState.isDisable && (
+          <Grid
+            lg={3}
+            className={classes.plusButton}
+            onClick={() => addOption()}
+          >
+            <Fab size="small" color="primary">
+              <AddIcon />
+            </Fab>
+            <span className="ml-4">Adicionar novo sócio </span>
+          </Grid>
+        )}
       </Grid>
     </form>
   );

@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const InformacoesJuridicasForm = ({ clientData = "" }) => {
   const inputState = useSelector((state) => state.client);
-  const dispatch = useDispatch();
   const classes = useStyles();
   const [optionsOpen, handleAvatarClick] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -67,15 +66,11 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
       cnpj: clientData.cnpj,
       razaoSocial: clientData.razaoSocial,
       nomeFantasia: clientData.nomeFantasia,
-      dataAbertura: clientData.formattedDate,
+      dataAbertura: formattedDate,
     });
 
     setPicture(clientData.logo);
   }, [clientData]);
-
-  const handleEditButton = () => {
-    dispatch(setIsDisable(inputState));
-  };
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -83,20 +78,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
-      <Grid Container>
-        <p className="ml-3 font-weight-bold">
-          Passo 01: Informe os dados básicos{" "}
-        </p>
-        <Fab size="small" color="primary" aria-label="Editar" className="mr-3">
-          <button
-            type="button"
-            onClick={() => handleEditButton()}
-            style={{ border: 0, backgroundColor: "transparent" }}
-          >
-            <EditIcon />
-          </button>
-        </Fab>
-      </Grid>
+      <p className="ml-3 font-weight-bold">
+        Passo 01: Informe os dados básicos{" "}
+      </p>
 
       <Grid container justify="space-between" spacing={3} className="mt-5 ml-0">
         <Grid md={9}>

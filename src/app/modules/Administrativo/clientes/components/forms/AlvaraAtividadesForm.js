@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const AlvaraAtividadesForm = () => {
   const inputState = useSelector((state) => state.client);
-  const dispatch = useDispatch();
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -103,10 +102,6 @@ export const AlvaraAtividadesForm = () => {
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-  };
-
-  const handleEditButton = () => {
-    dispatch(setIsDisable(inputState));
   };
 
   return (

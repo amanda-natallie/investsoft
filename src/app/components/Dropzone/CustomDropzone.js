@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 export const CustomDropzone = (props) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const classes = useStyles();
+  const [renderFiles, setRenderFiles] = useState([]);
 
   const [arrayFiles, setArrayFiles] = useState(acceptedFiles);
 
@@ -58,9 +59,33 @@ export const CustomDropzone = (props) => {
       const findFileIndex = arrayFiles.findIndex(
         (arrayFile) => arrayFile.name === file.name
       );
-      console.log(findFileIndex);
+
       if (findFileIndex !== -1) arrayFiles.splice(findFileIndex, 1);
     });
+  }
+
+  function renderingFiles() {
+    setRenderFiles(
+      arrayFiles.map((file) => (
+        <ListItem key={file.path} disableGutters>
+          <ListItemAvatar>
+            <Avatar>
+              <FolderIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={`${file.path} - ${file.size} bytes`} />
+          <ListItemSecondaryAction>
+            <IconButton
+              edge="end"
+              aria-label="delete"
+              onClick={() => handleDeleteButton(file.name)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      ))
+    );
   }
 
   useEffect(() => {
@@ -73,21 +98,21 @@ export const CustomDropzone = (props) => {
     setArrayFiles([...arrayFiles, ...files]);
   }, [acceptedFiles]);
 
-  const files = arrayFiles.map((file) => (
-    <ListItem key={file.path} disableGutters>
-      <ListItemAvatar>
-        <Avatar>
-          <FolderIcon />
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText primary={`${file.path} - ${file.size} bytes`} />
-      <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
-    </ListItem>
-  ));
+  useEffect(() => {
+    renderingFiles();
+  }, [arrayFiles, acceptedFiles]);
+
+  function handleDeleteButton(name) {
+    const fileIndex = arrayFiles.findIndex((file) => file.name === name);
+
+    if (fileIndex !== -1) {
+      arrayFiles.splice(fileIndex, 1);
+      renderFiles.splice(fileIndex, 1);
+      renderingFiles();
+    } else {
+      return;
+    }
+  }
 
   return (
     <section className={classes.root}>
@@ -95,7 +120,7 @@ export const CustomDropzone = (props) => {
         <input {...getInputProps()} />
         <p>Arraste seus arquivos para cá, ou clique para selecioná-los.</p>
       </div>
-      {files && <List>{files}</List>}
+      {renderFiles && <List>{renderFiles}</List>}
     </section>
   );
 };
