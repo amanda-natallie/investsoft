@@ -190,13 +190,14 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={10}>
           <TextField
             disabled={inputState.isDisable}
             multiline
             rows={6}
             label="Observações do cliente"
             variant="outlined"
+            style={{ width: "92%" }}
           />
         </Grid>
       </Grid>
