@@ -39,7 +39,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const InformacoesJuridicasForm = ({ clientData = "" }) => {
+export const InformacoesJuridicasForm = ({
+  clientData = "",
+  managerCustomer = false,
+}) => {
   const inputState = useSelector((state) => state.client);
   const classes = useStyles();
   const [optionsOpen, handleAvatarClick] = useState(false);
@@ -53,6 +56,7 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
     razaoSocial: "",
     nomeFantasia: "",
     dataAbertura: "",
+    observacao: "",
   });
 
   useEffect(() => {
@@ -67,6 +71,7 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
       razaoSocial: clientData.razaoSocial,
       nomeFantasia: clientData.nomeFantasia,
       dataAbertura: formattedDate,
+      observacao: clientData.observacao,
     });
 
     setPicture(clientData.logo);
@@ -87,7 +92,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Código do Cliente"
                 fullWidth
                 value={values.nome}
@@ -99,7 +106,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 fullWidth
                 value={values.tipo}
                 onChange={handleChange("tipo")}
@@ -118,7 +127,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Número do CNPJ"
                 fullWidth
                 value={values.cnpj}
@@ -129,7 +140,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Razão Social"
                 fullWidth
                 value={values.razaoSocial}
@@ -141,7 +154,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Nome Fantasia"
                 fullWidth
                 value={values.nomeFantasia}
@@ -152,7 +167,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label=""
                 fullWidth
                 value={values.dataAbertura}
@@ -177,7 +194,7 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
         <Grid item xs={10}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             multiline
             rows={6}
             label="Observações do cliente"

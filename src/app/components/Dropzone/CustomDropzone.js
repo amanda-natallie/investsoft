@@ -53,11 +53,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-export const CustomDropzone = (props) => {
+export const CustomDropzone = ({ managerCustomer = false }) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const inputState = useSelector((state) => state.client);
   const classes = useStyles();
   const [renderFiles, setRenderFiles] = useState([]);
+
+  console.log(managerCustomer);
 
   const [arrayFiles, setArrayFiles] = useState(acceptedFiles);
 
@@ -108,7 +110,9 @@ export const CustomDropzone = (props) => {
                   name: "tipoArquivo",
                   id: "outlined-age-native-simple",
                 }}
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
               >
                 <option disabled selected aria-label="None" value="" />
                 <option value={"CPF"}>CPF</option>
@@ -159,8 +163,15 @@ export const CustomDropzone = (props) => {
 
   return (
     <section className={classes.root}>
-      {inputState.isDisable === true ? (
-        ""
+      {managerCustomer === true ? (
+        inputState.isDisable === true ? (
+          ""
+        ) : (
+          <div {...getRootProps({ className: classes.dropzone })}>
+            <input {...getInputProps()} />
+            <p>Arraste seus arquivos para cá, ou clique para selecioná-los.</p>
+          </div>
+        )
       ) : (
         <div {...getRootProps({ className: classes.dropzone })}>
           <input {...getInputProps()} />

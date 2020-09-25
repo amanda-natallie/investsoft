@@ -201,15 +201,18 @@ const GerenciarClientesTab = ({ clientData }) => {
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
                 <h4>Informações Jurídicas</h4>
-                <InformacoesJuridicasForm clientData={clientData} />
+                <InformacoesJuridicasForm
+                  clientData={clientData}
+                  managerCustomer={true}
+                />
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 <h4>Socios</h4>
-                <SociosForm />
+                <SociosForm managerCustomer={true} />
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
                 <h4>Atividades</h4>
-                <AlvaraAtividadesForm />
+                <AlvaraAtividadesForm managerCustomer={true} />
               </TabPanel>
               <TabPanel value={value} index={3} dir={theme.direction}>
                 <h4>Arquivos</h4>
