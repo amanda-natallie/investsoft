@@ -12,10 +12,10 @@ import FolderIcon from "@material-ui/icons/Folder";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import NativeSelect from "@material-ui/core/NativeSelect";
+
+import { useSelector } from "react-redux";
 
 import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
@@ -54,15 +54,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export const CustomDropzone = (props) => {
-  const [testeState, setTesteState] = useState("");
-
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const inputState = useSelector((state) => state.client);
   const classes = useStyles();
   const [renderFiles, setRenderFiles] = useState([]);
 
   const [arrayFiles, setArrayFiles] = useState(acceptedFiles);
-
-  console.log();
 
   const handleChange = (event, file) => {
     setArrayFiles((state) => [
@@ -71,7 +68,6 @@ export const CustomDropzone = (props) => {
     ]);
 
     setArrayFiles(arrayFiles);
-    console.log(arrayFiles);
   };
 
   function checkingIdenticalFiles(files) {
@@ -112,11 +108,12 @@ export const CustomDropzone = (props) => {
                   name: "tipoArquivo",
                   id: "outlined-age-native-simple",
                 }}
+                disabled={inputState.isDisable}
               >
                 <option disabled selected aria-label="None" value="" />
                 <option value={"CPF"}>CPF</option>
-                <option value={"CNPJ"}>CNPJ</option>
-                <option value={"PDF"}>PDF</option>
+                <option value={"CONTRATO SOCIAL"}>CONTRATO SOCIAL</option>
+                <option value={"CARTAO CNPJ"}>CARTÃO CNPJ</option>
               </Select>
             </FormControl>
           </div>
@@ -146,7 +143,7 @@ export const CustomDropzone = (props) => {
 
   useEffect(() => {
     renderingFiles();
-  }, [arrayFiles, acceptedFiles, testeState]);
+  }, [arrayFiles, acceptedFiles, inputState.isDisable]);
 
   function handleDeleteButton(name) {
     const fileIndex = arrayFiles.findIndex((file) => file.name === name);
@@ -162,10 +159,15 @@ export const CustomDropzone = (props) => {
 
   return (
     <section className={classes.root}>
-      <div {...getRootProps({ className: classes.dropzone })}>
-        <input {...getInputProps()} />
-        <p>Arraste seus arquivos para cá, ou clique para selecioná-los.</p>
-      </div>
+      {inputState.isDisable === true ? (
+        ""
+      ) : (
+        <div {...getRootProps({ className: classes.dropzone })}>
+          <input {...getInputProps()} />
+          <p>Arraste seus arquivos para cá, ou clique para selecioná-los.</p>
+        </div>
+      )}
+
       {renderFiles && <List>{renderFiles}</List>}
     </section>
   );

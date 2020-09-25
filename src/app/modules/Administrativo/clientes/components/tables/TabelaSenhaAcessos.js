@@ -33,6 +33,11 @@ const columns = [
     headerStyle: headerStyle,
   },
   {
+    dataField: "description",
+    text: "Descrição",
+    headerStyle: headerStyle,
+  },
+  {
     dataField: "user",
     text: "Usuario",
     headerStyle: headerStyle,

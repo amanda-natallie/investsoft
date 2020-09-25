@@ -121,14 +121,14 @@ const GerenciarClientesTab = ({ clientData }) => {
     {
       name: "Marcus",
       url: "teste",
-      dataField: "21/09/2020",
+      description: "teste",
       user: "teste",
       password: "123123",
     },
     {
       name: "Teste",
       url: "teste",
-      dataField: "21/09/2020",
+      description: "teste",
       user: "teste",
       password: "123123",
     },
@@ -177,7 +177,9 @@ const GerenciarClientesTab = ({ clientData }) => {
                 <Tab label="Senha e Acessos" {...a11yProps(4)} />
                 <Fab
                   size="small"
-                  color="inherit"
+                  color={
+                    inputState.isDisable === false ? "secondary" : "inherit"
+                  }
                   aria-label="Editar"
                   className="mr-3"
                   style={{ marginLeft: "16px" }}

@@ -153,12 +153,13 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
             <Grid item xs={6}>
               <TextField
                 disabled={inputState.isDisable}
-                label="Data de Abertura"
+                label=""
                 fullWidth
                 value={values.dataAbertura}
                 onChange={handleChange("dataAbertura")}
                 className={classes.textField}
                 variant="outlined"
+                type="Date"
               />
             </Grid>
           </Grid>
