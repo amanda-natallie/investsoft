@@ -61,13 +61,13 @@ export const SociosForm = ({ managerCustomer = false }) => {
   const [representante, setRepresentante] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const [contatos, setContatos] = useState([
-    {
-      id: 0,
-      telefoneContato: "",
-      emailContato: "",
-    },
-  ]);
+  // const [contatos, setContatos] = useState([
+  //   {
+  //     id: 0,
+  //     telefoneContato: "",
+  //     emailContato: "",
+  //   },
+  // ]);
   const [socios, setSocios] = useState([
     {
       id: 0,
@@ -94,8 +94,12 @@ export const SociosForm = ({ managerCustomer = false }) => {
       municipio: "",
       complemento: "",
       uf: "",
-      telefone: "",
-      email: "",
+      contatos: [
+        {
+          telefoneContato: "",
+          emailContato: "",
+        },
+      ],
     },
   ]);
 
@@ -118,19 +122,26 @@ export const SociosForm = ({ managerCustomer = false }) => {
     setSocios(newArray);
   };
 
-  const addContactOption = () => {
-    const id = contatos.length;
+  const addContactOption = (item) => {
+    // const id = contatos.length;
     const optionLine = {
-      id: id,
       telefoneContato: "",
       emailContato: "",
     };
 
-    setContatos([...contatos, optionLine]);
+    setSocios((state) => [...state, item.contatos.push(optionLine)]);
+
+    setSocios([...socios]);
   };
 
-  const deleteContactOption = (index) => {
-    setContatos(contatos.filter((_, i) => i !== index));
+  const deleteContactOption = (item, index) => {
+    // console.log(item, index);
+    // setSocios((state) => [
+    //   ...state,
+    //   item.contatos.filter((_, i) => i !== index),
+    // ]);
+    setSocios((state) => [...state, item.contatos.splice(index, 1)]);
+    setSocios([...socios]);
   };
 
   const addOption = () => {
@@ -160,8 +171,12 @@ export const SociosForm = ({ managerCustomer = false }) => {
       municipio: "",
       complemento: "",
       uf: "",
-      telefone: "",
-      email: "",
+      contatos: [
+        {
+          telefoneContato: "",
+          emailContato: "",
+        },
+      ],
     };
 
     setSocios([...socios, optionLine]);
@@ -575,8 +590,8 @@ export const SociosForm = ({ managerCustomer = false }) => {
                 </InputLabel>
               </Grid>
 
-              {contatos &&
-                contatos.map((item, index) => (
+              {item.contatos &&
+                item.contatos.map((a, index) => (
                   <Grid
                     container
                     key={index}
@@ -617,14 +632,14 @@ export const SociosForm = ({ managerCustomer = false }) => {
                       />
                     </Grid>
 
-                    {contatos.length > 1 && (
+                    {item.contatos.length > 1 && (
                       <Grid item xs={1}>
                         <Tooltip title="Deletar Opção">
                           <Fab
                             size="small"
                             color="primary"
                             aria-label="Deletar Opção"
-                            onClick={() => deleteContactOption(index)}
+                            onClick={() => deleteContactOption(item, index)}
                           >
                             <DeleteIcon />
                           </Fab>
@@ -640,7 +655,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                     <Grid
                       lg={3}
                       className={classes.plusButton}
-                      onClick={() => addContactOption()}
+                      onClick={() => addContactOption(item)}
                     >
                       <Fab size="small" color="primary">
                         <AddIcon />
@@ -652,7 +667,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   <Grid
                     lg={3}
                     className={classes.plusButton}
-                    onClick={() => addContactOption()}
+                    onClick={() => addContactOption(item)}
                   >
                     <Fab size="small" color="primary">
                       <AddIcon />

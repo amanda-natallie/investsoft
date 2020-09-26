@@ -59,8 +59,6 @@ export const CustomDropzone = ({ managerCustomer = false }) => {
   const classes = useStyles();
   const [renderFiles, setRenderFiles] = useState([]);
 
-  console.log(managerCustomer);
-
   const [arrayFiles, setArrayFiles] = useState(acceptedFiles);
 
   const handleChange = (event, file) => {
