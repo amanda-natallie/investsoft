@@ -18,6 +18,12 @@ import { AlvaraAtividadesForm } from "../components/forms/AlvaraAtividadesForm";
 import TabelaSenhaAcessos from "./tables/TabelaSenhaAcessos";
 import TabelaArquivos from "./tables/TabelaArquivos";
 
+import { Fab } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+
+import { useSelector, useDispatch } from "react-redux";
+import { setIsDisable } from "../../clientes/_redux/clientesActions";
+
 const useStylesTable = makeStyles((theme) => ({
   root: {
     width: "90%",
@@ -94,6 +100,13 @@ const GerenciarClientesTab = ({ clientData }) => {
   const theme = useTheme();
   const [value, setValue] = useState(0);
 
+  const inputState = useSelector((state) => state.client);
+  const dispatch = useDispatch();
+
+  const handleEditButton = () => {
+    dispatch(setIsDisable(inputState));
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -108,14 +121,14 @@ const GerenciarClientesTab = ({ clientData }) => {
     {
       name: "Marcus",
       url: "teste",
-      dataField: "21/09/2020",
+      description: "teste",
       user: "teste",
       password: "123123",
     },
     {
       name: "Teste",
       url: "teste",
-      dataField: "21/09/2020",
+      description: "teste",
       user: "teste",
       password: "123123",
     },
@@ -162,6 +175,23 @@ const GerenciarClientesTab = ({ clientData }) => {
                 <Tab label="Atividades" {...a11yProps(2)} />
                 <Tab label="Arquivos" {...a11yProps(3)} />
                 <Tab label="Senha e Acessos" {...a11yProps(4)} />
+                <Fab
+                  size="small"
+                  color={
+                    inputState.isDisable === false ? "secondary" : "inherit"
+                  }
+                  aria-label="Editar"
+                  className="mr-3"
+                  style={{ marginLeft: "16px" }}
+                >
+                  <button
+                    type="button"
+                    onClick={handleEditButton}
+                    style={{ border: 0, backgroundColor: "transparent" }}
+                  >
+                    <EditIcon />
+                  </button>
+                </Fab>
               </Tabs>
             </AppBar>
             <SwipeableViews
@@ -171,15 +201,18 @@ const GerenciarClientesTab = ({ clientData }) => {
             >
               <TabPanel value={value} index={0} dir={theme.direction}>
                 <h4>Informações Jurídicas</h4>
-                <InformacoesJuridicasForm clientData={clientData} />
+                <InformacoesJuridicasForm
+                  clientData={clientData}
+                  managerCustomer={true}
+                />
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 <h4>Socios</h4>
-                <SociosForm />
+                <SociosForm managerCustomer={true} />
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
                 <h4>Atividades</h4>
-                <AlvaraAtividadesForm />
+                <AlvaraAtividadesForm managerCustomer={true} />
               </TabPanel>
               <TabPanel value={value} index={3} dir={theme.direction}>
                 <h4>Arquivos</h4>

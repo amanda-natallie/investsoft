@@ -47,9 +47,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const AlvaraAtividadesForm = () => {
+export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
   const inputState = useSelector((state) => state.client);
-  const dispatch = useDispatch();
+
+  console.log(managerCustomer);
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -105,10 +106,6 @@ export const AlvaraAtividadesForm = () => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleEditButton = () => {
-    dispatch(setIsDisable(inputState));
-  };
-
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <p className="ml-3 font-weight-bold">
@@ -117,7 +114,7 @@ export const AlvaraAtividadesForm = () => {
       <Grid container spacing={4}>
         <Grid item xs={3}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             label="Número do Alvará"
             fullWidth
             value={values.numeroAlvara}
@@ -128,7 +125,7 @@ export const AlvaraAtividadesForm = () => {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             label="Inscrição Municipal"
             fullWidth
             value={values.inscricaoMunicipal}
@@ -139,7 +136,7 @@ export const AlvaraAtividadesForm = () => {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             label="Inscrição Estadual"
             fullWidth
             value={values.inscricaoEstadual}
@@ -151,7 +148,7 @@ export const AlvaraAtividadesForm = () => {
 
         <Grid item xs={3}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             label="NIRE"
             fullWidth
             value={values.nire}
@@ -162,7 +159,7 @@ export const AlvaraAtividadesForm = () => {
         </Grid>
 
         <Grid item xs={12} className="pl-6">
-          <CustomDropzone />
+          <CustomDropzone managerCustomer={managerCustomer} />
         </Grid>
 
         <Grid item xs={12} className="pl-6 mb-4">
@@ -175,7 +172,9 @@ export const AlvaraAtividadesForm = () => {
           <Grid container key={index} spacing={5} className="mb-5">
             <Grid item xs>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="CNAE"
                 fullWidth
                 value={item[index]}
@@ -186,7 +185,9 @@ export const AlvaraAtividadesForm = () => {
             </Grid>
             <Grid item xs>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Principal ou Secundaria"
                 fullWidth
                 value={item[index]}
@@ -199,7 +200,9 @@ export const AlvaraAtividadesForm = () => {
             </Grid>
             <Grid item xs>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Item de Servico"
                 fullWidth
                 value={item[index]}
@@ -209,25 +212,98 @@ export const AlvaraAtividadesForm = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <Tooltip title="Deletar Opção">
-                <Fab
-                  color="primary"
-                  aria-label="Deletar Opção"
-                  onClick={() => deleteOption(index)}
-                >
-                  <DeleteIcon />
-                </Fab>
-              </Tooltip>
+              {managerCustomer === true ? (
+                inputState.isDisable === true ? (
+                  ""
+                ) : (
+                  <Tooltip title="Deletar Opção">
+                    <Fab
+                      style={{
+                        width: "26px",
+                        height: "26px",
+                        fontSize: "1.5rem",
+                      }}
+                      color="primary"
+                      aria-label="Deletar Opção"
+                      onClick={() => deleteOption(index)}
+                    >
+                      <DeleteIcon
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                        }}
+                      />
+                    </Fab>
+                  </Tooltip>
+                )
+              ) : (
+                <Tooltip title="Deletar Opção">
+                  <Fab
+                    style={{
+                      width: "26px",
+                      height: "26px",
+                      fontSize: "1.5rem",
+                    }}
+                    color="primary"
+                    aria-label="Deletar Opção"
+                    onClick={() => deleteOption(index)}
+                  >
+                    <DeleteIcon
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                      }}
+                    />
+                  </Fab>
+                </Tooltip>
+              )}
             </Grid>
           </Grid>
         ))}
       <Grid container>
-        <Grid lg={3} className={classes.plusButton} onClick={() => addOption()}>
-          <Fab size="small" color="primary">
-            <AddIcon />
-          </Fab>
-          <span className="ml-4">Adicionar Atividade</span>
-        </Grid>
+        {managerCustomer === true ? (
+          inputState.isDisable === true ? (
+            ""
+          ) : (
+            <Grid
+              lg={3}
+              className={classes.plusButton}
+              onClick={() => addOption()}
+            >
+              <Fab
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  fontSize: "1.5rem",
+                }}
+                size="small"
+                color="primary"
+              >
+                <AddIcon />
+              </Fab>
+              <span className="ml-4">Adicionar Atividade</span>
+            </Grid>
+          )
+        ) : (
+          <Grid
+            lg={3}
+            className={classes.plusButton}
+            onClick={() => addOption()}
+          >
+            <Fab
+              style={{
+                width: "24px",
+                height: "24px",
+                fontSize: "1.5rem",
+              }}
+              size="small"
+              color="primary"
+            >
+              <AddIcon />
+            </Fab>
+            <span className="ml-4">Adicionar Atividade</span>
+          </Grid>
+        )}
       </Grid>
     </form>
   );

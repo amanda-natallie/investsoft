@@ -39,9 +39,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const InformacoesJuridicasForm = ({ clientData = "" }) => {
+export const InformacoesJuridicasForm = ({
+  clientData = "",
+  managerCustomer = false,
+}) => {
   const inputState = useSelector((state) => state.client);
-  const dispatch = useDispatch();
   const classes = useStyles();
   const [optionsOpen, handleAvatarClick] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -54,6 +56,7 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
     razaoSocial: "",
     nomeFantasia: "",
     dataAbertura: "",
+    observacao: "",
   });
 
   useEffect(() => {
@@ -67,15 +70,12 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
       cnpj: clientData.cnpj,
       razaoSocial: clientData.razaoSocial,
       nomeFantasia: clientData.nomeFantasia,
-      dataAbertura: clientData.formattedDate,
+      dataAbertura: formattedDate,
+      observacao: clientData.observacao,
     });
 
     setPicture(clientData.logo);
   }, [clientData]);
-
-  const handleEditButton = () => {
-    dispatch(setIsDisable(inputState));
-  };
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -83,27 +83,18 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
-      <Grid Container>
-        <p className="ml-3 font-weight-bold">
-          Passo 01: Informe os dados básicos{" "}
-        </p>
-        <Fab size="small" color="primary" aria-label="Editar" className="mr-3">
-          <button
-            type="button"
-            onClick={() => handleEditButton()}
-            style={{ border: 0, backgroundColor: "transparent" }}
-          >
-            <EditIcon />
-          </button>
-        </Fab>
-      </Grid>
+      <p className="ml-3 font-weight-bold">
+        Passo 01: Informe os dados básicos{" "}
+      </p>
 
       <Grid container justify="space-between" spacing={3} className="mt-5 ml-0">
         <Grid md={9}>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Código do Cliente"
                 fullWidth
                 value={values.nome}
@@ -115,7 +106,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 fullWidth
                 value={values.tipo}
                 onChange={handleChange("tipo")}
@@ -134,7 +127,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Número do CNPJ"
                 fullWidth
                 value={values.cnpj}
@@ -145,7 +140,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Razão Social"
                 fullWidth
                 value={values.razaoSocial}
@@ -157,7 +154,9 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Nome Fantasia"
                 fullWidth
                 value={values.nomeFantasia}
@@ -168,13 +167,16 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
-                label="Data de Abertura"
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
+                label=""
                 fullWidth
                 value={values.dataAbertura}
                 onChange={handleChange("dataAbertura")}
                 className={classes.textField}
                 variant="outlined"
+                type="Date"
               />
             </Grid>
           </Grid>
@@ -190,13 +192,14 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={10}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             multiline
             rows={6}
             label="Observações do cliente"
             variant="outlined"
+            style={{ width: "92%" }}
           />
         </Grid>
       </Grid>

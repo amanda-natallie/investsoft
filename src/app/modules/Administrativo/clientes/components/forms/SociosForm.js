@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SociosForm = () => {
+export const SociosForm = ({ managerCustomer = false }) => {
   const classes = useStyles();
   const inputState = useSelector((state) => state.client);
   const dispatch = useDispatch();
@@ -61,13 +61,13 @@ export const SociosForm = () => {
   const [representante, setRepresentante] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const [contatos, setContatos] = useState([
-    {
-      id: 0,
-      telefoneContato: "",
-      emailContato: "",
-    },
-  ]);
+  // const [contatos, setContatos] = useState([
+  //   {
+  //     id: 0,
+  //     telefoneContato: "",
+  //     emailContato: "",
+  //   },
+  // ]);
   const [socios, setSocios] = useState([
     {
       id: 0,
@@ -94,8 +94,12 @@ export const SociosForm = () => {
       municipio: "",
       complemento: "",
       uf: "",
-      telefone: "",
-      email: "",
+      contatos: [
+        {
+          telefoneContato: "",
+          emailContato: "",
+        },
+      ],
     },
   ]);
 
@@ -118,19 +122,26 @@ export const SociosForm = () => {
     setSocios(newArray);
   };
 
-  const addContactOption = () => {
-    const id = contatos.length;
+  const addContactOption = (item) => {
+    // const id = contatos.length;
     const optionLine = {
-      id: id,
       telefoneContato: "",
       emailContato: "",
     };
 
-    setContatos([...contatos, optionLine]);
+    setSocios((state) => [...state, item.contatos.push(optionLine)]);
+
+    setSocios([...socios]);
   };
 
-  const deleteContactOption = (index) => {
-    setContatos(contatos.filter((_, i) => i !== index));
+  const deleteContactOption = (item, index) => {
+    // console.log(item, index);
+    // setSocios((state) => [
+    //   ...state,
+    //   item.contatos.filter((_, i) => i !== index),
+    // ]);
+    setSocios((state) => [...state, item.contatos.splice(index, 1)]);
+    setSocios([...socios]);
   };
 
   const addOption = () => {
@@ -160,8 +171,12 @@ export const SociosForm = () => {
       municipio: "",
       complemento: "",
       uf: "",
-      telefone: "",
-      email: "",
+      contatos: [
+        {
+          telefoneContato: "",
+          emailContato: "",
+        },
+      ],
     };
 
     setSocios([...socios, optionLine]);
@@ -196,7 +211,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={representante ? 4 : 6}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   fullWidth
                   className={classes.textField}
                   variant="outlined"
@@ -260,7 +277,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Nome"
                   fullWidth
                   onChange={(e) => addInformationOption("nome", index, e)}
@@ -270,7 +289,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="CPF"
                   fullWidth
                   onChange={(e) => addInformationOption("cpf", index, e)}
@@ -280,7 +301,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Data de Nascimento"
                   fullWidth
                   onChange={(e) =>
@@ -293,7 +316,9 @@ export const SociosForm = () => {
 
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="RG"
                   fullWidth
                   onChange={(e) => addInformationOption("rg", index, e)}
@@ -303,7 +328,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Órgão Emissor (RG)"
                   fullWidth
                   onChange={(e) =>
@@ -315,7 +342,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Uf de origem (RG)"
                   fullWidth
                   onChange={(e) => addInformationOption("ufRg", index, e)}
@@ -326,7 +355,9 @@ export const SociosForm = () => {
 
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Carteira Profissional"
                   fullWidth
                   onChange={(e) =>
@@ -338,7 +369,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Órgão Emissor (Carteira)"
                   fullWidth
                   onChange={(e) =>
@@ -350,7 +383,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Uf de origem (Carteira)"
                   fullWidth
                   onChange={(e) => addInformationOption("ufCarteira", index, e)}
@@ -361,7 +396,9 @@ export const SociosForm = () => {
 
               <Grid item md={6}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Nacionalidade"
                   fullWidth
                   onChange={(e) =>
@@ -373,7 +410,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={6}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Naturalidade"
                   fullWidth
                   onChange={(e) =>
@@ -391,7 +430,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   fullWidth
                   className={classes.textField}
                   variant="outlined"
@@ -412,7 +453,9 @@ export const SociosForm = () => {
                 <>
                   <Grid item md={4}>
                     <TextField
-                      disabled={inputState.isDisable}
+                      disabled={
+                        managerCustomer === true ? inputState.isDisable : false
+                      }
                       label="Nome do Cônjuge"
                       fullWidth
                       onChange={(e) =>
@@ -424,7 +467,9 @@ export const SociosForm = () => {
                   </Grid>
                   <Grid item md={4}>
                     <TextField
-                      disabled={inputState.isDisable}
+                      disabled={
+                        managerCustomer === true ? inputState.isDisable : false
+                      }
                       label="CPF do Cônjuge"
                       fullWidth
                       onChange={(e) =>
@@ -444,7 +489,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item md={12}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Profissão"
                   fullWidth
                   onChange={(e) => addInformationOption("profissao", index, e)}
@@ -460,7 +507,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="CEP"
                   fullWidth
                   onChange={(e) => addInformationOption("cep", index, e)}
@@ -472,7 +521,9 @@ export const SociosForm = () => {
               <Grid item xs={4}></Grid>
               <Grid item xs={7}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Logradouro"
                   fullWidth
                   onChange={(e) => addInformationOption("logradouro", index, e)}
@@ -483,7 +534,9 @@ export const SociosForm = () => {
 
               <Grid item xs={5}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Número"
                   fullWidth
                   onChange={(e) => addInformationOption("numero", index, e)}
@@ -493,7 +546,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Bairro"
                   fullWidth
                   onChange={(e) => addInformationOption("bairro", index, e)}
@@ -504,7 +559,9 @@ export const SociosForm = () => {
 
               <Grid item xs={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Município"
                   fullWidth
                   onChange={(e) => addInformationOption("municipio", index, e)}
@@ -514,7 +571,9 @@ export const SociosForm = () => {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  disabled={inputState.isDisable}
+                  disabled={
+                    managerCustomer === true ? inputState.isDisable : false
+                  }
                   label="Complemento"
                   fullWidth
                   onChange={(e) =>
@@ -531,8 +590,8 @@ export const SociosForm = () => {
                 </InputLabel>
               </Grid>
 
-              {contatos &&
-                contatos.map((item, index) => (
+              {item.contatos &&
+                item.contatos.map((a, index) => (
                   <Grid
                     container
                     key={index}
@@ -542,7 +601,11 @@ export const SociosForm = () => {
                   >
                     <Grid item xs>
                       <TextField
-                        disabled={inputState.isDisable}
+                        disabled={
+                          managerCustomer === true
+                            ? inputState.isDisable
+                            : false
+                        }
                         label="Telefone"
                         fullWidth
                         onChange={(e) =>
@@ -554,7 +617,11 @@ export const SociosForm = () => {
                     </Grid>
                     <Grid item xs>
                       <TextField
-                        disabled={inputState.isDisable}
+                        disabled={
+                          managerCustomer === true
+                            ? inputState.isDisable
+                            : false
+                        }
                         label="E-mail"
                         fullWidth
                         onChange={(e) =>
@@ -565,14 +632,14 @@ export const SociosForm = () => {
                       />
                     </Grid>
 
-                    {contatos.length > 1 && (
+                    {item.contatos.length > 1 && (
                       <Grid item xs={1}>
                         <Tooltip title="Deletar Opção">
                           <Fab
                             size="small"
                             color="primary"
                             aria-label="Deletar Opção"
-                            onClick={() => deleteContactOption(index)}
+                            onClick={() => deleteContactOption(item, index)}
                           >
                             <DeleteIcon />
                           </Fab>
@@ -583,28 +650,57 @@ export const SociosForm = () => {
                 ))}
 
               <Grid container>
-                <Grid
-                  lg={3}
-                  className={classes.plusButton}
-                  onClick={() => addContactOption()}
-                >
-                  <Fab size="small" color="primary">
-                    <AddIcon />
-                  </Fab>
-                  <span className="ml-4">Adicionar novo Contato </span>
-                </Grid>
+                {managerCustomer === true ? (
+                  !inputState.isDisable && (
+                    <Grid
+                      lg={3}
+                      className={classes.plusButton}
+                      onClick={() => addContactOption(item)}
+                    >
+                      <Fab size="small" color="primary">
+                        <AddIcon />
+                      </Fab>
+                      <span className="ml-4">Adicionar novo Contato </span>
+                    </Grid>
+                  )
+                ) : (
+                  <Grid
+                    lg={3}
+                    className={classes.plusButton}
+                    onClick={() => addContactOption(item)}
+                  >
+                    <Fab size="small" color="primary">
+                      <AddIcon />
+                    </Fab>
+                    <span className="ml-4">Adicionar novo Contato </span>
+                  </Grid>
+                )}
               </Grid>
 
               <Grid item xs={12} className="pl-6 mt-4">
-                <InputLabel>
-                  <strong>
-                    Adicione aqui os anexos de documentos do sócio.
-                    <Tooltip title="Documentos anexos dos sócios e representantes">
-                      <InfoIcon />
-                    </Tooltip>
-                  </strong>
-                </InputLabel>
-                <CustomDropzone />
+                {managerCustomer === true ? (
+                  !inputState.isDisable && (
+                    <InputLabel>
+                      <strong>
+                        Adicione aqui os anexos de documentos do sócio.
+                        <Tooltip title="Documentos anexos dos sócios e representantes">
+                          <InfoIcon />
+                        </Tooltip>
+                      </strong>
+                    </InputLabel>
+                  )
+                ) : (
+                  <InputLabel>
+                    <strong>
+                      Adicione aqui os anexos de documentos do sócio.
+                      <Tooltip title="Documentos anexos dos sócios e representantes">
+                        <InfoIcon />
+                      </Tooltip>
+                    </strong>
+                  </InputLabel>
+                )}
+
+                <CustomDropzone managerCustomer={managerCustomer} />
               </Grid>
               {socios.length > 1 && (
                 <Grid item xs={1}>
@@ -623,12 +719,31 @@ export const SociosForm = () => {
           </>
         ))}
       <Grid container>
-        <Grid lg={3} className={classes.plusButton} onClick={() => addOption()}>
-          <Fab size="small" color="primary">
-            <AddIcon />
-          </Fab>
-          <span className="ml-4">Adicionar novo sócio </span>
-        </Grid>
+        {managerCustomer === true ? (
+          !inputState.isDisable && (
+            <Grid
+              lg={3}
+              className={classes.plusButton}
+              onClick={() => addOption()}
+            >
+              <Fab size="small" color="primary">
+                <AddIcon />
+              </Fab>
+              <span className="ml-4">Adicionar novo sócio </span>
+            </Grid>
+          )
+        ) : (
+          <Grid
+            lg={3}
+            className={classes.plusButton}
+            onClick={() => addOption()}
+          >
+            <Fab size="small" color="primary">
+              <AddIcon />
+            </Fab>
+            <span className="ml-4">Adicionar novo sócio </span>
+          </Grid>
+        )}
       </Grid>
     </form>
   );

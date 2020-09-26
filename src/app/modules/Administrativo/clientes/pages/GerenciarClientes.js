@@ -92,15 +92,25 @@ export const GerenciarClientes = () => {
     };
   }, [name, loading]);
 
-  // useEffect(() => {
-  //   if (!open) {
-  //     setOptions([]);
-  //   }
-  // }, [open]);
+  function MascaraParaLabel(valorDoTextBox) {
+    if (valorDoTextBox.length <= 14) {
+      let x = valorDoTextBox
+        .replace(/\D/g, "")
+        .match(/(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
 
-  // useEffect(() => {
-  //   console.log(name);
-  // }, [name]);
+      valorDoTextBox = !x[2]
+        ? x[1]
+        : x[1] +
+          "." +
+          x[2] +
+          "." +
+          x[3] +
+          "/" +
+          x[4] +
+          (x[5] ? "-" + x[5] : "");
+    }
+    return valorDoTextBox;
+  }
 
   return (
     <>
@@ -153,7 +163,7 @@ export const GerenciarClientes = () => {
               fullWidth
               getOptionSelected={(option, value) => option.name === value.name}
               getOptionLabel={(option) =>
-                `${option.cnpj}${option.nomeFantasia}`
+                `${MascaraParaLabel(option.cnpj)} _ ${option.nomeFantasia}`
               }
               options={options}
               loading={loading}
