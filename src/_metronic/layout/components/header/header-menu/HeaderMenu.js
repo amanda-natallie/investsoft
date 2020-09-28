@@ -3,6 +3,7 @@ import React from "react";
 import { useLocation } from "react-router";
 import { NavLink } from "react-router-dom";
 import {  checkIsActive } from "../../../../_helpers";
+import Home from "@material-ui/icons/HomeOutlined"
 
 export function HeaderMenu({ layoutProps }) {
     const location = useLocation();
@@ -20,22 +21,13 @@ export function HeaderMenu({ layoutProps }) {
             {/*begin::1 Level*/}
             <li className={`menu-item menu-item-rel ${getMenuItemActive('/dashboard')}`}>
                 <NavLink className="menu-link" to="/dashboard">
-                    <span className="menu-text">Dashboard</span>
+                    <span className="menu-text">
+                    <Home />
+                        Dashboard</span>
                     
                 </NavLink>
             </li>
-            <li className={`menu-item menu-item-rel ${getMenuItemActive('/pagina-um')}`}>
-                <NavLink className="menu-link" to="/pagina-um">
-                    <span className="menu-text">Cadastro de Atividade</span>
-                    
-                </NavLink>
-            </li>
-            <li className={`menu-item menu-item-rel ${getMenuItemActive('/pagina-dois')}`}>
-                <NavLink className="menu-link" to="/pagina-dois">
-                    <span className="menu-text">Consulta de Atividade</span>
-                    
-                </NavLink>
-            </li>
+            
         </ul>
         {/*end::Header Nav*/}
     </div>;

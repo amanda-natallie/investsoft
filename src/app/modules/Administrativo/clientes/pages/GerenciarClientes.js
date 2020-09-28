@@ -159,7 +159,7 @@ export const GerenciarClientes = () => {
               onClose={() => {
                 setOpen(false);
               }}
-              disabled={loading}
+              
               fullWidth
               getOptionSelected={(option, value) => option.name === value.name}
               getOptionLabel={(option) =>
@@ -191,7 +191,8 @@ export const GerenciarClientes = () => {
           </Grid>
         </Grid>
       </Paper>
-      {name && <GerenciarClientesTab clientData={name} />}
+      <GerenciarClientesTab clientData={name} />
+      {/* {name && <GerenciarClientesTab clientData={name} />} */}
     </>
   );
 };
