@@ -91,6 +91,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
       dataNascimento: "",
       cep: "",
       logradouro: "",
+      numero: "",
       bairro: "",
       municipio: "",
       complemento: "",
@@ -105,15 +106,107 @@ export const SociosForm = ({ managerCustomer = false }) => {
   ]);
 
   const addInformationOption = (type, index, e) => {
-    const newArray = JSON.parse(JSON.stringify(socios));
+    // const newArray = JSON.parse(JSON.stringify(socios));
+    let newArray = [...socios];
+
+    switch (type) {
+      case "nome":
+        newArray[index].nome = e.target.value;
+        break;
+
+      case "cpf":
+        newArray[index].cpf = e.target.value;
+        break;
+
+      case "dataNascimento":
+        newArray[index].dataNascimento = e.target.value;
+        break;
+
+      case "rg":
+        newArray[index].rg = e.target.value;
+        break;
+
+      case "orgaoEmissorRg":
+        newArray[index].orgaoEmissorRg = e.target.value;
+        break;
+
+      case "ufRg":
+        newArray[index].ufRg = e.target.value;
+        break;
+
+      case "carteiraProfissional":
+        newArray[index].carteiraProfissional = e.target.value;
+        break;
+
+      case "orgaoEmissorCarteira":
+        newArray[index].orgaoEmissorCarteira = e.target.value;
+        break;
+
+      case "ufCarteira":
+        newArray[index].ufCarteira = e.target.value;
+        break;
+
+      case "nacionalidade":
+        newArray[index].nacionalidade = e.target.value;
+        break;
+
+      case "naturalidade":
+        newArray[index].naturalidade = e.target.value;
+        break;
+
+      case "nomeConjuge":
+        newArray[index].nomeConjuge = e.target.value;
+        break;
+
+      case "cpfConjuge":
+        newArray[index].cpfConjuge = e.target.value;
+        break;
+
+      case "profissao":
+        newArray[index].profissao = e.target.value;
+        break;
+
+      case "cep":
+        newArray[index].cep = e.target.value;
+        break;
+
+      case "logradouro":
+        newArray[index].logradouro = e.target.value;
+        break;
+
+      case "numero":
+        newArray[index].numero = e.target.value;
+        break;
+
+      case "bairro":
+        newArray[index].bairro = e.target.value;
+        break;
+
+      case "municipio":
+        newArray[index].municipio = e.target.value;
+        break;
+
+      case "complemento":
+        newArray[index].complemento = e.target.value;
+        break;
+
+      default:
+        break;
+    }
+
+    setSocios(newArray);
+  };
+
+  const handleChangeContatos = (type, index, indexContato, e) => {
+    const newArray = [...socios];
 
     switch (type) {
       case "telefoneContato":
-        newArray[index].telefoneContato = e.target.value;
-
+        newArray[index].contatos[indexContato].telefoneContato = e.target.value;
         break;
+
       case "emailContato":
-        newArray[index].emailContato = e.target.value;
+        newArray[index].contatos[indexContato].emailContato = e.target.value;
         break;
 
       default:
@@ -168,6 +261,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
       dataNascimento: "",
       cep: "",
       logradouro: "",
+      numero: "",
       bairro: "",
       municipio: "",
       complemento: "",
@@ -664,7 +758,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
               </Grid>
 
               {item.contatos &&
-                item.contatos.map((a, index) => (
+                item.contatos.map((a, indexContato) => (
                   <Grid
                     container
                     key={index}
@@ -682,7 +776,12 @@ export const SociosForm = ({ managerCustomer = false }) => {
                         label="Telefone"
                         fullWidth
                         onChange={(e) =>
-                          addInformationOption("telefoneContato", index, e)
+                          handleChangeContatos(
+                            "telefoneContato",
+                            index,
+                            indexContato,
+                            e
+                          )
                         }
                         className={classes.textField}
                         variant="outlined"
@@ -698,7 +797,12 @@ export const SociosForm = ({ managerCustomer = false }) => {
                         label="E-mail"
                         fullWidth
                         onChange={(e) =>
-                          addInformationOption("emailContato", index, e)
+                          handleChangeContatos(
+                            "emailContato",
+                            index,
+                            indexContato,
+                            e
+                          )
                         }
                         className={classes.textField}
                         variant="outlined"
@@ -818,6 +922,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
           </Grid>
         )}
       </Grid>
+      <button type="submit"> TESTE YUP</button>
     </form>
   );
 };
