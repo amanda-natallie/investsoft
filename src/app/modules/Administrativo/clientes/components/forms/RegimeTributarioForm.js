@@ -39,13 +39,20 @@ d.setFullYear(d.getFullYear() - 1);
 export const RegimeTributarioForm = () => {
   const classes = useStyles();
   const [values, setValues] = useState([
-    { id: 0, ano: "", regimeTributario: "" },
-    { id: 1, ano: "", regimeTributario: "" },
-    { id: 2, ano: "", regimeTributario: "" },
+    { id: 0, ano: "2020", regimeTributario: "" },
+    { id: 1, ano: "2019", regimeTributario: "" },
+    { id: 2, ano: "2018", regimeTributario: "" },
   ]);
 
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+  const handleChange = (name, id) => (event) => {
+    let newArray = [...values];
+
+    newArray[id].regimeTributario = event.target.value;
+
+    // setValues({ ...values, [name]: event.target.value });
+    console.log(values);
+
+    setValues(newArray);
   };
 
   const handleSubmit = async (e) => {
@@ -55,9 +62,10 @@ export const RegimeTributarioForm = () => {
         Yup.object({
           id: Yup.number(),
           ano: Yup.string(),
-          regimeTributario: Yup.string().required(
-            "Escolha um Regime Tributario"
-          ),
+          regimeTributario: Yup.string().when("ano", {
+            is: "2020",
+            then: Yup.string().required("Escolha um Regime Tributario"),
+          }),
         })
       );
       await schema.validate(values, {
@@ -89,8 +97,7 @@ export const RegimeTributarioForm = () => {
           <TextField
             disabled={false}
             fullWidth
-            value={values.regimeTributario}
-            onChange={handleChange("regimeTributario")}
+            onChange={handleChange("regimeTributario", 0)}
             className={classes.textField}
             variant="outlined"
             id="select"
@@ -113,8 +120,7 @@ export const RegimeTributarioForm = () => {
           <TextField
             disabled={false}
             fullWidth
-            value={values.regimeTributario}
-            onChange={handleChange("regimeTributario")}
+            onChange={handleChange("regimeTributario", 1)}
             className={classes.textField}
             variant="outlined"
             id="select"
@@ -137,8 +143,7 @@ export const RegimeTributarioForm = () => {
           <TextField
             disabled={false}
             fullWidth
-            value={values.regimeTributario}
-            onChange={handleChange("regimeTributario")}
+            onChange={handleChange("regimeTributario", 2)}
             className={classes.textField}
             variant="outlined"
             id="select"

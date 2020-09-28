@@ -95,21 +95,23 @@ export const ContatosForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const schema = Yup.object().shape({
-        id: Yup.number(),
-        pessoaContato: Yup.string().required(
-          "Campo Nome do contato, obrigatório"
-        ),
-        telefoneContato: Yup.string().required(
-          "Campo Telefone do contato, obrigatório"
-        ),
-        emailContato: Yup.string().required(
-          "Campo E-mail do contato, obrigatório"
-        ),
-        departamento: Yup.string().required(
-          "Campo Departamento do contato, obrigatório"
-        ),
-      });
+      const schema = Yup.array(
+        Yup.object({
+          id: Yup.number(),
+          pessoaContato: Yup.string().required(
+            "Campo Nome do contato, obrigatório"
+          ),
+          telefoneContato: Yup.string().required(
+            "Campo Telefone do contato, obrigatório"
+          ),
+          emailContato: Yup.string().required(
+            "Campo E-mail do contato, obrigatório"
+          ),
+          departamento: Yup.string().required(
+            "Campo Departamento do contato, obrigatório"
+          ),
+        })
+      );
 
       await schema.validate(contatos, {
         abortEarly: false,
@@ -122,7 +124,12 @@ export const ContatosForm = () => {
   };
 
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
         Passo 05: Informe os dados de contatos. Você pode adicionar quantos
         quiser. O primeiro é obrigatório.

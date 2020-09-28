@@ -109,10 +109,16 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
     e.preventDefault();
     try {
       const schema = Yup.object().shape({
-        numeroAlvara: Yup.string().required(""),
-        inscricaoMunicipal: Yup.string().required(""),
-        inscricaoEstadual: Yup.string().required(""),
-        nire: Yup.string().required(""),
+        numeroAlvara: Yup.string().required(
+          "Campo Numero do Alvara, obrigatório"
+        ),
+        inscricaoMunicipal: Yup.string().required(
+          "Campo Inscrição Municipal, obrigatório"
+        ),
+        inscricaoEstadual: Yup.string().required(
+          "Campo Inscrição Estadual, obrigatório"
+        ),
+        nire: Yup.string().required("Campo NIRE, obrigatório"),
       });
 
       await schema.validate(values, {
@@ -126,7 +132,12 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
   };
 
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
         Passo 03: Informe os dados de Alvará & Atividades{" "}
       </p>

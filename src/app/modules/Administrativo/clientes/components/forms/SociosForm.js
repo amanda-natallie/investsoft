@@ -922,7 +922,6 @@ export const SociosForm = ({ managerCustomer = false }) => {
           </Grid>
         )}
       </Grid>
-      <button type="submit"> TESTE YUP</button>
     </form>
   );
 };
