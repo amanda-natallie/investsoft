@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Grid, MenuItem, InputLabel } from "@material-ui/core";
+import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     paddingLeft: "15px",
-  }
+  },
 }));
 var d = new Date();
 d.setFullYear(d.getFullYear() - 1);
@@ -47,10 +48,38 @@ export const RegimeTributarioForm = () => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.array().of(
+        Yup.object({
+          id: Yup.number(),
+          ano: Yup.string(),
+          regimeTributario: Yup.string().required(
+            "Escolha um Regime Tributario"
+          ),
+        })
+      );
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
-        Passo 04: Informe os dados de regime tributário do cliente. O ano atual é obrigatório. 
+        Passo 04: Informe os dados de regime tributário do cliente. O ano atual
+        é obrigatório.
       </p>
       <Grid container spacing={3} className="mb-4 mt-4">
         <Grid item xs={3}>
@@ -76,7 +105,9 @@ export const RegimeTributarioForm = () => {
       </Grid>
       <Grid container spacing={3} className="mb-4">
         <Grid item xs={3}>
-          <InputLabel className={classes.label}>Ano Anterior - 2019 (Opcional)</InputLabel>
+          <InputLabel className={classes.label}>
+            Ano Anterior - 2019 (Opcional)
+          </InputLabel>
         </Grid>
         <Grid item xs={9}>
           <TextField
@@ -96,9 +127,11 @@ export const RegimeTributarioForm = () => {
           </TextField>
         </Grid>
       </Grid>
-      <Grid container spacing={3} >
+      <Grid container spacing={3}>
         <Grid item xs={3}>
-          <InputLabel className={classes.label}>Ano Anterior - 2018 (Opcional)</InputLabel>
+          <InputLabel className={classes.label}>
+            Ano Anterior - 2018 (Opcional)
+          </InputLabel>
         </Grid>
         <Grid item xs={9}>
           <TextField
@@ -118,8 +151,6 @@ export const RegimeTributarioForm = () => {
           </TextField>
         </Grid>
       </Grid>
-      
     </form>
   );
 };
-

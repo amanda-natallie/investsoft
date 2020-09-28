@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Divider, TextField, Grid } from "@material-ui/core";
+import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,6 +40,28 @@ export const EnderecoLocalizacaoForm = () => {
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.object().shape({
+        cep: Yup.string().required("Campo CEP obrigatório"),
+        logradouro: Yup.string().required("Campo Logradouro obrigatório"),
+        numero: Yup.string().required("Campo número obrigatório"),
+        bairro: Yup.string().required("Campo bairro obrigatório"),
+        municipio: Yup.string().required("Campo município obrigatório"),
+        complemento: Yup.string(),
+      });
+
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

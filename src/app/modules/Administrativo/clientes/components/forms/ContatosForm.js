@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Grid, Fab, Tooltip } from "@material-ui/core";
+import * as Yup from "yup";
 
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -89,6 +90,35 @@ export const ContatosForm = () => {
 
   const deleteOption = (index) => {
     setContatos(contatos.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.object().shape({
+        id: Yup.number(),
+        pessoaContato: Yup.string().required(
+          "Campo Nome do contato, obrigatório"
+        ),
+        telefoneContato: Yup.string().required(
+          "Campo Telefone do contato, obrigatório"
+        ),
+        emailContato: Yup.string().required(
+          "Campo E-mail do contato, obrigatório"
+        ),
+        departamento: Yup.string().required(
+          "Campo Departamento do contato, obrigatório"
+        ),
+      });
+
+      await schema.validate(contatos, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

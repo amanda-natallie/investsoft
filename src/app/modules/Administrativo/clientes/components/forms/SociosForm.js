@@ -16,6 +16,7 @@ import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
 import InfoIcon from "@material-ui/icons/Info";
+import * as Yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
@@ -193,8 +194,80 @@ export const SociosForm = ({ managerCustomer = false }) => {
     dispatch(setIsDisable(inputState));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.array().of(
+        Yup.object({
+          id: Yup.number(),
+          tipo: Yup.string().required("Escolha um tipo de sócio"),
+          representante: Yup.boolean(),
+          nome: Yup.string().required("Campo Nome, obrigatório"),
+          cpf: Yup.string().required("Campo CPF, obrigatório"),
+          rg: Yup.string().required("Campo RG, obrigatório"),
+          orgaoEmissorRg: Yup.string().required(
+            "Campo Órgão Emissor (RG), obrigatório"
+          ),
+          ufRg: Yup.string().required("Campo Uf de origem (RG), obrigatório"),
+          carteiraProfissional: Yup.string().required(
+            "Campo Carteira Profissional, obrigatório"
+          ),
+          orgaoEmissorCarteira: Yup.string().required(
+            "Campo Órgão Emissor (Carteira), obrigatório"
+          ),
+          ufCarteira: Yup.string().required(
+            "Campo Uf de origem (Carteira), obrigatório"
+          ),
+          nacionalidade: Yup.string().required(
+            "Campo Nacionalidade, obrigatório"
+          ),
+          naturalidade: Yup.string().required(
+            "Campo Naturalidade, obrigatório"
+          ),
+          estadoCivil: Yup.string().required("Campo Estado Civil, obrigatório"),
+          nomeConjuge: Yup.string(),
+          cpfConjuge: Yup.string(),
+          profissao: Yup.string().required("Campo Profissão, obrigatório"),
+          dataNascimento: Yup.string().required(
+            "Campo Data de Nascimento, obrigatório"
+          ),
+          cep: Yup.string().required("Campo CEP, obrigatório"),
+          logradouro: Yup.string().required("Campo Logradouro, obrigatório"),
+          bairro: Yup.string().required("Campo Bairro, obrigatório"),
+          municipio: Yup.string().required("Campo Município, obrigatório"),
+          complemento: Yup.string(),
+          uf: Yup.string(),
+          contatos: Yup.array().of(
+            Yup.object({
+              telefoneContato: Yup.string().required(
+                "Campo Telefone, obrigatório"
+              ),
+              emailContato: Yup.string().required("Campo E-mail, obrigatório"),
+            })
+          ),
+        })
+      );
+
+      await schema.validate(socios, {
+        abortEarly: false,
+      });
+
+      console.log(socios);
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(socios);
+      console.log(err);
+    }
+  };
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
         Passo 06: Informe os dados de sócios. Você pode adicionar quantos
         quiser. O primeiro é obrigatório.

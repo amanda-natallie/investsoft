@@ -12,6 +12,7 @@ import {
 import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import * as Yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
@@ -49,8 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
   const inputState = useSelector((state) => state.client);
-
-  console.log(managerCustomer);
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -104,6 +103,26 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.object().shape({
+        numeroAlvara: Yup.string().required(""),
+        inscricaoMunicipal: Yup.string().required(""),
+        inscricaoEstadual: Yup.string().required(""),
+        nire: Yup.string().required(""),
+      });
+
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
