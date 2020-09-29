@@ -9,6 +9,7 @@ import {
   Grid,
   MenuItem,
   TextareaAutosize,
+  Button,
 } from "@material-ui/core";
 import ImageUpload from "../../../../../components/ImageUpload/ImageUpload";
 import { format } from "date-fns/esm";
@@ -17,6 +18,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
 import * as Yup from "yup";
 import { useRef } from "react";
+
+import {
+  nextStep,
+  backStep,
+  resetStep,
+} from "../../../steps/_redux/stepsActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -45,12 +52,16 @@ export const InformacoesJuridicasForm = ({
   clientData = "",
   managerCustomer = false,
 }) => {
-  const formErrorRef = useRef({ error: {} });
   const inputState = useSelector((state) => state.client);
+  const stepRedux = useSelector((state) => state.step);
+  const dispatch = useDispatch();
+
   const classes = useStyles();
   const [optionsOpen, handleAvatarClick] = useState(false);
   const [loading, setLoading] = useState(false);
   const [picture, setPicture] = useState("/media/client-logos/brand.png");
+
+  const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
   const [values, setValues] = useState({
     codigo: "",
@@ -59,6 +70,7 @@ export const InformacoesJuridicasForm = ({
     razaoSocial: "",
     nomeFantasia: "",
     dataAbertura: "",
+    clienteDesde: "",
     observacao: "",
   });
 
@@ -79,7 +91,7 @@ export const InformacoesJuridicasForm = ({
     const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
 
     setValues({
-      codigo: "",
+      codigo: clientData.codigo,
       tipo: clientData.tipoCliente,
       cnpj: clientData.cnpj,
       razaoSocial: clientData.razaoSocial,
@@ -118,6 +130,7 @@ export const InformacoesJuridicasForm = ({
       });
 
       console.log("OKAY");
+      dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};
       let InputError = [];
@@ -127,12 +140,15 @@ export const InformacoesJuridicasForm = ({
         InputError[i] = error.path;
       });
 
-      formErrorRef.current.error = validationErros;
-      console.log(formErrorRef.current.error);
-
-      console.log(InputError);
+      setArrayOfErrors(InputError);
       console.log(validationErros);
     }
+  };
+
+  const checkingArrayOfErrors = (name) => {
+    const find = arrayOfErrors.findIndex((error) => error === name);
+    if (find !== -1) return true;
+    else return false;
   };
 
   return (
@@ -157,7 +173,8 @@ export const InformacoesJuridicasForm = ({
                 label="Código do Cliente"
                 fullWidth
                 value={values.nome}
-                onChange={handleChange("nome")}
+                onChange={handleChange("codigo")}
+                error={checkingArrayOfErrors("codigo")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -171,6 +188,7 @@ export const InformacoesJuridicasForm = ({
                 fullWidth
                 value={values.tipo}
                 onChange={handleChange("tipo")}
+                error={checkingArrayOfErrors("tipo")}
                 className={classes.textField}
                 variant="outlined"
                 id="select"
@@ -193,6 +211,7 @@ export const InformacoesJuridicasForm = ({
                 fullWidth
                 value={values.cnpj}
                 onChange={handleChange("cnpj")}
+                error={checkingArrayOfErrors("cnpj")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -206,6 +225,7 @@ export const InformacoesJuridicasForm = ({
                 fullWidth
                 value={values.razaoSocial}
                 onChange={handleChange("razaoSocial")}
+                error={checkingArrayOfErrors("razaoSocial")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -220,6 +240,7 @@ export const InformacoesJuridicasForm = ({
                 fullWidth
                 value={values.nomeFantasia}
                 onChange={handleChange("nomeFantasia")}
+                error={checkingArrayOfErrors("nomeFantasia")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -233,6 +254,7 @@ export const InformacoesJuridicasForm = ({
                 fullWidth
                 value={values.dataAbertura}
                 onChange={handleChange("dataAbertura")}
+                error={checkingArrayOfErrors("dataAbertura")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -245,8 +267,9 @@ export const InformacoesJuridicasForm = ({
                 }
                 label="Cliente Desde"
                 fullWidth
-                value={values.dataAbertura}
-                onChange={handleChange("dataAbertura")}
+                value={values.clienteDesde}
+                onChange={handleChange("clienteDesde")}
+                error={checkingArrayOfErrors("clienteDesde")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -273,6 +296,19 @@ export const InformacoesJuridicasForm = ({
             variant="outlined"
             style={{ width: "92%" }}
           />
+        </Grid>
+
+        <Grid item xs={10}>
+          {managerCustomer === false && (
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              className={classes.button}
+            >
+              EXEMPLO TESTE
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Divider />
