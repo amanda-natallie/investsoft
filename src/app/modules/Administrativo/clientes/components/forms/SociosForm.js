@@ -16,6 +16,7 @@ import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
 import InfoIcon from "@material-ui/icons/Info";
+import * as Yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
@@ -90,6 +91,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
       dataNascimento: "",
       cep: "",
       logradouro: "",
+      numero: "",
       bairro: "",
       municipio: "",
       complemento: "",
@@ -104,15 +106,107 @@ export const SociosForm = ({ managerCustomer = false }) => {
   ]);
 
   const addInformationOption = (type, index, e) => {
-    const newArray = JSON.parse(JSON.stringify(socios));
+    // const newArray = JSON.parse(JSON.stringify(socios));
+    let newArray = [...socios];
+
+    switch (type) {
+      case "nome":
+        newArray[index].nome = e.target.value;
+        break;
+
+      case "cpf":
+        newArray[index].cpf = e.target.value;
+        break;
+
+      case "dataNascimento":
+        newArray[index].dataNascimento = e.target.value;
+        break;
+
+      case "rg":
+        newArray[index].rg = e.target.value;
+        break;
+
+      case "orgaoEmissorRg":
+        newArray[index].orgaoEmissorRg = e.target.value;
+        break;
+
+      case "ufRg":
+        newArray[index].ufRg = e.target.value;
+        break;
+
+      case "carteiraProfissional":
+        newArray[index].carteiraProfissional = e.target.value;
+        break;
+
+      case "orgaoEmissorCarteira":
+        newArray[index].orgaoEmissorCarteira = e.target.value;
+        break;
+
+      case "ufCarteira":
+        newArray[index].ufCarteira = e.target.value;
+        break;
+
+      case "nacionalidade":
+        newArray[index].nacionalidade = e.target.value;
+        break;
+
+      case "naturalidade":
+        newArray[index].naturalidade = e.target.value;
+        break;
+
+      case "nomeConjuge":
+        newArray[index].nomeConjuge = e.target.value;
+        break;
+
+      case "cpfConjuge":
+        newArray[index].cpfConjuge = e.target.value;
+        break;
+
+      case "profissao":
+        newArray[index].profissao = e.target.value;
+        break;
+
+      case "cep":
+        newArray[index].cep = e.target.value;
+        break;
+
+      case "logradouro":
+        newArray[index].logradouro = e.target.value;
+        break;
+
+      case "numero":
+        newArray[index].numero = e.target.value;
+        break;
+
+      case "bairro":
+        newArray[index].bairro = e.target.value;
+        break;
+
+      case "municipio":
+        newArray[index].municipio = e.target.value;
+        break;
+
+      case "complemento":
+        newArray[index].complemento = e.target.value;
+        break;
+
+      default:
+        break;
+    }
+
+    setSocios(newArray);
+  };
+
+  const handleChangeContatos = (type, index, indexContato, e) => {
+    const newArray = [...socios];
 
     switch (type) {
       case "telefoneContato":
-        newArray[index].telefoneContato = e.target.value;
-
+        newArray[index].contatos[indexContato].telefoneContato = e.target.value;
         break;
+
       case "emailContato":
-        newArray[index].emailContato = e.target.value;
+        newArray[index].contatos[indexContato].emailContato = e.target.value;
         break;
 
       default:
@@ -167,6 +261,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
       dataNascimento: "",
       cep: "",
       logradouro: "",
+      numero: "",
       bairro: "",
       municipio: "",
       complemento: "",
@@ -193,8 +288,80 @@ export const SociosForm = ({ managerCustomer = false }) => {
     dispatch(setIsDisable(inputState));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.array().of(
+        Yup.object({
+          id: Yup.number(),
+          tipo: Yup.string().required("Escolha um tipo de sócio"),
+          representante: Yup.boolean(),
+          nome: Yup.string().required("Campo Nome, obrigatório"),
+          cpf: Yup.string().required("Campo CPF, obrigatório"),
+          rg: Yup.string().required("Campo RG, obrigatório"),
+          orgaoEmissorRg: Yup.string().required(
+            "Campo Órgão Emissor (RG), obrigatório"
+          ),
+          ufRg: Yup.string().required("Campo Uf de origem (RG), obrigatório"),
+          carteiraProfissional: Yup.string().required(
+            "Campo Carteira Profissional, obrigatório"
+          ),
+          orgaoEmissorCarteira: Yup.string().required(
+            "Campo Órgão Emissor (Carteira), obrigatório"
+          ),
+          ufCarteira: Yup.string().required(
+            "Campo Uf de origem (Carteira), obrigatório"
+          ),
+          nacionalidade: Yup.string().required(
+            "Campo Nacionalidade, obrigatório"
+          ),
+          naturalidade: Yup.string().required(
+            "Campo Naturalidade, obrigatório"
+          ),
+          estadoCivil: Yup.string().required("Campo Estado Civil, obrigatório"),
+          nomeConjuge: Yup.string(),
+          cpfConjuge: Yup.string(),
+          profissao: Yup.string().required("Campo Profissão, obrigatório"),
+          dataNascimento: Yup.string().required(
+            "Campo Data de Nascimento, obrigatório"
+          ),
+          cep: Yup.string().required("Campo CEP, obrigatório"),
+          logradouro: Yup.string().required("Campo Logradouro, obrigatório"),
+          bairro: Yup.string().required("Campo Bairro, obrigatório"),
+          municipio: Yup.string().required("Campo Município, obrigatório"),
+          complemento: Yup.string(),
+          uf: Yup.string(),
+          contatos: Yup.array().of(
+            Yup.object({
+              telefoneContato: Yup.string().required(
+                "Campo Telefone, obrigatório"
+              ),
+              emailContato: Yup.string().required("Campo E-mail, obrigatório"),
+            })
+          ),
+        })
+      );
+
+      await schema.validate(socios, {
+        abortEarly: false,
+      });
+
+      console.log(socios);
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(socios);
+      console.log(err);
+    }
+  };
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
         Passo 06: Informe os dados de sócios. Você pode adicionar quantos
         quiser. O primeiro é obrigatório.
@@ -591,7 +758,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
               </Grid>
 
               {item.contatos &&
-                item.contatos.map((a, index) => (
+                item.contatos.map((a, indexContato) => (
                   <Grid
                     container
                     key={index}
@@ -609,7 +776,12 @@ export const SociosForm = ({ managerCustomer = false }) => {
                         label="Telefone"
                         fullWidth
                         onChange={(e) =>
-                          addInformationOption("telefoneContato", index, e)
+                          handleChangeContatos(
+                            "telefoneContato",
+                            index,
+                            indexContato,
+                            e
+                          )
                         }
                         className={classes.textField}
                         variant="outlined"
@@ -625,7 +797,12 @@ export const SociosForm = ({ managerCustomer = false }) => {
                         label="E-mail"
                         fullWidth
                         onChange={(e) =>
-                          addInformationOption("emailContato", index, e)
+                          handleChangeContatos(
+                            "emailContato",
+                            index,
+                            indexContato,
+                            e
+                          )
                         }
                         className={classes.textField}
                         variant="outlined"

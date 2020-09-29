@@ -15,6 +15,8 @@ import { format } from "date-fns/esm";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+import * as Yup from "yup";
+import { useRef } from "react";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,6 +45,7 @@ export const InformacoesJuridicasForm = ({
   clientData = "",
   managerCustomer = false,
 }) => {
+  const formErrorRef = useRef({ error: {} });
   const inputState = useSelector((state) => state.client);
   const classes = useStyles();
   const [optionsOpen, handleAvatarClick] = useState(false);
@@ -59,10 +62,21 @@ export const InformacoesJuridicasForm = ({
     observacao: "",
   });
 
+  function formattingDate(date = "") {
+    if (date !== "") {
+      return format(new Date(date), "dd/MM/yyyy");
+    } else {
+      return "";
+    }
+  }
+
   useEffect(() => {
-    const formattedDate = clientData.dataAbertura
-      ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
-      : "";
+    // const formattedDate = clientData.dataAbertura
+    //   ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
+    //   : "";
+
+    const formattedDateAbertura = formattingDate(clientData.dataAbertura);
+    const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
 
     setValues({
       codigo: "",
@@ -70,7 +84,8 @@ export const InformacoesJuridicasForm = ({
       cnpj: clientData.cnpj,
       razaoSocial: clientData.razaoSocial,
       nomeFantasia: clientData.nomeFantasia,
-      dataAbertura: formattedDate,
+      dataAbertura: formattedDateAbertura,
+      clienteDesde: formattedDateClienteDesde,
       observacao: clientData.observacao,
     });
 
@@ -81,8 +96,52 @@ export const InformacoesJuridicasForm = ({
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.object().shape({
+        codigo: Yup.string().required("Código do Cliente"),
+        tipo: Yup.string().required("Selecione um Tipo"),
+        cnpj: Yup.string()
+          .required("CNPJ Obrigatório")
+          .min(14, "Mínimo 14 dígitos")
+          .max(14, "Máximo 14 dígitos"),
+        razaoSocial: Yup.string().required("Qual a Razão Social?"),
+        nomeFantasia: Yup.string().required("Requer um Nome Fantasia"),
+        dataAbertura: Yup.string().required("Qual a Data de Abertura?"),
+        clienteDesde: Yup.string().required("Cliente Desde?"),
+        observacao: Yup.string(),
+      });
+
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+    } catch (err) {
+      const validationErros = {};
+      let InputError = [];
+
+      err.inner.forEach((error, i) => {
+        validationErros[error.path] = error.message;
+        InputError[i] = error.path;
+      });
+
+      formErrorRef.current.error = validationErros;
+      console.log(formErrorRef.current.error);
+
+      console.log(InputError);
+      console.log(validationErros);
+    }
+  };
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
         Passo 01: Informe os dados básicos{" "}
       </p>
@@ -170,13 +229,26 @@ export const InformacoesJuridicasForm = ({
                 disabled={
                   managerCustomer === true ? inputState.isDisable : false
                 }
-                label=""
+                label="Data de Abertura"
                 fullWidth
                 value={values.dataAbertura}
                 onChange={handleChange("dataAbertura")}
                 className={classes.textField}
                 variant="outlined"
-                type="Date"
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
+                label="Cliente Desde"
+                fullWidth
+                value={values.dataAbertura}
+                onChange={handleChange("dataAbertura")}
+                className={classes.textField}
+                variant="outlined"
               />
             </Grid>
           </Grid>

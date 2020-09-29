@@ -19,7 +19,7 @@ import { AlvaraAtividadesForm } from "../components/forms/AlvaraAtividadesForm";
 import { RegimeTributarioForm } from "../components/forms/RegimeTributarioForm";
 import { ContatosForm } from "../components/forms/ContatosForm";
 import { SociosForm } from "../components/forms/SociosForm";
-
+import { Formik } from "formik";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -148,7 +148,6 @@ export const CadastrarClientes = () => {
         </Grid>
 
         <Stepper
-        
           activeStep={activeStep}
           connector={connector}
           style={{ padding: "10px 0" }}
@@ -196,5 +195,3 @@ export const CadastrarClientes = () => {
     </div>
   );
 };
-
- 

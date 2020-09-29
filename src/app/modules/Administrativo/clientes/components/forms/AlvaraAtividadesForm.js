@@ -12,6 +12,7 @@ import {
 import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import * as Yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
@@ -49,8 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
 export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
   const inputState = useSelector((state) => state.client);
-
-  console.log(managerCustomer);
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -106,8 +105,39 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.object().shape({
+        numeroAlvara: Yup.string().required(
+          "Campo Numero do Alvara, obrigatório"
+        ),
+        inscricaoMunicipal: Yup.string().required(
+          "Campo Inscrição Municipal, obrigatório"
+        ),
+        inscricaoEstadual: Yup.string().required(
+          "Campo Inscrição Estadual, obrigatório"
+        ),
+        nire: Yup.string().required("Campo NIRE, obrigatório"),
+      });
+
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
         Passo 03: Informe os dados de Alvará & Atividades{" "}
       </p>

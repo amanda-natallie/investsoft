@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Grid, MenuItem, InputLabel } from "@material-ui/core";
+import * as Yup from "yup";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     paddingLeft: "15px",
-  }
+  },
 }));
 var d = new Date();
 d.setFullYear(d.getFullYear() - 1);
@@ -38,19 +39,55 @@ d.setFullYear(d.getFullYear() - 1);
 export const RegimeTributarioForm = () => {
   const classes = useStyles();
   const [values, setValues] = useState([
-    { id: 0, ano: "", regimeTributario: "" },
-    { id: 1, ano: "", regimeTributario: "" },
-    { id: 2, ano: "", regimeTributario: "" },
+    { id: 0, ano: "2020", regimeTributario: "" },
+    { id: 1, ano: "2019", regimeTributario: "" },
+    { id: 2, ano: "2018", regimeTributario: "" },
   ]);
 
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+  const handleChange = (name, id) => (event) => {
+    let newArray = [...values];
+
+    newArray[id].regimeTributario = event.target.value;
+
+    // setValues({ ...values, [name]: event.target.value });
+    console.log(values);
+
+    setValues(newArray);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.array().of(
+        Yup.object({
+          id: Yup.number(),
+          ano: Yup.string(),
+          regimeTributario: Yup.string().when("ano", {
+            is: "2020",
+            then: Yup.string().required("Escolha um Regime Tributario"),
+          }),
+        })
+      );
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
-        Passo 04: Informe os dados de regime tributário do cliente. O ano atual é obrigatório. 
+        Passo 04: Informe os dados de regime tributário do cliente. O ano atual
+        é obrigatório.
       </p>
       <Grid container spacing={3} className="mb-4 mt-4">
         <Grid item xs={3}>
@@ -60,8 +97,7 @@ export const RegimeTributarioForm = () => {
           <TextField
             disabled={false}
             fullWidth
-            value={values.regimeTributario}
-            onChange={handleChange("regimeTributario")}
+            onChange={handleChange("regimeTributario", 0)}
             className={classes.textField}
             variant="outlined"
             id="select"
@@ -76,14 +112,15 @@ export const RegimeTributarioForm = () => {
       </Grid>
       <Grid container spacing={3} className="mb-4">
         <Grid item xs={3}>
-          <InputLabel className={classes.label}>Ano Anterior - 2019 (Opcional)</InputLabel>
+          <InputLabel className={classes.label}>
+            Ano Anterior - 2019 (Opcional)
+          </InputLabel>
         </Grid>
         <Grid item xs={9}>
           <TextField
             disabled={false}
             fullWidth
-            value={values.regimeTributario}
-            onChange={handleChange("regimeTributario")}
+            onChange={handleChange("regimeTributario", 1)}
             className={classes.textField}
             variant="outlined"
             id="select"
@@ -96,16 +133,17 @@ export const RegimeTributarioForm = () => {
           </TextField>
         </Grid>
       </Grid>
-      <Grid container spacing={3} >
+      <Grid container spacing={3}>
         <Grid item xs={3}>
-          <InputLabel className={classes.label}>Ano Anterior - 2018 (Opcional)</InputLabel>
+          <InputLabel className={classes.label}>
+            Ano Anterior - 2018 (Opcional)
+          </InputLabel>
         </Grid>
         <Grid item xs={9}>
           <TextField
             disabled={false}
             fullWidth
-            value={values.regimeTributario}
-            onChange={handleChange("regimeTributario")}
+            onChange={handleChange("regimeTributario", 2)}
             className={classes.textField}
             variant="outlined"
             id="select"
@@ -118,8 +156,6 @@ export const RegimeTributarioForm = () => {
           </TextField>
         </Grid>
       </Grid>
-      
     </form>
   );
 };
-
