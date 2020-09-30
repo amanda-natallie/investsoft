@@ -13,6 +13,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import * as Yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
@@ -48,9 +49,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const AlvaraAtividadesForm = () => {
+export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
   const inputState = useSelector((state) => state.client);
-  const dispatch = useDispatch();
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -106,19 +106,46 @@ export const AlvaraAtividadesForm = () => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleEditButton = () => {
-    dispatch(setIsDisable(inputState));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.object().shape({
+        numeroAlvara: Yup.string().required(
+          "Campo Numero do Alvara, obrigatório"
+        ),
+        inscricaoMunicipal: Yup.string().required(
+          "Campo Inscrição Municipal, obrigatório"
+        ),
+        inscricaoEstadual: Yup.string().required(
+          "Campo Inscrição Estadual, obrigatório"
+        ),
+        nire: Yup.string().required("Campo NIRE, obrigatório"),
+      });
+
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
         Passo 03: Informe os dados de Alvará & Atividades{" "}
       </p>
       <Grid container spacing={4}>
         <Grid item xs={3}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             label="Número do Alvará"
             fullWidth
             value={values.numeroAlvara}
@@ -129,7 +156,7 @@ export const AlvaraAtividadesForm = () => {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             label="Inscrição Municipal"
             fullWidth
             value={values.inscricaoMunicipal}
@@ -140,7 +167,7 @@ export const AlvaraAtividadesForm = () => {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             label="Inscrição Estadual"
             fullWidth
             value={values.inscricaoEstadual}
@@ -152,7 +179,7 @@ export const AlvaraAtividadesForm = () => {
 
         <Grid item xs={3}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             label="NIRE"
             fullWidth
             value={values.nire}
@@ -185,7 +212,9 @@ export const AlvaraAtividadesForm = () => {
           <Grid container key={index} spacing={5} className="mb-5">
             <Grid item xs>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="CNAE"
                 fullWidth
                 value={item[index]}
@@ -196,7 +225,9 @@ export const AlvaraAtividadesForm = () => {
             </Grid>
             <Grid item xs>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Principal ou Secundaria"
                 fullWidth
                 value={item[index]}
@@ -209,7 +240,9 @@ export const AlvaraAtividadesForm = () => {
             </Grid>
             <Grid item xs>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Item de Servico"
                 fullWidth
                 value={item[index]}
@@ -219,25 +252,98 @@ export const AlvaraAtividadesForm = () => {
               />
             </Grid>
             <Grid item xs={1}>
-              <Tooltip title="Deletar Opção">
-                <Fab
-                  color="primary"
-                  aria-label="Deletar Opção"
-                  onClick={() => deleteOption(index)}
-                >
-                  <DeleteIcon />
-                </Fab>
-              </Tooltip>
+              {managerCustomer === true ? (
+                inputState.isDisable === true ? (
+                  ""
+                ) : (
+                  <Tooltip title="Deletar Opção">
+                    <Fab
+                      style={{
+                        width: "26px",
+                        height: "26px",
+                        fontSize: "1.5rem",
+                      }}
+                      color="primary"
+                      aria-label="Deletar Opção"
+                      onClick={() => deleteOption(index)}
+                    >
+                      <DeleteIcon
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                        }}
+                      />
+                    </Fab>
+                  </Tooltip>
+                )
+              ) : (
+                <Tooltip title="Deletar Opção">
+                  <Fab
+                    style={{
+                      width: "26px",
+                      height: "26px",
+                      fontSize: "1.5rem",
+                    }}
+                    color="primary"
+                    aria-label="Deletar Opção"
+                    onClick={() => deleteOption(index)}
+                  >
+                    <DeleteIcon
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                      }}
+                    />
+                  </Fab>
+                </Tooltip>
+              )}
             </Grid>
           </Grid>
         ))}
       <Grid container>
-        <Grid lg={3} className={classes.plusButton} onClick={() => addOption()}>
-          <Fab size="small" color="primary">
-            <AddIcon />
-          </Fab>
-          <span className="ml-4">Adicionar Atividade</span>
-        </Grid>
+        {managerCustomer === true ? (
+          inputState.isDisable === true ? (
+            ""
+          ) : (
+            <Grid
+              lg={3}
+              className={classes.plusButton}
+              onClick={() => addOption()}
+            >
+              <Fab
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  fontSize: "1.5rem",
+                }}
+                size="small"
+                color="primary"
+              >
+                <AddIcon />
+              </Fab>
+              <span className="ml-4">Adicionar Atividade</span>
+            </Grid>
+          )
+        ) : (
+          <Grid
+            lg={3}
+            className={classes.plusButton}
+            onClick={() => addOption()}
+          >
+            <Fab
+              style={{
+                width: "24px",
+                height: "24px",
+                fontSize: "1.5rem",
+              }}
+              size="small"
+              color="primary"
+            >
+              <AddIcon />
+            </Fab>
+            <span className="ml-4">Adicionar Atividade</span>
+          </Grid>
+        )}
       </Grid>
     </form>
   );

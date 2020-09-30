@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import { Fab } from "@material-ui/core";
+import GetAppIcon from "@material-ui/icons/GetApp";
+import { Fab, Icon } from "@material-ui/core";
+import { toAbsoluteUrl } from "../../../../../../_metronic/_helpers";
 import CustomTable from "../../../../../components/CustomTable/CustomTable";
-import { StatusColumnFormatter } from "./utils/StatusColumnFormatter";
+import SVG from "react-inlinesvg";
 
 const headerStyle = {
   backgroundColor: "#F3F6F9",
@@ -14,18 +15,43 @@ const headerStyle = {
 
 const columns = [
   {
-    dataField: "description",
-    text: "Descrição",
+    field: "name",
+    title: "Nome",
+    headerStyle: headerStyle,
+    render: (row) => (
+      <div className="d-flex align-items-center">
+        <img
+          className="table_icon no_bg"
+          src={toAbsoluteUrl(row.icone)}
+          alt={row.name}
+        />
+        <span>{row.name}</span>
+      </div>
+    ),
+  },
+  {
+    field: "tipo",
+    title: "Tipo",
+    headerStyle: headerStyle,
+  },
+  {
+    field: "usuario",
+    title: "Usuário",
+    headerStyle: headerStyle,
+  },
+
+  {
+    field: "actions",
+    title: "Ações",
+    filtering: false,
     headerStyle: {
       backgroundColor: "#F3F6F9",
       border: 0,
       color: "#3F4254",
       borderRadius: "0.42rem 0 0 0.42rem",
     },
-    style: {
-      width: 20,
-    },
-    formatter: (cell, row, rowIndex, extraData) => (
+
+    render: (row) => (
       <div
         style={{
           margin: "0 auto",
@@ -33,67 +59,22 @@ const columns = [
           justifyContent: "center",
         }}
       >
-        <Fab size="small" color="primary" aria-label="Editar" className="mr-3">
-          <Link to="/">
-            <EditIcon />
-          </Link>
-        </Fab>
-        <Fab size="small" aria-label="Editar">
-          <Link to="/">
-            <DeleteIcon />
-          </Link>
-        </Fab>
-      </div>
-    ),
-  },
-
-  {
-    dataField: "name",
-    text: "Nome",
-    headerStyle: headerStyle,
-  },
-  {
-    dataField: "user",
-    text: "Usuário",
-    headerStyle: headerStyle,
-  },
-  {
-    dataField: "use",
-    text: "Uso",
-    headerStyle: headerStyle,
-  },
-
-  {
-    dataField: "download",
-    text: "",
-    headerStyle: {
-      backgroundColor: "#F3F6F9",
-      border: 0,
-      color: "#3F4254",
-      borderRadius: "0 0.42rem 0.42rem 0",
-    },
-
-    formatter: (cell, row, rowIndex, extraData) => (
-      <div
-        style={{
-          margin: "0 auto",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <a
-          href="#"
-          className="btn btn-light-success font-weight-bolder font-size-sm"
+        <button
+          className="btn btn-primary font-weight-bolder font-size-sm"
+          style={{ marginRight: 20 }}
         >
-          Download
-        </a>
+          <GetAppIcon />
+        </button>
+        <button className="btn btn-danger font-weight-bolder font-size-sm">
+          <DeleteIcon />
+        </button>
       </div>
     ),
   },
 ];
 
 const TabelaArquivos = ({ data }) => {
-  return <CustomTable data={data} columns={columns} />;
+  return <CustomTable data={data} columns={columns} title="Arquivos" />;
 };
 
 export default TabelaArquivos;

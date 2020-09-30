@@ -1,17 +1,42 @@
 import React from "react";
-import BootstrapTable from "react-bootstrap-table-next";
+import MaterialTable from "material-table";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
-export default ({ data, columns }) => (
+export default ({ data, columns, title }) => (
   <>
-    <BootstrapTable
-      wrapperClasses="table-responsive"
-      bordered={false}
+    <MaterialTable
       classes="table table-head-custom table-vertical-center overflow-hidden"
-      bootstrap4
-      keyField="id"
       data={data}
       columns={columns}
+      title={title}
+      options={{
+        filtering: true,
+        search: true,
+        grouping: true
+      }}
+      localization={{
+        pagination: {
+            labelDisplayedRows: '{from}-{to} de {count}',
+            labelRowsPerPage: "Linhas por página:"
+        },
+        toolbar: {
+            nRowsSelected: '{0} linha(s) selecionada(s)',
+            searchTooltip: "Buscar",
+            searchPlaceholder: "Buscar"
+        },
+        header: {
+            actions: 'Actions'
+        },
+        body: {
+            emptyDataSourceMessage: 'Nenhum registro para mostrar',
+            filterRow: {
+                filterTooltip: 'Filtrar'
+            }
+        },
+        grouping: {
+          placeholder: "Arraste para cá um titulo de coluna para agrupar"
+        }
+    }}
     />
   </>
 );

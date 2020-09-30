@@ -11,6 +11,12 @@ import {
 import FolderIcon from "@material-ui/icons/Folder";
 import DeleteIcon from "@material-ui/icons/Delete";
 
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+
+import { useSelector } from "react-redux";
+
 import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 const useStyles = makeStyles((theme) => ({
@@ -47,20 +53,84 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-export const CustomDropzone = (props) => {
+export const CustomDropzone = ({ managerCustomer = false }) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const inputState = useSelector((state) => state.client);
   const classes = useStyles();
+  const [renderFiles, setRenderFiles] = useState([]);
 
   const [arrayFiles, setArrayFiles] = useState(acceptedFiles);
+
+  const handleChange = (event, file) => {
+    setArrayFiles((state) => [
+      ...state,
+      (file.archiveType = event.target.value),
+    ]);
+
+    setArrayFiles(arrayFiles);
+  };
 
   function checkingIdenticalFiles(files) {
     files.map((file) => {
       const findFileIndex = arrayFiles.findIndex(
         (arrayFile) => arrayFile.name === file.name
       );
-      console.log(findFileIndex);
+
       if (findFileIndex !== -1) arrayFiles.splice(findFileIndex, 1);
     });
+  }
+
+  function renderingFiles() {
+    setRenderFiles(
+      arrayFiles.map((file) => (
+        <ListItem key={file.path} disableGutters>
+          <ListItemAvatar>
+            <Avatar>
+              <FolderIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={`${file.path} - ${file.size} bytes`} />
+          <div style={{ width: "30%", margin: "0 auto" }}>
+            <FormControl
+              style={{ width: "100%" }}
+              variant="outlined"
+              className={classes.formControl}
+            >
+              <InputLabel htmlFor="outlined-age-native-simple">
+                Tipo de arquivo
+              </InputLabel>
+              <Select
+                native
+                value={arrayFiles.archiveType}
+                onChange={(event) => handleChange(event, file)}
+                label="Tipo de arquivo"
+                inputProps={{
+                  name: "tipoArquivo",
+                  id: "outlined-age-native-simple",
+                }}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
+              >
+                <option disabled selected aria-label="None" value="" />
+                <option value={"CPF"}>CPF</option>
+                <option value={"CONTRATO SOCIAL"}>CONTRATO SOCIAL</option>
+                <option value={"CARTAO CNPJ"}>CARTÃO CNPJ</option>
+              </Select>
+            </FormControl>
+          </div>
+          <ListItemSecondaryAction>
+            <IconButton
+              edge="end"
+              aria-label="delete"
+              onClick={() => handleDeleteButton(file.name)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      ))
+    );
   }
 
   useEffect(() => {
@@ -73,29 +143,41 @@ export const CustomDropzone = (props) => {
     setArrayFiles([...arrayFiles, ...files]);
   }, [acceptedFiles]);
 
-  const files = arrayFiles.map((file) => (
-    <ListItem key={file.path} disableGutters>
-      <ListItemAvatar>
-        <Avatar>
-          <FolderIcon />
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText primary={`${file.path} - ${file.size} bytes`} />
-      <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-      </ListItemSecondaryAction>
-    </ListItem>
-  ));
+  useEffect(() => {
+    renderingFiles();
+  }, [arrayFiles, acceptedFiles, inputState.isDisable]);
+
+  function handleDeleteButton(name) {
+    const fileIndex = arrayFiles.findIndex((file) => file.name === name);
+
+    if (fileIndex !== -1) {
+      arrayFiles.splice(fileIndex, 1);
+      renderFiles.splice(fileIndex, 1);
+      renderingFiles();
+    } else {
+      return;
+    }
+  }
 
   return (
     <section className={classes.root}>
-      <div {...getRootProps({ className: classes.dropzone })}>
-        <input {...getInputProps()} />
-        <p>Arraste seus arquivos para cá, ou clique para selecioná-los.</p>
-      </div>
-      {files && <List>{files}</List>}
+      {managerCustomer === true ? (
+        inputState.isDisable === true ? (
+          ""
+        ) : (
+          <div {...getRootProps({ className: classes.dropzone })}>
+            <input {...getInputProps()} />
+            <p>Arraste seus arquivos para cá, ou clique para selecioná-los.</p>
+          </div>
+        )
+      ) : (
+        <div {...getRootProps({ className: classes.dropzone })}>
+          <input {...getInputProps()} />
+          <p>Arraste seus arquivos para cá, ou clique para selecioná-los.</p>
+        </div>
+      )}
+
+      {renderFiles && <List>{renderFiles}</List>}
     </section>
   );
 };

@@ -19,7 +19,9 @@ import { AlvaraAtividadesForm } from "../components/forms/AlvaraAtividadesForm";
 import { RegimeTributarioForm } from "../components/forms/RegimeTributarioForm";
 import { ContatosForm } from "../components/forms/ContatosForm";
 import { SociosForm } from "../components/forms/SociosForm";
-
+import { Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { nextStep, backStep, resetStep } from "../../steps/_redux/stepsActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +68,9 @@ export const CadastrarClientes = () => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
 
+  const dispatch = useDispatch();
+  const stepRedux = useSelector((state) => state.step);
+
   const getSteps = () => {
     return [
       "Informações Jurídicas",
@@ -99,15 +104,17 @@ export const CadastrarClientes = () => {
   const steps = getSteps();
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    dispatch(nextStep(stepRedux));
+    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    dispatch(backStep(stepRedux));
+    // setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleReset = () => {
-    setActiveStep(0);
+    dispatch(resetStep(stepRedux));
   };
 
   const connector = (
@@ -148,8 +155,7 @@ export const CadastrarClientes = () => {
         </Grid>
 
         <Stepper
-        
-          activeStep={activeStep}
+          activeStep={stepRedux.step}
           connector={connector}
           style={{ padding: "10px 0" }}
         >
@@ -160,7 +166,8 @@ export const CadastrarClientes = () => {
           ))}
         </Stepper>
         <div>
-          {activeStep === steps.length ? (
+          {/* {stepRedux.step === steps.length ? ( */}
+          {stepRedux.step === 6 ? (
             <div>
               <Typography className={classes.instructions}>
                 Você finalizou todas as etapas desta atividade!
@@ -171,10 +178,10 @@ export const CadastrarClientes = () => {
             </div>
           ) : (
             <>
-              <Grid container>{getStepContent(activeStep)}</Grid>
+              <Grid container>{getStepContent(stepRedux.step)}</Grid>
               <Grid container>
                 <Button
-                  disabled={activeStep === 0}
+                  disabled={stepRedux.step === 0}
                   onClick={handleBack}
                   className={classes.button}
                 >
@@ -186,7 +193,10 @@ export const CadastrarClientes = () => {
                   onClick={handleNext}
                   className={classes.button}
                 >
-                  {activeStep === steps.length - 1 ? "Finalizar" : "Próximo"}
+                  {/* {stepRedux.step === steps.length - 1
+                    ? "Finalizar"
+                    : "Próximo"} */}
+                  {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
                 </Button>
               </Grid>
             </>
@@ -196,5 +206,3 @@ export const CadastrarClientes = () => {
     </div>
   );
 };
-
- 

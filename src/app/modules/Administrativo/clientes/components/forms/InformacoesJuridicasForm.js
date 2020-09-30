@@ -9,12 +9,21 @@ import {
   Grid,
   MenuItem,
   TextareaAutosize,
+  Button,
 } from "@material-ui/core";
 import ImageUpload from "../../../../../components/ImageUpload/ImageUpload";
 import { format } from "date-fns/esm";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+import * as Yup from "yup";
+import { useRef } from "react";
+
+import {
+  nextStep,
+  backStep,
+  resetStep,
+} from "../../../steps/_redux/stepsActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,13 +48,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const InformacoesJuridicasForm = ({ clientData = "" }) => {
+export const InformacoesJuridicasForm = ({
+  clientData = "",
+  managerCustomer = false,
+}) => {
   const inputState = useSelector((state) => state.client);
+  const stepRedux = useSelector((state) => state.step);
   const dispatch = useDispatch();
+
   const classes = useStyles();
   const [optionsOpen, handleAvatarClick] = useState(false);
   const [loading, setLoading] = useState(false);
   const [picture, setPicture] = useState("/media/client-logos/brand.png");
+
+  const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
   const [values, setValues] = useState({
     codigo: "",
@@ -54,60 +70,111 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
     razaoSocial: "",
     nomeFantasia: "",
     dataAbertura: "",
+    clienteDesde: "",
+    observacao: "",
   });
 
+  function formattingDate(date = "") {
+    if (date !== "") {
+      return format(new Date(date), "dd/MM/yyyy");
+    } else {
+      return "";
+    }
+  }
+
   useEffect(() => {
-    const formattedDate = clientData.dataAbertura
-      ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
-      : "";
+    // const formattedDate = clientData.dataAbertura
+    //   ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
+    //   : "";
+
+    const formattedDateAbertura = formattingDate(clientData.dataAbertura);
+    const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
 
     setValues({
-      codigo: "",
+      codigo: clientData.codigo,
       tipo: clientData.tipoCliente,
       cnpj: clientData.cnpj,
       razaoSocial: clientData.razaoSocial,
       nomeFantasia: clientData.nomeFantasia,
-      dataAbertura: clientData.formattedDate,
+      dataAbertura: formattedDateAbertura,
+      clienteDesde: formattedDateClienteDesde,
+      observacao: clientData.observacao,
     });
 
     setPicture(clientData.logo);
   }, [clientData]);
 
-  const handleEditButton = () => {
-    dispatch(setIsDisable(inputState));
-  };
-
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const schema = Yup.object().shape({
+        codigo: Yup.string().required("Código do Cliente"),
+        tipo: Yup.string().required("Selecione um Tipo"),
+        cnpj: Yup.string()
+          .required("CNPJ Obrigatório")
+          .min(14, "Mínimo 14 dígitos")
+          .max(14, "Máximo 14 dígitos"),
+        razaoSocial: Yup.string().required("Qual a Razão Social?"),
+        nomeFantasia: Yup.string().required("Requer um Nome Fantasia"),
+        dataAbertura: Yup.string().required("Qual a Data de Abertura?"),
+        clienteDesde: Yup.string().required("Cliente Desde?"),
+        observacao: Yup.string(),
+      });
+
+      await schema.validate(values, {
+        abortEarly: false,
+      });
+
+      console.log("OKAY");
+      dispatch(nextStep(stepRedux));
+    } catch (err) {
+      const validationErros = {};
+      let InputError = [];
+
+      err.inner.forEach((error, i) => {
+        validationErros[error.path] = error.message;
+        InputError[i] = error.path;
+      });
+
+      setArrayOfErrors(InputError);
+      console.log(validationErros);
+    }
+  };
+
+  const checkingArrayOfErrors = (name) => {
+    const find = arrayOfErrors.findIndex((error) => error === name);
+    if (find !== -1) return true;
+    else return false;
+  };
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
-      <Grid Container>
-        <p className="ml-3 font-weight-bold">
-          Passo 01: Informe os dados básicos{" "}
-        </p>
-        <Fab size="small" color="primary" aria-label="Editar" className="mr-3">
-          <button
-            type="button"
-            onClick={() => handleEditButton()}
-            style={{ border: 0, backgroundColor: "transparent" }}
-          >
-            <EditIcon />
-          </button>
-        </Fab>
-      </Grid>
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
+      <p className="ml-3 font-weight-bold">
+        Passo 01: Informe os dados básicos{" "}
+      </p>
 
       <Grid container justify="space-between" spacing={3} className="mt-5 ml-0">
         <Grid md={9}>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Código do Cliente"
                 fullWidth
                 value={values.nome}
-                onChange={handleChange("nome")}
+                onChange={handleChange("codigo")}
+                error={checkingArrayOfErrors("codigo")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -115,10 +182,13 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 fullWidth
                 value={values.tipo}
                 onChange={handleChange("tipo")}
+                error={checkingArrayOfErrors("tipo")}
                 className={classes.textField}
                 variant="outlined"
                 id="select"
@@ -134,22 +204,28 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Número do CNPJ"
                 fullWidth
                 value={values.cnpj}
                 onChange={handleChange("cnpj")}
+                error={checkingArrayOfErrors("cnpj")}
                 className={classes.textField}
                 variant="outlined"
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Razão Social"
                 fullWidth
                 value={values.razaoSocial}
                 onChange={handleChange("razaoSocial")}
+                error={checkingArrayOfErrors("razaoSocial")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -157,22 +233,43 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
 
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Nome Fantasia"
                 fullWidth
                 value={values.nomeFantasia}
                 onChange={handleChange("nomeFantasia")}
+                error={checkingArrayOfErrors("nomeFantasia")}
                 className={classes.textField}
                 variant="outlined"
               />
             </Grid>
             <Grid item xs={6}>
               <TextField
-                disabled={inputState.isDisable}
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 label="Data de Abertura"
                 fullWidth
                 value={values.dataAbertura}
                 onChange={handleChange("dataAbertura")}
+                error={checkingArrayOfErrors("dataAbertura")}
+                className={classes.textField}
+                variant="outlined"
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
+                label="Cliente Desde"
+                fullWidth
+                value={values.clienteDesde}
+                onChange={handleChange("clienteDesde")}
+                error={checkingArrayOfErrors("clienteDesde")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -190,14 +287,28 @@ export const InformacoesJuridicasForm = ({ clientData = "" }) => {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={10}>
           <TextField
-            disabled={inputState.isDisable}
+            disabled={managerCustomer === true ? inputState.isDisable : false}
             multiline
             rows={6}
             label="Observações do cliente"
             variant="outlined"
+            style={{ width: "92%" }}
           />
+        </Grid>
+
+        <Grid item xs={10}>
+          {managerCustomer === false && (
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              className={classes.button}
+            >
+              EXEMPLO TESTE
+            </Button>
+          )}
         </Grid>
       </Grid>
       <Divider />

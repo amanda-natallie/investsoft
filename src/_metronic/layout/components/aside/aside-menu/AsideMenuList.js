@@ -37,6 +37,86 @@ export function AsideMenuList({ layoutProps }) {
           <h4 className="menu-text">módulos</h4>
           <i className="menu-icon flaticon-more-v2"></i>
         </li>
+        <li className={`menu-item menu-item-submenu ${getMenuItemActive("/gerenciar-clientes", true)}`} aria-haspopup="true" data-menu-toggle="hover">
+          <NavLink className="menu-link menu-toggle" to="/gerenciar-clientes">
+            <span className="svg-icon menu-icon">
+              <SVG src={toAbsoluteUrl("/media/svg/icons/Design/Cap-2.svg")} />
+            </span>
+            <span className="menu-text">Administrativo</span>
+            <i className="menu-arrow" />
+          </NavLink>
+          <div className="menu-submenu ">
+            <i className="menu-arrow" />
+            <ul className="menu-subnav">
+              <li className="menu-item  menu-item-parent" aria-haspopup="true">
+                <span className="menu-link">
+                  <span className="menu-text">Administrativo</span>
+                </span>
+              </li>
+
+              <li className={`menu-item menu-item-submenu ${getMenuItemActive("/gerenciar-clientes",true)}`} aria-haspopup="true" data-menu-toggle="hover" >
+                <NavLink
+                  className="menu-link menu-toggle"
+                  to="/gerenciar-clientes">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Clientes</span>
+                  <i className="menu-arrow" />
+                </NavLink>
+                <div className="menu-submenu ">
+                  <i className="menu-arrow" />
+                  <ul className="menu-subnav">
+                    <li
+                      className={`menu-item  ${getMenuItemActive("/gerenciar-clientes")}`} aria-haspopup="true" >
+                      <NavLink
+                        className="menu-link"
+                        to="/gerenciar-clientes">
+                        <i className="menu-bullet menu-bullet-dot">
+                          <span />
+                        </i>
+                        <span className="menu-text">Gerenciar Clientes</span>
+                      </NavLink>
+                    </li>
+
+                    <li
+                      className={`menu-item ${getMenuItemActive(
+                        "/cadastrar-clientes"
+                      )}`}
+                      aria-haspopup="true"
+                    >
+                      <NavLink
+                        className="menu-link"
+                        to="/cadastrar-clientes"
+                      >
+                        <i className="menu-bullet menu-bullet-dot">
+                          <span />
+                        </i>
+                        <span className="menu-text">Cadastrar Cliente</span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+
+              <li
+                className={`menu-item menu-item-submenu  ${getMenuItemActive(
+                  "/google-material/navigation",
+                  true
+                )}`}
+                aria-haspopup="true"
+                data-menu-toggle="hover"
+              >
+                <NavLink className="menu-link" to="/google-materialbruh">
+                  <i className="menu-bullet menu-bullet-dot">
+                    <span />
+                  </i>
+                  <span className="menu-text">Relatórios</span>
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </li>
 
         <li
           className={`menu-item menu-item-submenu ${getMenuItemActive(
@@ -140,87 +220,7 @@ export function AsideMenuList({ layoutProps }) {
         </li>
 
 
-        <li className={`menu-item menu-item-submenu ${getMenuItemActive("/gerenciar-clientes", true)}`} aria-haspopup="true" data-menu-toggle="hover">
-          <NavLink className="menu-link menu-toggle" to="/gerenciar-clientes">
-            <span className="svg-icon menu-icon">
-              <SVG src={toAbsoluteUrl("/media/svg/icons/Design/Cap-2.svg")} />
-            </span>
-            <span className="menu-text">Administrativo</span>
-            <i className="menu-arrow" />
-          </NavLink>
-          <div className="menu-submenu ">
-            <i className="menu-arrow" />
-            <ul className="menu-subnav">
-              <li className="menu-item  menu-item-parent" aria-haspopup="true">
-                <span className="menu-link">
-                  <span className="menu-text">Administrativo</span>
-                </span>
-              </li>
-
-              <li className={`menu-item menu-item-submenu ${getMenuItemActive("/gerenciar-clientes",true)}`} aria-haspopup="true" data-menu-toggle="hover" >
-                <NavLink
-                  className="menu-link menu-toggle"
-                  to="/gerenciar-clientes">
-                  <i className="menu-bullet menu-bullet-dot">
-                    <span />
-                  </i>
-                  <span className="menu-text">Clientes</span>
-                  <i className="menu-arrow" />
-                </NavLink>
-                <div className="menu-submenu ">
-                  <i className="menu-arrow" />
-                  <ul className="menu-subnav">
-                    <li
-                      className={`menu-item  ${getMenuItemActive("/gerenciar-clientes")}`} aria-haspopup="true" >
-                      <NavLink
-                        className="menu-link"
-                        to="/gerenciar-clientes">
-                        <i className="menu-bullet menu-bullet-dot">
-                          <span />
-                        </i>
-                        <span className="menu-text">Gerenciar Clientes</span>
-                      </NavLink>
-                    </li>
-
-                    <li
-                      className={`menu-item ${getMenuItemActive(
-                        "/cadastrar-clientes"
-                      )}`}
-                      aria-haspopup="true"
-                    >
-                      <NavLink
-                        className="menu-link"
-                        to="/cadastrar-clientes"
-                      >
-                        <i className="menu-bullet menu-bullet-dot">
-                          <span />
-                        </i>
-                        <span className="menu-text">Cadastrar Cliente</span>
-                      </NavLink>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-
-              <li
-                className={`menu-item menu-item-submenu  ${getMenuItemActive(
-                  "/google-material/navigation",
-                  true
-                )}`}
-                aria-haspopup="true"
-                data-menu-toggle="hover"
-              >
-                <NavLink className="menu-link" to="/google-materialbruh">
-                  <i className="menu-bullet menu-bullet-dot">
-                    <span />
-                  </i>
-                  <span className="menu-text">Relatórios</span>
-                </NavLink>
-              </li>
-            </ul>
-          </div>
-        </li>
-
+      
         <li className={`menu-item menu-item-submenu ${getMenuItemActive("/google-materialbruh",true)}`} aria-haspopup="true" data-menu-toggle="hover">
           <NavLink className="menu-link menu-toggle" to="/google-material">
             <span className="svg-icon menu-icon">
