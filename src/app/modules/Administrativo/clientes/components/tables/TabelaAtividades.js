@@ -25,9 +25,9 @@ const columns = [
       borderRadius: "0 0.42rem 0.42rem 0",
     },
 
-     render: (row) => (
+    render: (row) => (
       <div className="d-flex align-items-center">
-        <Icon className="table_icon">{row.icon}</Icon>
+        {/* <Icon className="table_icon">{row.icon}</Icon> */}
         <span>{row.name}</span>
       </div>
     ),
@@ -35,14 +35,14 @@ const columns = [
 
   {
     field: "description",
-    title: "Descrição",
+    title: "Area responsável",
     headerStyle: headerStyle,
   },
 
   {
     field: "status",
-    title: "Tipo",
-    render: (row) => ActivityStatusColumnFormatter(row) ,
+    title: "Status",
+    render: (row) => ActivityStatusColumnFormatter(row),
     headerStyle: {
       backgroundColor: "#F3F6F9",
       border: 0,
@@ -51,8 +51,8 @@ const columns = [
       width: 205,
     },
     style: {
-      textAlign: "center"
-    }
+      textAlign: "center",
+    },
   },
   {
     field: "acaoRapida",
@@ -66,7 +66,7 @@ const columns = [
       width: 120,
     },
 
-     render: (row) => (
+    render: (row) => (
       <div
         style={{
           margin: "0 auto",

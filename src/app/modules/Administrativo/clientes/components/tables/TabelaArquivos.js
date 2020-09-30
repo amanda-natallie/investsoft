@@ -7,6 +7,10 @@ import { toAbsoluteUrl } from "../../../../../../_metronic/_helpers";
 import CustomTable from "../../../../../components/CustomTable/CustomTable";
 import SVG from "react-inlinesvg";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
+
 const headerStyle = {
   backgroundColor: "#F3F6F9",
   border: 0,
@@ -37,6 +41,12 @@ const columns = [
   {
     field: "usuario",
     title: "Usuário",
+    headerStyle: headerStyle,
+  },
+
+  {
+    field: "dataArquivo",
+    title: "Data do Arquivo",
     headerStyle: headerStyle,
   },
 
@@ -73,8 +83,17 @@ const columns = [
   },
 ];
 
-const TabelaArquivos = ({ data }) => {
-  return <CustomTable data={data} columns={columns} title="Arquivos" />;
+const TabelaArquivos = ({ data, managerCustomer }) => {
+  const inputState = useSelector((state) => state.client);
+
+  return (
+    <>
+      <CustomTable data={data} columns={columns} title="Arquivos" />
+      {managerCustomer === true && !inputState.isDisable && (
+        <CustomDropzone managerCustomer={managerCustomer} />
+      )}
+    </>
+  );
 };
 
 export default TabelaArquivos;

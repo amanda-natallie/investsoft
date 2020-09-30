@@ -147,21 +147,23 @@ const GerenciarClientesTab = ({ clientData }) => {
       name: "Nome do arquivo.docx",
       tipo: "Documento de word",
       usuario: "Admin",
-      icone:"/media/svg/files/doc.svg",
+      dataArquivo: "29/09/2020",
+      icone: "/media/svg/files/doc.svg",
     },
     {
       name: "Nome do arquivo.docx",
       tipo: "Documento de imagem",
       usuario: "Admin",
+      dataArquivo: "29/09/2020",
       icone: "/media/svg/files/png.svg",
     },
     {
       name: "Nome do arquivo.docx",
       tipo: "Documento de documento",
       usuario: "Admin",
+      dataArquivo: "29/09/2020",
       icone: "/media/svg/files/pdf.svg",
     },
-  
   ];
 
   return (
@@ -223,12 +225,13 @@ const GerenciarClientesTab = ({ clientData }) => {
                 <SociosForm managerCustomer={true} />
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
-                
-                <TabelaAtividades data={atividadesMockup}/>
+                <TabelaAtividades data={atividadesMockup} />
               </TabPanel>
               <TabPanel value={value} index={3} dir={theme.direction}>
-                
-                <TabelaArquivos data={dataTableArquivos} />
+                <TabelaArquivos
+                  data={dataTableArquivos}
+                  managerCustomer={true}
+                />
               </TabPanel>
               <TabPanel value={value} index={4} dir={theme.direction}>
                 <TabelaSenhaAcessos data={dataTableSenhaAcessos} />
