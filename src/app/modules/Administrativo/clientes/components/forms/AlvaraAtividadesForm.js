@@ -190,16 +190,35 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
         </Grid>
 
         <Grid item xs={12} className="pl-6">
-          <InputLabel>
-            <strong>
-              Anexar o contrato social da empresa e alterações contratuiais
-              existentes.
-              <Tooltip title="Documentos anexos contrato social da empresa e alterações contratuiais existentes">
-                <InfoIcon />
-              </Tooltip>
-            </strong>
-          </InputLabel>
-          <CustomDropzone />
+          {managerCustomer === true ? (
+            !inputState.isDisable && (
+              <>
+                <InputLabel>
+                  <strong>
+                    Anexar o contrato social da empresa e alterações
+                    contratuiais existentes.
+                    <Tooltip title="Documentos anexos contrato social da empresa e alterações contratuiais existentes">
+                      <InfoIcon />
+                    </Tooltip>
+                  </strong>
+                </InputLabel>
+                <CustomDropzone />
+              </>
+            )
+          ) : (
+            <>
+              <InputLabel>
+                <strong>
+                  Anexar o contrato social da empresa e alterações contratuiais
+                  existentes.
+                  <Tooltip title="Documentos anexos contrato social da empresa e alterações contratuiais existentes">
+                    <InfoIcon />
+                  </Tooltip>
+                </strong>
+              </InputLabel>
+              <CustomDropzone />
+            </>
+          )}
         </Grid>
 
         <Grid item xs={12} className="pl-6 mb-4">
