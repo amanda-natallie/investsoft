@@ -36,10 +36,25 @@ export const EnderecoLocalizacaoForm = () => {
     bairro: "",
     municipio: "",
     complemento: "",
+    uf: "",
   });
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
+  };
+
+  const setAddress = (cep) => {
+    fetch(`https://viacep.com.br/ws/${cep}/json/`).then((response) =>
+      response.json().then((data) => {
+        setValues({
+          ...values,
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          municipio: data.localidade,
+          uf: data.uf,
+        });
+      })
+    );
   };
 
   const handleSubmit = async (e) => {
@@ -51,6 +66,7 @@ export const EnderecoLocalizacaoForm = () => {
         numero: Yup.string().required("Campo número obrigatório"),
         bairro: Yup.string().required("Campo bairro obrigatório"),
         municipio: Yup.string().required("Campo município obrigatório"),
+        uf: Yup.string().required("Campo UF obrigatório"),
         complemento: Yup.string(),
       });
 
@@ -77,6 +93,7 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.cep}
             onChange={handleChange("cep")}
+            onBlur={(e) => setAddress(e.target.value)}
             className={classes.textField}
             variant="outlined"
           />
@@ -106,7 +123,7 @@ export const EnderecoLocalizacaoForm = () => {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <TextField
             disabled={false}
             label="Bairro"
@@ -125,6 +142,17 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.municipio}
             onChange={handleChange("municipio")}
+            className={classes.textField}
+            variant="outlined"
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <TextField
+            disabled={false}
+            label="UF"
+            fullWidth
+            value={values.uf}
+            onChange={handleChange("uf")}
             className={classes.textField}
             variant="outlined"
           />
