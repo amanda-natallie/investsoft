@@ -8,6 +8,7 @@ import {
   InputLabel,
   Fab,
   Tooltip,
+  Button,
 } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import { CustomDropzone } from "../../../../../components/Dropzone/CustomDropzone";
@@ -16,7 +17,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import * as Yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+import {
+  nextStep,
+  backStep,
+  resetStep,
+} from "../../../steps/_redux/stepsActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -51,6 +56,10 @@ const useStyles = makeStyles((theme) => ({
 
 export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
   const inputState = useSelector((state) => state.client);
+  const stepRedux = useSelector((state) => state.step);
+  const dispatch = useDispatch();
+
+  const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
   const classes = useStyles();
   const [values, setValues] = useState({
@@ -127,9 +136,29 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
       });
 
       console.log("OKAY");
+      dispatch(nextStep(stepRedux));
     } catch (err) {
-      console.log(err);
+      const validationErros = {};
+      let InputError = [];
+
+      err.inner.forEach((error, i) => {
+        validationErros[error.path] = error.message;
+        InputError[i] = error.path;
+      });
+
+      setArrayOfErrors(InputError);
+      console.log(validationErros);
     }
+  };
+
+  const checkingArrayOfErrors = (name) => {
+    const find = arrayOfErrors.findIndex((error) => error === name);
+    if (find !== -1) return true;
+    else return false;
+  };
+
+  const handleBack = () => {
+    dispatch(backStep(stepRedux));
   };
 
   return (
@@ -150,6 +179,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
             fullWidth
             value={values.numeroAlvara}
             onChange={handleChange("numeroAlvara")}
+            error={checkingArrayOfErrors("numeroAlvara")}
             className={classes.textField}
             variant="outlined"
           />
@@ -161,6 +191,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
             fullWidth
             value={values.inscricaoMunicipal}
             onChange={handleChange("inscricaoMunicipal")}
+            error={checkingArrayOfErrors("inscricaoMunicipal")}
             className={classes.textField}
             variant="outlined"
           />
@@ -172,6 +203,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
             fullWidth
             value={values.inscricaoEstadual}
             onChange={handleChange("inscricaoEstadual")}
+            error={checkingArrayOfErrors("inscricaoEstadual")}
             className={classes.textField}
             variant="outlined"
           />
@@ -183,7 +215,8 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
             label="NIRE"
             fullWidth
             value={values.nire}
-            onChange={handleChange("inscricaoEstadual")}
+            onChange={handleChange("nire")}
+            error={checkingArrayOfErrors("nire")}
             className={classes.textField}
             variant="outlined"
           />
@@ -238,6 +271,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
                 fullWidth
                 value={item[index]}
                 onChange={(e) => addInformationOption("cnae", index, e)}
+                error={checkingArrayOfErrors("cnae")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -253,6 +287,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
                 onChange={(e) =>
                   addInformationOption("principalSecundaria", index, e)
                 }
+                error={checkingArrayOfErrors("principalSecundaria")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -266,6 +301,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
                 fullWidth
                 value={item[index]}
                 onChange={(e) => addInformationOption("itemServico", index, e)}
+                error={checkingArrayOfErrors("itemServico")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -331,14 +367,21 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
             >
               <Fab
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width: "26px",
+                  height: "26px",
                   fontSize: "1.5rem",
                 }}
                 size="small"
                 color="primary"
               >
-                <AddIcon />
+                <AddIcon
+                  style={{
+                    margin: "0 auto",
+                    maxWidth: "20px",
+                    maxHeight: "20px",
+                    textAlign: "center",
+                  }}
+                />
               </Fab>
               <span className="ml-4">Adicionar Atividade</span>
             </Grid>
@@ -351,16 +394,50 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
           >
             <Fab
               style={{
-                width: "24px",
-                height: "24px",
+                width: "26px",
+                height: "26px",
                 fontSize: "1.5rem",
               }}
               size="small"
               color="primary"
             >
-              <AddIcon />
+              <AddIcon
+                style={{
+                  margin: "0 auto",
+                  maxWidth: "20px",
+                  maxHeight: "20px",
+                  textAlign: "center",
+                }}
+              />
             </Fab>
             <span className="ml-4">Adicionar Atividade</span>
+          </Grid>
+        )}
+      </Grid>
+
+      <Grid item md={6}>
+        {managerCustomer === false && (
+          <Grid container>
+            <Grid item md={2}>
+              <Button
+                disabled={stepRedux.step === 0}
+                onClick={handleBack}
+                className={classes.button}
+              >
+                Voltar
+              </Button>
+            </Grid>
+
+            <Grid item md={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className={classes.button}
+              >
+                {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
+              </Button>
+            </Grid>
           </Grid>
         )}
       </Grid>

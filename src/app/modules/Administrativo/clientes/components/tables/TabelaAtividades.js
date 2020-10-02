@@ -34,7 +34,7 @@ const columns = [
   },
 
   {
-    field: "description",
+    field: "responsibleArea",
     title: "Area responsável",
     headerStyle: headerStyle,
   },
@@ -53,6 +53,11 @@ const columns = [
     style: {
       textAlign: "center",
     },
+  },
+  {
+    field: "startActivity",
+    title: "Inicio da atividade",
+    headerStyle: headerStyle,
   },
   {
     field: "acaoRapida",

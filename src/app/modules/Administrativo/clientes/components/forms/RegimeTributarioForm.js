@@ -1,8 +1,21 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Grid, MenuItem, InputLabel } from "@material-ui/core";
+import {
+  TextField,
+  Grid,
+  MenuItem,
+  InputLabel,
+  Button,
+} from "@material-ui/core";
 import * as Yup from "yup";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  nextStep,
+  backStep,
+  resetStep,
+} from "../../../steps/_redux/stepsActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -36,13 +49,18 @@ const useStyles = makeStyles((theme) => ({
 var d = new Date();
 d.setFullYear(d.getFullYear() - 1);
 
-export const RegimeTributarioForm = () => {
+export const RegimeTributarioForm = ({ managerCustomer = false }) => {
   const classes = useStyles();
   const [values, setValues] = useState([
     { id: 0, ano: "2020", regimeTributario: "" },
     { id: 1, ano: "2019", regimeTributario: "" },
     { id: 2, ano: "2018", regimeTributario: "" },
   ]);
+
+  const stepRedux = useSelector((state) => state.step);
+  const dispatch = useDispatch();
+
+  const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
   const handleChange = (name, id) => (event) => {
     let newArray = [...values];
@@ -73,9 +91,30 @@ export const RegimeTributarioForm = () => {
       });
 
       console.log("OKAY");
+      dispatch(nextStep(stepRedux));
     } catch (err) {
-      console.log(err);
+      const validationErros = {};
+      let InputError = [];
+
+      err.inner.forEach((error, i) => {
+        validationErros[error.path] = error.message;
+        InputError[i] = error.path;
+      });
+
+      setArrayOfErrors(InputError);
+      console.log(InputError);
+      console.log(validationErros);
     }
+  };
+
+  const checkingArrayOfErrors = (name) => {
+    const find = arrayOfErrors.findIndex((error) => error === `[0].${name}`);
+    if (find !== -1) return true;
+    else return false;
+  };
+
+  const handleBack = () => {
+    dispatch(backStep(stepRedux));
   };
 
   return (
@@ -98,6 +137,7 @@ export const RegimeTributarioForm = () => {
             disabled={false}
             fullWidth
             onChange={handleChange("regimeTributario", 0)}
+            error={checkingArrayOfErrors("regimeTributario")}
             className={classes.textField}
             variant="outlined"
             id="select"
@@ -155,6 +195,33 @@ export const RegimeTributarioForm = () => {
             <MenuItem value="Lucro real">Lucro real</MenuItem>
           </TextField>
         </Grid>
+      </Grid>
+
+      <Grid item md={6}>
+        {managerCustomer === false && (
+          <Grid container>
+            <Grid item md={2}>
+              <Button
+                disabled={stepRedux.step === 0}
+                onClick={handleBack}
+                className={classes.button}
+              >
+                Voltar
+              </Button>
+            </Grid>
+
+            <Grid item md={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className={classes.button}
+              >
+                {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
+              </Button>
+            </Grid>
+          </Grid>
+        )}
       </Grid>
     </form>
   );

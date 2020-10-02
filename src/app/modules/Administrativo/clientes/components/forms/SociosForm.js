@@ -10,6 +10,7 @@ import {
   InputLabel,
   Fab,
   Tooltip,
+  Button,
 } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import AddIcon from "@material-ui/icons/Add";
@@ -20,6 +21,12 @@ import * as Yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+
+import {
+  nextStep,
+  backStep,
+  resetStep,
+} from "../../../steps/_redux/stepsActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -55,20 +62,17 @@ const useStyles = makeStyles((theme) => ({
 
 export const SociosForm = ({ managerCustomer = false }) => {
   const classes = useStyles();
+
   const inputState = useSelector((state) => state.client);
+  const stepRedux = useSelector((state) => state.step);
   const dispatch = useDispatch();
 
-  const [estadoCivil, setEstadoCivil] = useState("");
-  const [representante, setRepresentante] = useState(false);
+  const [arrayOfErrors, setArrayOfErrors] = useState([]);
+
+  // const [estadoCivil, setEstadoCivil] = useState("");
+  // const [representante, setRepresentante] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  // const [contatos, setContatos] = useState([
-  //   {
-  //     id: 0,
-  //     telefoneContato: "",
-  //     emailContato: "",
-  //   },
-  // ]);
   const [socios, setSocios] = useState([
     {
       id: 0,
@@ -110,6 +114,14 @@ export const SociosForm = ({ managerCustomer = false }) => {
     let newArray = [...socios];
 
     switch (type) {
+      case "tipo":
+        newArray[index].tipo = e.target.value;
+        break;
+
+      case "representante":
+        newArray[index].representante = e.target.value;
+        break;
+
       case "nome":
         newArray[index].nome = e.target.value;
         break;
@@ -152,6 +164,10 @@ export const SociosForm = ({ managerCustomer = false }) => {
 
       case "naturalidade":
         newArray[index].naturalidade = e.target.value;
+        break;
+
+      case "estadoCivil":
+        newArray[index].estadoCivil = e.target.value;
         break;
 
       case "nomeConjuge":
@@ -349,10 +365,41 @@ export const SociosForm = ({ managerCustomer = false }) => {
       console.log(socios);
 
       console.log("OKAY");
+      dispatch(nextStep(stepRedux));
     } catch (err) {
-      console.log(socios);
-      console.log(err);
+      const validationErros = {};
+      let InputError = [];
+
+      err.inner.forEach((error, i) => {
+        validationErros[error.path] = error.message;
+        InputError[i] = error.path;
+      });
+      console.log(InputError);
+
+      setArrayOfErrors(InputError);
+      console.log(validationErros);
     }
+  };
+
+  const checkingArrayOfErrors = (name, index) => {
+    const find = arrayOfErrors.findIndex(
+      (error) => error === `[${index}].${name}`
+    );
+    if (find !== -1) return true;
+    else return false;
+  };
+
+  const checkingArrayOfErrorsContacts = (name, index, indexContato) => {
+    console.log(name);
+    const find = arrayOfErrors.findIndex(
+      (error) => error === `[${index}].contatos[${indexContato}].${name}`
+    );
+    if (find !== -1) return true;
+    else return false;
+  };
+
+  const handleBack = () => {
+    dispatch(backStep(stepRedux));
   };
 
   return (
@@ -376,7 +423,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   <strong>Tipo de Sócio</strong>
                 </InputLabel>
               </Grid>
-              <Grid item md={representante ? 4 : 6}>
+              <Grid item md={item.representante ? 4 : 6}>
                 <TextField
                   disabled={
                     managerCustomer === true ? inputState.isDisable : false
@@ -386,12 +433,14 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   variant="outlined"
                   id="select"
                   label="Escolha um tipo de sócio"
+                  onChange={(e) => addInformationOption("tipo", index, e)}
+                  error={checkingArrayOfErrors("tipo", index)}
                   select
                 >
                   <MenuItem value="SOCIO_ADMINISTRADOR">
                     Sócio Administrador
                   </MenuItem>
-                  <MenuItem value="SoCIO">Sócio</MenuItem>
+                  <MenuItem value="SOCIO">Sócio</MenuItem>
                   <MenuItem value="ADMINISTRADOR_NAO_SOCIO">
                     Administrador não sócio
                   </MenuItem>
@@ -404,7 +453,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
 
               <Grid
                 item
-                md={representante ? 4 : 6}
+                md={item.representante ? 4 : 6}
                 className="pl-5 d-flex w-full align-items-center justify-content-center"
               >
                 <InputLabel className="mr-5">
@@ -415,13 +464,15 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   disabled={socios.some(
                     (socio) => socio.representante === true
                   )}
-                  onChange={() => setRepresentante(!representante)}
+                  onChange={(e) =>
+                    addInformationOption("representante", index, e)
+                  }
                   color="default"
                 />
                 <span>Sim</span>
               </Grid>
 
-              {representante && (
+              {item.representante && (
                 <Grid item md={4}>
                   <TextField
                     fullWidth
@@ -450,6 +501,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Nome"
                   fullWidth
                   onChange={(e) => addInformationOption("nome", index, e)}
+                  error={checkingArrayOfErrors("nome", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -462,6 +514,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="CPF"
                   fullWidth
                   onChange={(e) => addInformationOption("cpf", index, e)}
+                  error={checkingArrayOfErrors("cpf", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -476,6 +529,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   onChange={(e) =>
                     addInformationOption("dataNascimento", index, e)
                   }
+                  error={checkingArrayOfErrors("dataNascimento", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -489,6 +543,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="RG"
                   fullWidth
                   onChange={(e) => addInformationOption("rg", index, e)}
+                  error={checkingArrayOfErrors("rg", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -503,6 +558,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   onChange={(e) =>
                     addInformationOption("orgaoEmissorRg", index, e)
                   }
+                  error={checkingArrayOfErrors("orgaoEmissorRg", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -515,6 +571,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Uf de origem (RG)"
                   fullWidth
                   onChange={(e) => addInformationOption("ufRg", index, e)}
+                  error={checkingArrayOfErrors("ufRg", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -530,6 +587,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   onChange={(e) =>
                     addInformationOption("carteiraProfissional", index, e)
                   }
+                  error={checkingArrayOfErrors("carteiraProfissional", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -544,6 +602,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   onChange={(e) =>
                     addInformationOption("orgaoEmissorCarteira", index, e)
                   }
+                  error={checkingArrayOfErrors("orgaoEmissorCarteira", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -556,6 +615,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Uf de origem (Carteira)"
                   fullWidth
                   onChange={(e) => addInformationOption("ufCarteira", index, e)}
+                  error={checkingArrayOfErrors("ufCarteira", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -571,6 +631,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   onChange={(e) =>
                     addInformationOption("nacionalidade", index, e)
                   }
+                  error={checkingArrayOfErrors("nacionalidade", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -585,6 +646,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   onChange={(e) =>
                     addInformationOption("naturalidade", index, e)
                   }
+                  error={checkingArrayOfErrors("naturalidade", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -605,7 +667,10 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   variant="outlined"
                   id="select"
                   label="Estado Civil"
-                  onChange={(e) => setEstadoCivil(e.target.value)}
+                  onChange={(e) =>
+                    addInformationOption("estadoCivil", index, e)
+                  }
+                  error={checkingArrayOfErrors("estadoCivil", index)}
                   select
                 >
                   <MenuItem value="SOLTEIRO">Solteiro</MenuItem>
@@ -616,7 +681,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   <MenuItem value="AMASIADO">Amasiado</MenuItem>
                 </TextField>
               </Grid>
-              {estadoCivil === "CASADO" && (
+              {item.estadoCivil === "CASADO" && (
                 <>
                   <Grid item md={4}>
                     <TextField
@@ -628,6 +693,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                       onChange={(e) =>
                         addInformationOption("nomeConjuge", index, e)
                       }
+                      error={checkingArrayOfErrors("nomeConjuge", index)}
                       className={classes.textField}
                       variant="outlined"
                     />
@@ -642,6 +708,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                       onChange={(e) =>
                         addInformationOption("cpfConjuge", index, e)
                       }
+                      error={checkingArrayOfErrors("cpfConjuge", index)}
                       className={classes.textField}
                       variant="outlined"
                     />
@@ -662,6 +729,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Profissão"
                   fullWidth
                   onChange={(e) => addInformationOption("profissao", index, e)}
+                  error={checkingArrayOfErrors("profissao", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -680,6 +748,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="CEP"
                   fullWidth
                   onChange={(e) => addInformationOption("cep", index, e)}
+                  error={checkingArrayOfErrors("cep", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -694,6 +763,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Logradouro"
                   fullWidth
                   onChange={(e) => addInformationOption("logradouro", index, e)}
+                  error={checkingArrayOfErrors("logradouro", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -707,6 +777,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Número"
                   fullWidth
                   onChange={(e) => addInformationOption("numero", index, e)}
+                  error={checkingArrayOfErrors("numero", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -719,6 +790,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Bairro"
                   fullWidth
                   onChange={(e) => addInformationOption("bairro", index, e)}
+                  error={checkingArrayOfErrors("bairro", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -732,6 +804,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Município"
                   fullWidth
                   onChange={(e) => addInformationOption("municipio", index, e)}
+                  error={checkingArrayOfErrors("municipio", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -746,6 +819,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   onChange={(e) =>
                     addInformationOption("complemento", index, e)
                   }
+                  error={checkingArrayOfErrors("complemento", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -783,6 +857,11 @@ export const SociosForm = ({ managerCustomer = false }) => {
                             e
                           )
                         }
+                        error={checkingArrayOfErrorsContacts(
+                          "telefoneContato",
+                          index,
+                          indexContato
+                        )}
                         className={classes.textField}
                         variant="outlined"
                       />
@@ -804,6 +883,11 @@ export const SociosForm = ({ managerCustomer = false }) => {
                             e
                           )
                         }
+                        error={checkingArrayOfErrorsContacts(
+                          "emailContato",
+                          index,
+                          indexContato
+                        )}
                         className={classes.textField}
                         variant="outlined"
                       />
@@ -919,6 +1003,33 @@ export const SociosForm = ({ managerCustomer = false }) => {
               <AddIcon />
             </Fab>
             <span className="ml-4">Adicionar novo sócio </span>
+          </Grid>
+        )}
+      </Grid>
+
+      <Grid item md={6}>
+        {managerCustomer === false && (
+          <Grid container>
+            <Grid item md={2}>
+              <Button
+                disabled={stepRedux.step === 0}
+                onClick={handleBack}
+                className={classes.button}
+              >
+                Voltar
+              </Button>
+            </Grid>
+
+            <Grid item md={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className={classes.button}
+              >
+                {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
+              </Button>
+            </Grid>
           </Grid>
         )}
       </Grid>

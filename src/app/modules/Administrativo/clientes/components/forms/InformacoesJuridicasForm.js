@@ -52,6 +52,14 @@ export const InformacoesJuridicasForm = ({
   clientData = "",
   managerCustomer = false,
 }) => {
+  const [selectedDate, setSelectedDate] = useState(
+    new Date("2014-08-18T21:11:54")
+  );
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
   const inputState = useSelector((state) => state.client);
   const stepRedux = useSelector((state) => state.step);
   const dispatch = useDispatch();
@@ -105,6 +113,7 @@ export const InformacoesJuridicasForm = ({
   }, [clientData]);
 
   const handleChange = (name) => (event) => {
+    console.log(event.target.value);
     setValues({ ...values, [name]: event.target.value });
   };
 
@@ -114,10 +123,9 @@ export const InformacoesJuridicasForm = ({
       const schema = Yup.object().shape({
         codigo: Yup.string().required("Código do Cliente"),
         tipo: Yup.string().required("Selecione um Tipo"),
-        cnpj: Yup.string()
-          .required("CNPJ Obrigatório")
-          .min(14, "Mínimo 14 dígitos")
-          .max(14, "Máximo 14 dígitos"),
+        cnpj: Yup.string().required("CNPJ Obrigatório"),
+        // .min(14, "Mínimo 14 dígitos")
+        // .max(14, "Máximo 14 dígitos"),
         razaoSocial: Yup.string().required("Qual a Razão Social?"),
         nomeFantasia: Yup.string().required("Requer um Nome Fantasia"),
         dataAbertura: Yup.string().required("Qual a Data de Abertura?"),
@@ -149,6 +157,10 @@ export const InformacoesJuridicasForm = ({
     const find = arrayOfErrors.findIndex((error) => error === name);
     if (find !== -1) return true;
     else return false;
+  };
+
+  const handleBack = () => {
+    dispatch(backStep(stepRedux));
   };
 
   return (
@@ -245,33 +257,34 @@ export const InformacoesJuridicasForm = ({
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <TextField
-                disabled={
-                  managerCustomer === true ? inputState.isDisable : false
-                }
+                id="date"
                 label="Data de Abertura"
-                fullWidth
+                type="date"
+                defaultValue="24-05-2020"
+                className={classes.textField}
                 value={values.dataAbertura}
                 onChange={handleChange("dataAbertura")}
                 error={checkingArrayOfErrors("dataAbertura")}
-                className={classes.textField}
-                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Grid>
-
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <TextField
-                disabled={
-                  managerCustomer === true ? inputState.isDisable : false
-                }
+                id="date"
                 label="Cliente Desde"
-                fullWidth
+                type="date"
+                defaultValue="24-05-2020"
+                className={classes.textField}
                 value={values.clienteDesde}
                 onChange={handleChange("clienteDesde")}
                 error={checkingArrayOfErrors("clienteDesde")}
-                className={classes.textField}
-                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </Grid>
           </Grid>
@@ -298,16 +311,30 @@ export const InformacoesJuridicasForm = ({
           />
         </Grid>
 
-        <Grid item xs={10}>
+        <Grid item md={6}>
           {managerCustomer === false && (
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              className={classes.button}
-            >
-              EXEMPLO TESTE
-            </Button>
+            <Grid container>
+              <Grid item md={2}>
+                <Button
+                  disabled={stepRedux.step === 0}
+                  onClick={handleBack}
+                  className={classes.button}
+                >
+                  Voltar
+                </Button>
+              </Grid>
+
+              <Grid item md={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  className={classes.button}
+                >
+                  {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
+                </Button>
+              </Grid>
+            </Grid>
           )}
         </Grid>
       </Grid>
