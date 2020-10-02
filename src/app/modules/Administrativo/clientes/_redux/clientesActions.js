@@ -1,5 +1,5 @@
 export const setClientes = (props) => {
-  return { type: "CLIENTES_UPDATE", props };
+  return { type: "CLIENTES_UPDATE", payload: { props } };
 };
 
 export const createCliente = (props) => {

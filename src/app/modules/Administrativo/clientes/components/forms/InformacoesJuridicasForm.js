@@ -1,7 +1,5 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
-import EditIcon from "@material-ui/icons/Edit";
-import { Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Divider,
@@ -13,9 +11,13 @@ import {
 } from "@material-ui/core";
 import ImageUpload from "../../../../../components/ImageUpload/ImageUpload";
 import { format } from "date-fns/esm";
+import { zonedTimeToUtc } from "date-fns-timezone";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+import {
+  setIsDisable,
+  setClientes,
+} from "../../../clientes/_redux/clientesActions";
 import * as Yup from "yup";
 import { useRef } from "react";
 
@@ -98,23 +100,39 @@ export const InformacoesJuridicasForm = ({
     const formattedDateAbertura = formattingDate(clientData.dataAbertura);
     const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
 
-    setValues({
-      codigo: clientData.codigo,
-      tipo: clientData.tipoCliente,
-      cnpj: clientData.cnpj,
-      razaoSocial: clientData.razaoSocial,
-      nomeFantasia: clientData.nomeFantasia,
-      dataAbertura: formattedDateAbertura,
-      clienteDesde: formattedDateClienteDesde,
-      observacao: clientData.observacao,
-    });
+    // setValues({
+    //   codigo: clientData.codigo,
+    //   tipo: clientData.tipoCliente,
+    //   cnpj: clientData.cnpj,
+    //   razaoSocial: clientData.razaoSocial,
+    //   nomeFantasia: clientData.nomeFantasia,
+    //   dataAbertura: formattedDateAbertura,
+    //   clienteDesde: formattedDateClienteDesde,
+    //   observacao: clientData.observacao,
+    // });
 
     setPicture(clientData.logo);
   }, [clientData]);
 
+  function formattingToUtcDate(date = "") {
+    console.log(date);
+    if (date !== "") {
+      const utcDate = new Date(date);
+      const utcDate2 = utcDate.toISOString();
+
+      return utcDate2;
+    } else {
+      return "";
+    }
+  }
+
   const handleChange = (name) => (event) => {
-    console.log(event.target.value);
-    setValues({ ...values, [name]: event.target.value });
+    console.log(name);
+    if (name === "clienteDesde" || name === "dataAbertura") {
+      setValues({ ...values, [name]: formattingToUtcDate(event.target.value) });
+    } else {
+      setValues({ ...values, [name]: event.target.value });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -139,6 +157,7 @@ export const InformacoesJuridicasForm = ({
 
       console.log("OKAY");
       dispatch(nextStep(stepRedux));
+      dispatch(setClientes(values));
     } catch (err) {
       const validationErros = {};
       let InputError = [];
@@ -149,7 +168,6 @@ export const InformacoesJuridicasForm = ({
       });
 
       setArrayOfErrors(InputError);
-      console.log(validationErros);
     }
   };
 
@@ -264,7 +282,7 @@ export const InformacoesJuridicasForm = ({
                 type="date"
                 defaultValue="24-05-2020"
                 className={classes.textField}
-                value={values.dataAbertura}
+                // value={values.dataAbertura}
                 onChange={handleChange("dataAbertura")}
                 error={checkingArrayOfErrors("dataAbertura")}
                 InputLabelProps={{
@@ -279,7 +297,7 @@ export const InformacoesJuridicasForm = ({
                 type="date"
                 defaultValue="24-05-2020"
                 className={classes.textField}
-                value={values.clienteDesde}
+                // value={values.clienteDesde}
                 onChange={handleChange("clienteDesde")}
                 error={checkingArrayOfErrors("clienteDesde")}
                 InputLabelProps={{
@@ -306,6 +324,8 @@ export const InformacoesJuridicasForm = ({
             multiline
             rows={6}
             label="Observações do cliente"
+            value={values.observacao}
+            onChange={handleChange("observacao")}
             variant="outlined"
             style={{ width: "92%" }}
           />

@@ -20,7 +20,10 @@ import InfoIcon from "@material-ui/icons/Info";
 import * as Yup from "yup";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+import {
+  setIsDisable,
+  setClientes,
+} from "../../../clientes/_redux/clientesActions";
 
 import {
   nextStep,
@@ -77,7 +80,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
     {
       id: 0,
       tipo: "",
-      representante: "",
+      representante: false,
       nome: "",
       cpf: "",
       rg: "",
@@ -365,6 +368,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
       console.log(socios);
 
       console.log("OKAY");
+      dispatch(setClientes(socios));
       dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};

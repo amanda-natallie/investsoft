@@ -13,6 +13,7 @@ import {
   backStep,
   resetStep,
 } from "../../../steps/_redux/stepsActions";
+import { setClientes } from "../../_redux/clientesActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -53,7 +54,7 @@ export const ContatosForm = ({ managerCustomer = false }) => {
 
   const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
-  const [contatos, setContatos] = useState([
+  const [contatosState, setContatosState] = useState([
     {
       id: 0,
       pessoaContato: "",
@@ -63,8 +64,12 @@ export const ContatosForm = ({ managerCustomer = false }) => {
     },
   ]);
 
+  const [contatosTeste, setContatosTeste] = useState({
+    contatos: [{}],
+  });
+
   const addInformationOption = (type, index, e) => {
-    const newArray = JSON.parse(JSON.stringify(contatos));
+    const newArray = JSON.parse(JSON.stringify(contatosState));
 
     switch (type) {
       case "pessoaContato":
@@ -85,10 +90,12 @@ export const ContatosForm = ({ managerCustomer = false }) => {
         break;
     }
 
-    setContatos(newArray);
+    setContatosTeste({ contatos: [...newArray] });
+
+    setContatosState(newArray);
   };
   const addOption = () => {
-    const id = contatos.length;
+    const id = contatosState.length;
     const optionLine = {
       id: id,
       pessoaContato: "",
@@ -97,11 +104,11 @@ export const ContatosForm = ({ managerCustomer = false }) => {
       departamento: "",
     };
 
-    setContatos([...contatos, optionLine]);
+    setContatosState([...contatosState, optionLine]);
   };
 
   const deleteOption = (index) => {
-    setContatos(contatos.filter((_, i) => i !== index));
+    setContatosState(contatosState.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -125,11 +132,12 @@ export const ContatosForm = ({ managerCustomer = false }) => {
         })
       );
 
-      await schema.validate(contatos, {
+      await schema.validate(contatosState, {
         abortEarly: false,
       });
 
       console.log("OKAY");
+      dispatch(setClientes(contatosTeste));
       dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};
@@ -169,8 +177,8 @@ export const ContatosForm = ({ managerCustomer = false }) => {
         quiser. O primeiro é obrigatório.
       </p>
 
-      {contatos &&
-        contatos.map((item, index) => (
+      {contatosState &&
+        contatosState.map((item, index) => (
           <Grid container key={index} spacing={2} className="mb-5">
             <Grid item xs>
               <TextField
@@ -224,7 +232,7 @@ export const ContatosForm = ({ managerCustomer = false }) => {
                 variant="outlined"
               />
             </Grid>
-            {contatos.length > 1 && (
+            {contatosState.length > 1 && (
               <Grid item xs={1}>
                 <Tooltip title="Deletar Opção">
                   <Fab

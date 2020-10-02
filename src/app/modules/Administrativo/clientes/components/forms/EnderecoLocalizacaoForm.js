@@ -10,6 +10,7 @@ import {
   backStep,
   resetStep,
 } from "../../../steps/_redux/stepsActions";
+import { setClientes } from "../../_redux/clientesActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -86,6 +87,7 @@ export const EnderecoLocalizacaoForm = ({ managerCustomer = false }) => {
       });
 
       console.log("OKAY");
+      dispatch(setClientes(values));
       dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};
