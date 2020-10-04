@@ -23,6 +23,9 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   setIsDisable,
   setClientes,
+  createSocios,
+  createCliente,
+  clearClientes,
 } from "../../../clientes/_redux/clientesActions";
 
 import {
@@ -72,23 +75,21 @@ export const SociosForm = ({ managerCustomer = false }) => {
 
   const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
-  // const [estadoCivil, setEstadoCivil] = useState("");
-  // const [representante, setRepresentante] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const [socios, setSocios] = useState([
     {
       id: 0,
-      tipo: "",
-      representante: false,
+      tipoSocio: "",
+      representanteRbf: false,
       nome: "",
       cpf: "",
       rg: "",
       orgaoEmissorRg: "",
       ufRg: "",
       carteiraProfissional: "",
-      orgaoEmissorCarteira: "",
-      ufCarteira: "",
+      orgaoEmissorCarteiraProfissional: "",
+      ufCarteiraProfissional: "",
       nacionalidade: "",
       naturalidade: "",
       estadoCivil: "",
@@ -103,7 +104,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
       municipio: "",
       complemento: "",
       uf: "",
-      contatos: [
+      AssociateContacts: [
         {
           telefoneContato: "",
           emailContato: "",
@@ -113,16 +114,15 @@ export const SociosForm = ({ managerCustomer = false }) => {
   ]);
 
   const addInformationOption = (type, index, e) => {
-    // const newArray = JSON.parse(JSON.stringify(socios));
     let newArray = [...socios];
 
     switch (type) {
-      case "tipo":
-        newArray[index].tipo = e.target.value;
+      case "tipoSocio":
+        newArray[index].tipoSocio = e.target.value;
         break;
 
-      case "representante":
-        newArray[index].representante = e.target.value;
+      case "representanteRbf":
+        newArray[index].representanteRbf = !newArray[index].representanteRbf;
         break;
 
       case "nome":
@@ -153,12 +153,12 @@ export const SociosForm = ({ managerCustomer = false }) => {
         newArray[index].carteiraProfissional = e.target.value;
         break;
 
-      case "orgaoEmissorCarteira":
-        newArray[index].orgaoEmissorCarteira = e.target.value;
+      case "orgaoEmissorCarteiraProfissional":
+        newArray[index].orgaoEmissorCarteiraProfissional = e.target.value;
         break;
 
-      case "ufCarteira":
-        newArray[index].ufCarteira = e.target.value;
+      case "ufCarteiraProfissional":
+        newArray[index].ufCarteiraProfissional = e.target.value;
         break;
 
       case "nacionalidade":
@@ -221,11 +221,13 @@ export const SociosForm = ({ managerCustomer = false }) => {
 
     switch (type) {
       case "telefoneContato":
-        newArray[index].contatos[indexContato].telefoneContato = e.target.value;
+        newArray[index].AssociateContacts[indexContato].telefoneContato =
+          e.target.value;
         break;
 
       case "emailContato":
-        newArray[index].contatos[indexContato].emailContato = e.target.value;
+        newArray[index].AssociateContacts[indexContato].emailContato =
+          e.target.value;
         break;
 
       default:
@@ -236,13 +238,13 @@ export const SociosForm = ({ managerCustomer = false }) => {
   };
 
   const addContactOption = (item) => {
-    // const id = contatos.length;
+    // const id = AssociateContacts.length;
     const optionLine = {
       telefoneContato: "",
       emailContato: "",
     };
 
-    setSocios((state) => [...state, item.contatos.push(optionLine)]);
+    setSocios((state) => [...state, item.AssociateContacts.push(optionLine)]);
 
     setSocios([...socios]);
   };
@@ -251,9 +253,9 @@ export const SociosForm = ({ managerCustomer = false }) => {
     // console.log(item, index);
     // setSocios((state) => [
     //   ...state,
-    //   item.contatos.filter((_, i) => i !== index),
+    //   item.AssociateContacts.filter((_, i) => i !== index),
     // ]);
-    setSocios((state) => [...state, item.contatos.splice(index, 1)]);
+    setSocios((state) => [...state, item.AssociateContacts.splice(index, 1)]);
     setSocios([...socios]);
   };
 
@@ -261,16 +263,16 @@ export const SociosForm = ({ managerCustomer = false }) => {
     const id = socios.length;
     const optionLine = {
       id: id,
-      tipo: "",
-      representante: false,
+      tipoSocio: "",
+      representanteRbf: false,
       nome: "",
       cpf: "",
       rg: "",
       orgaoEmissorRg: "",
       ufRg: "",
       carteiraProfissional: "",
-      orgaoEmissorCarteira: "",
-      ufCarteira: "",
+      orgaoEmissorCarteiraProfissional: "",
+      ufCarteiraProfissional: "",
       nacionalidade: "",
       naturalidade: "",
       estadoCivil: "",
@@ -285,7 +287,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
       municipio: "",
       complemento: "",
       uf: "",
-      contatos: [
+      AssociateContacts: [
         {
           telefoneContato: "",
           emailContato: "",
@@ -313,8 +315,8 @@ export const SociosForm = ({ managerCustomer = false }) => {
       const schema = Yup.array().of(
         Yup.object({
           id: Yup.number(),
-          tipo: Yup.string().required("Escolha um tipo de sócio"),
-          representante: Yup.boolean(),
+          tipoSocio: Yup.string().required("Escolha um tipo de sócio"),
+          representanteRbf: Yup.boolean(),
           nome: Yup.string().required("Campo Nome, obrigatório"),
           cpf: Yup.string().required("Campo CPF, obrigatório"),
           rg: Yup.string().required("Campo RG, obrigatório"),
@@ -325,10 +327,10 @@ export const SociosForm = ({ managerCustomer = false }) => {
           carteiraProfissional: Yup.string().required(
             "Campo Carteira Profissional, obrigatório"
           ),
-          orgaoEmissorCarteira: Yup.string().required(
+          orgaoEmissorCarteiraProfissional: Yup.string().required(
             "Campo Órgão Emissor (Carteira), obrigatório"
           ),
-          ufCarteira: Yup.string().required(
+          ufCarteiraProfissional: Yup.string().required(
             "Campo Uf de origem (Carteira), obrigatório"
           ),
           nacionalidade: Yup.string().required(
@@ -350,7 +352,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
           municipio: Yup.string().required("Campo Município, obrigatório"),
           complemento: Yup.string(),
           uf: Yup.string(),
-          contatos: Yup.array().of(
+          AssociateContacts: Yup.array().of(
             Yup.object({
               telefoneContato: Yup.string().required(
                 "Campo Telefone, obrigatório"
@@ -365,10 +367,11 @@ export const SociosForm = ({ managerCustomer = false }) => {
         abortEarly: false,
       });
 
-      console.log(socios);
-
       console.log("OKAY");
-      dispatch(setClientes(socios));
+      dispatch(createSocios(socios));
+      dispatch(createCliente(inputState.clienteInformation, socios));
+      console.log("PÓS SAGA");
+      dispatch(clearClientes());
       dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};
@@ -378,10 +381,10 @@ export const SociosForm = ({ managerCustomer = false }) => {
         validationErros[error.path] = error.message;
         InputError[i] = error.path;
       });
-      console.log(InputError);
 
       setArrayOfErrors(InputError);
-      console.log(validationErros);
+
+      console.log(err);
     }
   };
 
@@ -394,9 +397,9 @@ export const SociosForm = ({ managerCustomer = false }) => {
   };
 
   const checkingArrayOfErrorsContacts = (name, index, indexContato) => {
-    console.log(name);
     const find = arrayOfErrors.findIndex(
-      (error) => error === `[${index}].contatos[${indexContato}].${name}`
+      (error) =>
+        error === `[${index}].AssociateContacts[${indexContato}].${name}`
     );
     if (find !== -1) return true;
     else return false;
@@ -404,6 +407,16 @@ export const SociosForm = ({ managerCustomer = false }) => {
 
   const handleBack = () => {
     dispatch(backStep(stepRedux));
+  };
+
+  const checkRepresentateDisable = (index) => {
+    const someTrue = socios.some((socio) => socio.representanteRbf === true);
+
+    if (someTrue === true && socios[index].representanteRbf === true)
+      return false;
+    else if (someTrue === true && socios[index].representanteRbf === false)
+      return true;
+    else return false;
   };
 
   return (
@@ -427,7 +440,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   <strong>Tipo de Sócio</strong>
                 </InputLabel>
               </Grid>
-              <Grid item md={item.representante ? 4 : 6}>
+              <Grid item md={item.representanteRbf ? 4 : 6}>
                 <TextField
                   disabled={
                     managerCustomer === true ? inputState.isDisable : false
@@ -437,8 +450,8 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   variant="outlined"
                   id="select"
                   label="Escolha um tipo de sócio"
-                  onChange={(e) => addInformationOption("tipo", index, e)}
-                  error={checkingArrayOfErrors("tipo", index)}
+                  onChange={(e) => addInformationOption("tipoSocio", index, e)}
+                  error={checkingArrayOfErrors("tipoSocio", index)}
                   select
                 >
                   <MenuItem value="SOCIO_ADMINISTRADOR">
@@ -457,7 +470,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
 
               <Grid
                 item
-                md={item.representante ? 4 : 6}
+                md={item.representanteRbf ? 4 : 6}
                 className="pl-5 d-flex w-full align-items-center justify-content-center"
               >
                 <InputLabel className="mr-5">
@@ -465,18 +478,16 @@ export const SociosForm = ({ managerCustomer = false }) => {
                 </InputLabel>
                 <span>Não</span>
                 <Switch
-                  disabled={socios.some(
-                    (socio) => socio.representante === true
-                  )}
+                  disabled={checkRepresentateDisable(index)}
                   onChange={(e) =>
-                    addInformationOption("representante", index, e)
+                    addInformationOption("representanteRbf", index, e)
                   }
                   color="default"
                 />
                 <span>Sim</span>
               </Grid>
 
-              {item.representante && (
+              {item.representanteRbf && (
                 <Grid item md={4}>
                   <TextField
                     fullWidth
@@ -604,9 +615,16 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   label="Órgão Emissor (Carteira)"
                   fullWidth
                   onChange={(e) =>
-                    addInformationOption("orgaoEmissorCarteira", index, e)
+                    addInformationOption(
+                      "orgaoEmissorCarteiraProfissional",
+                      index,
+                      e
+                    )
                   }
-                  error={checkingArrayOfErrors("orgaoEmissorCarteira", index)}
+                  error={checkingArrayOfErrors(
+                    "orgaoEmissorCarteiraProfissional",
+                    index
+                  )}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -618,8 +636,10 @@ export const SociosForm = ({ managerCustomer = false }) => {
                   }
                   label="Uf de origem (Carteira)"
                   fullWidth
-                  onChange={(e) => addInformationOption("ufCarteira", index, e)}
-                  error={checkingArrayOfErrors("ufCarteira", index)}
+                  onChange={(e) =>
+                    addInformationOption("ufCarteiraProfissional", index, e)
+                  }
+                  error={checkingArrayOfErrors("ufCarteiraProfissional", index)}
                   className={classes.textField}
                   variant="outlined"
                 />
@@ -835,11 +855,11 @@ export const SociosForm = ({ managerCustomer = false }) => {
                 </InputLabel>
               </Grid>
 
-              {item.contatos &&
-                item.contatos.map((a, indexContato) => (
+              {item.AssociateContacts &&
+                item.AssociateContacts.map((a, indexContato) => (
                   <Grid
                     container
-                    key={index}
+                    key={(a, indexContato)}
                     spacing={2}
                     className="mb-5"
                     alignItems="center"
@@ -897,7 +917,7 @@ export const SociosForm = ({ managerCustomer = false }) => {
                       />
                     </Grid>
 
-                    {item.contatos.length > 1 && (
+                    {item.AssociateContacts.length > 1 && (
                       <Grid item xs={1}>
                         <Tooltip title="Deletar Opção">
                           <Fab

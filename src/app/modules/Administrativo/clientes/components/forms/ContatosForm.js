@@ -64,7 +64,7 @@ export const ContatosForm = ({ managerCustomer = false }) => {
     },
   ]);
 
-  const [contatosTeste, setContatosTeste] = useState({
+  const [contatosRefatorados, setContatosRefatorados] = useState({
     contatos: [{}],
   });
 
@@ -90,7 +90,7 @@ export const ContatosForm = ({ managerCustomer = false }) => {
         break;
     }
 
-    setContatosTeste({ contatos: [...newArray] });
+    setContatosRefatorados({ contatos: [...newArray] });
 
     setContatosState(newArray);
   };
@@ -137,7 +137,7 @@ export const ContatosForm = ({ managerCustomer = false }) => {
       });
 
       console.log("OKAY");
-      dispatch(setClientes(contatosTeste));
+      // dispatch(setClientes(contatosRefatorados));
       dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};

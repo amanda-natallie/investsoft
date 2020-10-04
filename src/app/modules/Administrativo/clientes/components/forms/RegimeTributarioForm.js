@@ -91,8 +91,22 @@ export const RegimeTributarioForm = ({ managerCustomer = false }) => {
         abortEarly: false,
       });
 
+      console.log(values[0].regimeTributario);
+
+      const regimeTributarioAtual = {
+        regimeTributarioAtual: values[0].regimeTributario,
+      };
+      const regimeTributarioAnterior1 = {
+        regimeTributarioAnterior1: values[1].regimeTributario,
+      };
+      const regimeTributarioAnterior2 = {
+        regimeTributarioAnterior2: values[2].regimeTributario,
+      };
+
       console.log("OKAY");
-      dispatch(setClientes(values));
+      dispatch(setClientes(regimeTributarioAtual));
+      dispatch(setClientes(regimeTributarioAnterior1));
+      dispatch(setClientes(regimeTributarioAnterior2));
       dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};

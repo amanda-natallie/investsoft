@@ -74,14 +74,15 @@ export const InformacoesJuridicasForm = ({
   const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
   const [values, setValues] = useState({
-    codigo: "",
-    tipo: "",
+    codigoCliente: "",
+    tipoCliente: "",
     cnpj: "",
     razaoSocial: "",
     nomeFantasia: "",
     dataAbertura: "",
     clienteDesde: "",
     observacao: "",
+    logo: "Teste",
   });
 
   function formattingDate(date = "") {
@@ -93,23 +94,23 @@ export const InformacoesJuridicasForm = ({
   }
 
   useEffect(() => {
-    // const formattedDate = clientData.dataAbertura
-    //   ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
-    //   : "";
+    const formattedDate = clientData.dataAbertura
+      ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
+      : "";
 
     const formattedDateAbertura = formattingDate(clientData.dataAbertura);
     const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
 
-    // setValues({
-    //   codigo: clientData.codigo,
-    //   tipo: clientData.tipoCliente,
-    //   cnpj: clientData.cnpj,
-    //   razaoSocial: clientData.razaoSocial,
-    //   nomeFantasia: clientData.nomeFantasia,
-    //   dataAbertura: formattedDateAbertura,
-    //   clienteDesde: formattedDateClienteDesde,
-    //   observacao: clientData.observacao,
-    // });
+    setValues({
+      codigoCliente: clientData.codigoCliente,
+      tipoCliente: clientData.tipoClienteCliente,
+      cnpj: clientData.cnpj,
+      razaoSocial: clientData.razaoSocial,
+      nomeFantasia: clientData.nomeFantasia,
+      dataAbertura: formattedDateAbertura,
+      clienteDesde: formattedDateClienteDesde,
+      observacao: clientData.observacao,
+    });
 
     setPicture(clientData.logo);
   }, [clientData]);
@@ -139,8 +140,8 @@ export const InformacoesJuridicasForm = ({
     e.preventDefault();
     try {
       const schema = Yup.object().shape({
-        codigo: Yup.string().required("Código do Cliente"),
-        tipo: Yup.string().required("Selecione um Tipo"),
+        codigoCliente: Yup.string().required("Código do Cliente"),
+        tipoCliente: Yup.string().required("Selecione um Tipo"),
         cnpj: Yup.string().required("CNPJ Obrigatório"),
         // .min(14, "Mínimo 14 dígitos")
         // .max(14, "Máximo 14 dígitos"),
@@ -149,6 +150,7 @@ export const InformacoesJuridicasForm = ({
         dataAbertura: Yup.string().required("Qual a Data de Abertura?"),
         clienteDesde: Yup.string().required("Cliente Desde?"),
         observacao: Yup.string(),
+        logo: Yup.string(),
       });
 
       await schema.validate(values, {
@@ -156,8 +158,8 @@ export const InformacoesJuridicasForm = ({
       });
 
       console.log("OKAY");
-      dispatch(nextStep(stepRedux));
       dispatch(setClientes(values));
+      dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};
       let InputError = [];
@@ -203,8 +205,8 @@ export const InformacoesJuridicasForm = ({
                 label="Código do Cliente"
                 fullWidth
                 value={values.nome}
-                onChange={handleChange("codigo")}
-                error={checkingArrayOfErrors("codigo")}
+                onChange={handleChange("codigoCliente")}
+                error={checkingArrayOfErrors("codigoCliente")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -216,9 +218,9 @@ export const InformacoesJuridicasForm = ({
                   managerCustomer === true ? inputState.isDisable : false
                 }
                 fullWidth
-                value={values.tipo}
-                onChange={handleChange("tipo")}
-                error={checkingArrayOfErrors("tipo")}
+                value={values.tipoCliente}
+                onChange={handleChange("tipoCliente")}
+                error={checkingArrayOfErrors("tipoCliente")}
                 className={classes.textField}
                 variant="outlined"
                 id="select"

@@ -1,4 +1,6 @@
 import { all } from "redux-saga/effects";
+import clientSaga from "../app/modules/Administrativo/clientes/_redux/clientesSaga";
+
 import { combineReducers } from "redux";
 
 import * as auth from "../app/modules/Auth/_redux/authRedux";
@@ -12,5 +14,5 @@ export const rootReducer = combineReducers({
 });
 
 export function* rootSaga() {
-  yield all([auth.saga()]);
+  yield all([auth.saga(), clientSaga]);
 }

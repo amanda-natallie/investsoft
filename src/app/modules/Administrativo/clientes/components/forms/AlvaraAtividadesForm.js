@@ -64,7 +64,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
 
   const classes = useStyles();
   const [values, setValues] = useState({
-    numeroAlvara: "",
+    alvaraLicenca: "",
     inscricaoMunicipal: "",
     inscricaoEstadual: "",
     nire: "",
@@ -120,7 +120,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
     e.preventDefault();
     try {
       const schema = Yup.object().shape({
-        numeroAlvara: Yup.string().required(
+        alvaraLicenca: Yup.string().required(
           "Campo Numero do Alvara, obrigatório"
         ),
         inscricaoMunicipal: Yup.string().required(
@@ -179,9 +179,9 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
             disabled={managerCustomer === true ? inputState.isDisable : false}
             label="Número do Alvará"
             fullWidth
-            value={values.numeroAlvara}
-            onChange={handleChange("numeroAlvara")}
-            error={checkingArrayOfErrors("numeroAlvara")}
+            value={values.alvaraLicenca}
+            onChange={handleChange("alvaraLicenca")}
+            error={checkingArrayOfErrors("alvaraLicenca")}
             className={classes.textField}
             variant="outlined"
           />
