@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 import ImageUpload from "../../../../../components/ImageUpload/ImageUpload";
 import { format } from "date-fns/esm";
-import { zonedTimeToUtc } from "date-fns-timezone";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -281,8 +280,7 @@ export const InformacoesJuridicasForm = ({
               <TextField
                 id="date"
                 label="Data de Abertura"
-                type="date"
-                defaultValue="24-05-2020"
+                placeholder="dd/mm/yyyy"
                 className={classes.textField}
                 // value={values.dataAbertura}
                 onChange={handleChange("dataAbertura")}
@@ -296,8 +294,7 @@ export const InformacoesJuridicasForm = ({
               <TextField
                 id="date"
                 label="Cliente Desde"
-                type="date"
-                defaultValue="24-05-2020"
+                placeholder="dd/mm/yyyy"
                 className={classes.textField}
                 // value={values.clienteDesde}
                 onChange={handleChange("clienteDesde")}

@@ -79,7 +79,7 @@ export const GerenciarClientes = () => {
     }
 
     api
-      .get("/clients", { params: { buscar: name } }, config)
+      .get("/clients", { params: { buscar: name }, config  })
       .then((response) => {
         setOptions(response.data);
       })
@@ -90,7 +90,7 @@ export const GerenciarClientes = () => {
     return () => {
       active = false;
     };
-  }, [name, loading]);
+  }, [name, loading, user.token]);
 
   function MascaraParaLabel(valorDoTextBox) {
     if (valorDoTextBox.length <= 14) {
@@ -191,8 +191,8 @@ export const GerenciarClientes = () => {
           </Grid>
         </Grid>
       </Paper>
-      <GerenciarClientesTab clientData={name} />
-      {/* {name && <GerenciarClientesTab clientData={name} />} */}
+      {/* <GerenciarClientesTab clientData={name} /> */}
+      {name && <GerenciarClientesTab clientData={name} />}
     </>
   );
 };
