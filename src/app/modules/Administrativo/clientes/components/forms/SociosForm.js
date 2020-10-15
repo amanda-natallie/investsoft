@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SociosForm = ({ managerCustomer = false }) => {
+export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
   const classes = useStyles();
 
   const inputState = useSelector((state) => state.client);

@@ -51,12 +51,24 @@ var d = new Date();
 d.setFullYear(d.getFullYear() - 1);
 
 export const RegimeTributarioForm = ({ managerCustomer = false }) => {
+  const inputState = useSelector((state) => state.client);
   const classes = useStyles();
-  const [values, setValues] = useState([
-    { id: 0, ano: "2020", regimeTributario: "" },
-    { id: 1, ano: "2019", regimeTributario: "" },
-    { id: 2, ano: "2018", regimeTributario: "" },
-  ]);
+  const [values, setValues] = useState(() => {
+    if(managerCustomer === false && inputState.clienteInformation !== {}) {
+      return [
+        { id: 0, ano: "2020", regimeTributario: inputState.clienteInformation.regimeTributarioAtual },
+        { id: 1, ano: "2019", regimeTributario: inputState.clienteInformation.regimeTributarioAnterior1 },
+        { id: 2, ano: "2018", regimeTributario: inputState.clienteInformation.regimeTributarioAnterior2 },
+      ]
+    } else {
+      return [
+        { id: 0, ano: "2020", regimeTributario: "" },
+        { id: 1, ano: "2019", regimeTributario: "" },
+        { id: 2, ano: "2018", regimeTributario: "" },
+      ]
+    }
+    
+});
 
   const stepRedux = useSelector((state) => state.step);
   const dispatch = useDispatch();
@@ -153,6 +165,7 @@ export const RegimeTributarioForm = ({ managerCustomer = false }) => {
             disabled={false}
             fullWidth
             onChange={handleChange("regimeTributario", 0)}
+            value={values[0].regimeTributario}
             error={checkingArrayOfErrors("regimeTributario")}
             className={classes.textField}
             variant="outlined"
@@ -177,6 +190,7 @@ export const RegimeTributarioForm = ({ managerCustomer = false }) => {
             disabled={false}
             fullWidth
             onChange={handleChange("regimeTributario", 1)}
+            value={values[1].regimeTributario}
             className={classes.textField}
             variant="outlined"
             id="select"
@@ -200,6 +214,7 @@ export const RegimeTributarioForm = ({ managerCustomer = false }) => {
             disabled={false}
             fullWidth
             onChange={handleChange("regimeTributario", 2)}
+            value={values[2].regimeTributario}
             className={classes.textField}
             variant="outlined"
             id="select"

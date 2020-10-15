@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Divider,
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
+export const AlvaraAtividadesForm = ({ managerCustomer = false, clientData = "" }) => {
   const inputState = useSelector((state) => state.client);
   const stepRedux = useSelector((state) => state.step);
   const dispatch = useDispatch();
@@ -63,16 +63,41 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false }) => {
   const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
   const classes = useStyles();
-  const [values, setValues] = useState({
-    alvaraLicenca: "",
-    inscricaoMunicipal: "",
-    inscricaoEstadual: "",
-    nire: "",
-  });
+  const [values, setValues] = useState(() => {
+    if(managerCustomer === false && inputState.clienteInformation !== {}) {
+      return {
+        alvaraLicenca: inputState.clienteInformation.alvaraLicenca,
+        inscricaoMunicipal: inputState.clienteInformation.inscricaoMunicipal,
+        inscricaoEstadual: inputState.clienteInformation.inscricaoEstadual,
+        nire: inputState.clienteInformation.nire,
+      }
+    } else {
+      return {
+        alvaraLicenca: "",
+        inscricaoMunicipal: "",
+        inscricaoEstadual: "",
+        nire: "",
+      }
+    }
+
+    
+
+});
 
   const [atividades, setAtividades] = useState([
     { id: 0, cnae: "", principalSecundaria: "", itemServico: "" },
   ]);
+
+  useEffect(() => {
+    if(clientData !== "") {
+      setValues({
+        alvaraLicenca: clientData.alvaraLicenca,
+        inscricaoMunicipal: clientData.inscricaoMunicipal,
+        inscricaoEstadual: clientData.inscricaoEstadual,
+        nire: clientData.nire,
+      });
+    }
+  }, [clientData]);
 
   const addInformationOption = (type, index, e) => {
     const newArray = JSON.parse(JSON.stringify(atividades));

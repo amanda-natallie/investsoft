@@ -36,20 +36,37 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const EnderecoLocalizacaoForm = ({ managerCustomer = false }) => {
+  const inputState = useSelector((state) => state.client);
   const stepRedux = useSelector((state) => state.step);
   const dispatch = useDispatch();
   const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
   const classes = useStyles();
-  const [values, setValues] = useState({
-    cep: "",
-    logradouro: "",
-    numero: "",
-    bairro: "",
-    municipio: "",
-    complemento: "",
-    uf: "",
-  });
+  const [values, setValues] = useState(() => {
+    if(managerCustomer === false && inputState.clienteInformation !== {}) {
+      return {
+        cep: inputState.clienteInformation.cep,
+        logradouro: inputState.clienteInformation.logradouro,
+        numero: inputState.clienteInformation.numero,
+        bairro: inputState.clienteInformation.bairro,
+        municipio: inputState.clienteInformation.municipio,
+        complemento: inputState.clienteInformation.complemento,
+        uf: inputState.clienteInformation.uf,
+      }
+    } else {
+      return {
+        cep: "",
+        logradouro: "",
+        numero: "",
+        bairro: "",
+        municipio: "",
+        complemento: "",
+        uf: "",
+      }
+    }
+  
+  
+});
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });

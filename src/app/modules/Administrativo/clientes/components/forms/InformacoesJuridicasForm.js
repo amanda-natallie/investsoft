@@ -11,6 +11,9 @@ import {
 } from "@material-ui/core";
 import ImageUpload from "../../../../../components/ImageUpload/ImageUpload";
 import { format } from "date-fns/esm";
+import { 
+  parseISO, 
+} from 'date-fns';
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -18,7 +21,8 @@ import {
   setClientes,
 } from "../../../clientes/_redux/clientesActions";
 import * as Yup from "yup";
-import { useRef } from "react";
+
+
 
 import {
   nextStep,
@@ -53,13 +57,6 @@ export const InformacoesJuridicasForm = ({
   clientData = "",
   managerCustomer = false,
 }) => {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date("2014-08-18T21:11:54")
-  );
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
 
   const inputState = useSelector((state) => state.client);
   const stepRedux = useSelector((state) => state.step);
@@ -72,51 +69,76 @@ export const InformacoesJuridicasForm = ({
 
   const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
-  const [values, setValues] = useState({
-    codigoCliente: "",
-    tipoCliente: "",
-    cnpj: "",
-    razaoSocial: "",
-    nomeFantasia: "",
-    dataAbertura: "",
-    clienteDesde: "",
-    observacao: "",
-    logo: "Teste",
-  });
+  console.log(inputState.clienteInformation);
 
-  function formattingDate(date = "") {
-    if (date !== "") {
-      return format(new Date(date), "dd/MM/yyyy");
+  const [values, setValues] = useState(() => {
+    if(managerCustomer === false && inputState.clienteInformation !== {}) {
+      return {
+        codigoCliente: inputState.clienteInformation.codigoCliente,
+        tipoCliente: inputState.clienteInformation.tipoCliente,
+        cnpj: inputState.clienteInformation.cnpj,
+        razaoSocial: inputState.clienteInformation.razaoSocial,
+        nomeFantasia: inputState.clienteInformation.nomeFantasia,
+        // dataAbertura: formattingDate(inputState.clienteInformation.dataAbertura),
+        // clienteDesde: formattingDate(inputState.clienteInformation.clienteDesde),
+        dataAbertura: new Date(),
+        clienteDesde: new Date(),
+        observacao: inputState.clienteInformation.observacao,
+        logo: "Teste",
+      }
     } else {
-      return "";
+      return {
+        codigoCliente: "",
+        tipoCliente: "",
+        cnpj: "",
+        razaoSocial: "",
+        nomeFantasia: "",
+        dataAbertura: new Date(),
+        clienteDesde: new Date(),
+        observacao: "",
+        logo: "Teste",
+      }
     }
+});
+
+function formattingDate(date = "") {
+  if (date !== "") {
+    return format(new Date(date), `yyyy-MM-dd`);
+  } else {
+    return "";
   }
+}
+
+
 
   useEffect(() => {
-    const formattedDate = clientData.dataAbertura
-      ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
-      : "";
+    
+    if(clientData !== "") {
+      const formattedDateAbertura = formattingDate(clientData.dataAbertura);
+      const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
 
-    const formattedDateAbertura = formattingDate(clientData.dataAbertura);
-    const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
-
-    setValues({
-      codigoCliente: clientData.codigoCliente,
-      tipoCliente: clientData.tipoClienteCliente,
-      cnpj: clientData.cnpj,
-      razaoSocial: clientData.razaoSocial,
-      nomeFantasia: clientData.nomeFantasia,
-      dataAbertura: formattedDateAbertura,
-      clienteDesde: formattedDateClienteDesde,
-      observacao: clientData.observacao,
-    });
-
-    setPicture(clientData.logo);
+      setValues({
+        codigoCliente: clientData.codigoCliente,
+        tipoCliente: clientData.tipoCliente,
+        cnpj: clientData.cnpj,
+        razaoSocial: clientData.razaoSocial,
+        nomeFantasia: clientData.nomeFantasia,
+        dataAbertura: formattedDateAbertura,
+        clienteDesde: formattedDateClienteDesde,
+        observacao: clientData.observacao,
+      });
+  
+      setPicture(clientData.logo);
+    }
+    
   }, [clientData]);
 
   function formattingToUtcDate(date = "") {
-    console.log(date);
-    if (date !== "") {
+    if (date !== "" && date.length === 10) {
+      // var myRe = new RegExp("/", "g");
+      // var resultado = date.replace(myRe, "-");
+      // console.log(resultado);
+      
       const utcDate = new Date(date);
       const utcDate2 = utcDate.toISOString();
 
@@ -127,7 +149,6 @@ export const InformacoesJuridicasForm = ({
   }
 
   const handleChange = (name) => (event) => {
-    console.log(name);
     if (name === "clienteDesde" || name === "dataAbertura") {
       setValues({ ...values, [name]: formattingToUtcDate(event.target.value) });
     } else {
@@ -146,8 +167,8 @@ export const InformacoesJuridicasForm = ({
         // .max(14, "Máximo 14 dígitos"),
         razaoSocial: Yup.string().required("Qual a Razão Social?"),
         nomeFantasia: Yup.string().required("Requer um Nome Fantasia"),
-        dataAbertura: Yup.string().required("Qual a Data de Abertura?"),
-        clienteDesde: Yup.string().required("Cliente Desde?"),
+        dataAbertura: Yup.date().required("Qual a Data de Abertura?"),
+        clienteDesde: Yup.date().required("Cliente Desde?"),
         observacao: Yup.string(),
         logo: Yup.string(),
       });
@@ -203,7 +224,7 @@ export const InformacoesJuridicasForm = ({
                 }
                 label="Código do Cliente"
                 fullWidth
-                value={values.nome}
+                value={values.codigoCliente}
                 onChange={handleChange("codigoCliente")}
                 error={checkingArrayOfErrors("codigoCliente")}
                 className={classes.textField}
@@ -280,29 +301,39 @@ export const InformacoesJuridicasForm = ({
               <TextField
                 id="date"
                 label="Data de Abertura"
-                placeholder="dd/mm/yyyy"
+                placeholder="yyyy-mm-dd"
+                type="date"
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 className={classes.textField}
-                // value={values.dataAbertura}
+                // value={formattingDate(values.dataAbertura)}
                 onChange={handleChange("dataAbertura")}
                 error={checkingArrayOfErrors("dataAbertura")}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
+              
             </Grid>
             <Grid item xs={3}>
               <TextField
                 id="date"
                 label="Cliente Desde"
-                placeholder="dd/mm/yyyy"
+                placeholder="yyyy-mm-dd"
+                type="date"
+                disabled={
+                  managerCustomer === true ? inputState.isDisable : false
+                }
                 className={classes.textField}
-                // value={values.clienteDesde}
+                // value={formattingDate(values.clienteDesde)}
                 onChange={handleChange("clienteDesde")}
                 error={checkingArrayOfErrors("clienteDesde")}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
+              
             </Grid>
           </Grid>
         </Grid>
