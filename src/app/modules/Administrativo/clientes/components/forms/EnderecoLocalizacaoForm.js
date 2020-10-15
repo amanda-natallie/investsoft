@@ -1,8 +1,16 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Divider, TextField, Grid } from "@material-ui/core";
+import { Divider, TextField, Grid, Button } from "@material-ui/core";
 import * as Yup from "yup";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  nextStep,
+  backStep,
+  resetStep,
+} from "../../../steps/_redux/stepsActions";
+import { setClientes } from "../../_redux/clientesActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,17 +35,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const EnderecoLocalizacaoForm = () => {
+export const EnderecoLocalizacaoForm = ({ managerCustomer = false }) => {
+  const inputState = useSelector((state) => state.client);
+  const stepRedux = useSelector((state) => state.step);
+  const dispatch = useDispatch();
+  const [arrayOfErrors, setArrayOfErrors] = useState([]);
+
   const classes = useStyles();
-  const [values, setValues] = useState({
-    cep: "",
-    logradouro: "",
-    numero: "",
-    bairro: "",
-    municipio: "",
-    complemento: "",
-    uf: "",
-  });
+  const [values, setValues] = useState(() => {
+    if(managerCustomer === false && inputState.clienteInformation !== {}) {
+      return {
+        cep: inputState.clienteInformation.cep,
+        logradouro: inputState.clienteInformation.logradouro,
+        numero: inputState.clienteInformation.numero,
+        bairro: inputState.clienteInformation.bairro,
+        municipio: inputState.clienteInformation.municipio,
+        complemento: inputState.clienteInformation.complemento,
+        uf: inputState.clienteInformation.uf,
+      }
+    } else {
+      return {
+        cep: "",
+        logradouro: "",
+        numero: "",
+        bairro: "",
+        municipio: "",
+        complemento: "",
+        uf: "",
+      }
+    }
+  
+  
+});
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -74,14 +103,40 @@ export const EnderecoLocalizacaoForm = () => {
         abortEarly: false,
       });
 
-      console.log("OKAY");
+      dispatch(setClientes(values));
+      dispatch(nextStep(stepRedux));
     } catch (err) {
-      console.log(err);
+      const validationErros = {};
+      let InputError = [];
+
+      err.inner.forEach((error, i) => {
+        validationErros[error.path] = error.message;
+        InputError[i] = error.path;
+      });
+
+      setArrayOfErrors(InputError);
+      console.log(validationErros);
     }
   };
 
+  const checkingArrayOfErrors = (name) => {
+    const find = arrayOfErrors.findIndex((error) => error === name);
+    if (find !== -1) return true;
+    else return false;
+  };
+
+  const handleBack = () => {
+    dispatch(setClientes(values));
+    dispatch(backStep(stepRedux));
+  };
+
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form
+      onSubmit={handleSubmit}
+      className={classes.container}
+      noValidate
+      autoComplete="off"
+    >
       <p className="ml-3 font-weight-bold">
         Passo 02: Informe os dados de endereço do cliente{" "}
       </p>
@@ -93,6 +148,7 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.cep}
             onChange={handleChange("cep")}
+            error={checkingArrayOfErrors("cep")}
             onBlur={(e) => setAddress(e.target.value)}
             className={classes.textField}
             variant="outlined"
@@ -107,6 +163,7 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.logradouro}
             onChange={handleChange("logradouro")}
+            error={checkingArrayOfErrors("logradouro")}
             className={classes.textField}
             variant="outlined"
           />
@@ -119,6 +176,7 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.numero}
             onChange={handleChange("numero")}
+            error={checkingArrayOfErrors("numero")}
             className={classes.textField}
             variant="outlined"
           />
@@ -130,6 +188,7 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.bairro}
             onChange={handleChange("bairro")}
+            error={checkingArrayOfErrors("bairro")}
             className={classes.textField}
             variant="outlined"
           />
@@ -142,6 +201,7 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.municipio}
             onChange={handleChange("municipio")}
+            error={checkingArrayOfErrors("municipio")}
             className={classes.textField}
             variant="outlined"
           />
@@ -153,6 +213,7 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.uf}
             onChange={handleChange("uf")}
+            error={checkingArrayOfErrors("uf")}
             className={classes.textField}
             variant="outlined"
           />
@@ -164,9 +225,37 @@ export const EnderecoLocalizacaoForm = () => {
             fullWidth
             value={values.complemento}
             onChange={handleChange("complemento")}
+            error={checkingArrayOfErrors("complemento")}
             className={classes.textField}
             variant="outlined"
           />
+        </Grid>
+
+        <Grid item md={6}>
+          {managerCustomer === false && (
+            <Grid container>
+              <Grid item md={2}>
+                <Button
+                  disabled={stepRedux.step === 0}
+                  onClick={handleBack}
+                  className={classes.button}
+                >
+                  Voltar
+                </Button>
+              </Grid>
+
+              <Grid item md={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  className={classes.button}
+                >
+                  {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
+                </Button>
+              </Grid>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       <Divider />

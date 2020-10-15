@@ -1,7 +1,5 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
-import EditIcon from "@material-ui/icons/Edit";
-import { Fab } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Divider,
@@ -13,11 +11,18 @@ import {
 } from "@material-ui/core";
 import ImageUpload from "../../../../../components/ImageUpload/ImageUpload";
 import { format } from "date-fns/esm";
+import { 
+  parseISO, 
+} from 'date-fns';
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setIsDisable } from "../../../clientes/_redux/clientesActions";
+import {
+  setIsDisable,
+  setClientes,
+} from "../../../clientes/_redux/clientesActions";
 import * as Yup from "yup";
-import { useRef } from "react";
+
+
 
 import {
   nextStep,
@@ -52,6 +57,7 @@ export const InformacoesJuridicasForm = ({
   clientData = "",
   managerCustomer = false,
 }) => {
+
   const inputState = useSelector((state) => state.client);
   const stepRedux = useSelector((state) => state.step);
   const dispatch = useDispatch();
@@ -63,66 +69,108 @@ export const InformacoesJuridicasForm = ({
 
   const [arrayOfErrors, setArrayOfErrors] = useState([]);
 
-  const [values, setValues] = useState({
-    codigo: "",
-    tipo: "",
-    cnpj: "",
-    razaoSocial: "",
-    nomeFantasia: "",
-    dataAbertura: "",
-    clienteDesde: "",
-    observacao: "",
-  });
+  console.log(inputState.clienteInformation);
 
-  function formattingDate(date = "") {
-    if (date !== "") {
-      return format(new Date(date), "dd/MM/yyyy");
+  const [values, setValues] = useState(() => {
+    if(managerCustomer === false && inputState.clienteInformation !== {}) {
+      return {
+        codigoCliente: inputState.clienteInformation.codigoCliente,
+        tipoCliente: inputState.clienteInformation.tipoCliente,
+        cnpj: inputState.clienteInformation.cnpj,
+        razaoSocial: inputState.clienteInformation.razaoSocial,
+        nomeFantasia: inputState.clienteInformation.nomeFantasia,
+        // dataAbertura: formattingDate(inputState.clienteInformation.dataAbertura),
+        // clienteDesde: formattingDate(inputState.clienteInformation.clienteDesde),
+        dataAbertura: new Date(),
+        clienteDesde: new Date(),
+        observacao: inputState.clienteInformation.observacao,
+        logo: "Teste",
+      }
+    } else {
+      return {
+        codigoCliente: "",
+        tipoCliente: "",
+        cnpj: "",
+        razaoSocial: "",
+        nomeFantasia: "",
+        dataAbertura: new Date(),
+        clienteDesde: new Date(),
+        observacao: "",
+        logo: "Teste",
+      }
+    }
+});
+
+function formattingDate(date = "") {
+  if (date !== "") {
+    return format(new Date(date), `yyyy-MM-dd`);
+  } else {
+    return "";
+  }
+}
+
+
+
+  useEffect(() => {
+    
+    if(clientData !== "") {
+      const formattedDateAbertura = formattingDate(clientData.dataAbertura);
+      const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
+
+      setValues({
+        codigoCliente: clientData.codigoCliente,
+        tipoCliente: clientData.tipoCliente,
+        cnpj: clientData.cnpj,
+        razaoSocial: clientData.razaoSocial,
+        nomeFantasia: clientData.nomeFantasia,
+        dataAbertura: formattedDateAbertura,
+        clienteDesde: formattedDateClienteDesde,
+        observacao: clientData.observacao,
+      });
+  
+      setPicture(clientData.logo);
+    }
+    
+  }, [clientData]);
+
+  function formattingToUtcDate(date = "") {
+    if (date !== "" && date.length === 10) {
+      // var myRe = new RegExp("/", "g");
+      // var resultado = date.replace(myRe, "-");
+      // console.log(resultado);
+      
+      const utcDate = new Date(date);
+      const utcDate2 = utcDate.toISOString();
+
+      return utcDate2;
     } else {
       return "";
     }
   }
 
-  useEffect(() => {
-    // const formattedDate = clientData.dataAbertura
-    //   ? format(new Date(clientData.dataAbertura), "dd/MM/yyyy")
-    //   : "";
-
-    const formattedDateAbertura = formattingDate(clientData.dataAbertura);
-    const formattedDateClienteDesde = formattingDate(clientData.clienteDesde);
-
-    setValues({
-      codigo: clientData.codigo,
-      tipo: clientData.tipoCliente,
-      cnpj: clientData.cnpj,
-      razaoSocial: clientData.razaoSocial,
-      nomeFantasia: clientData.nomeFantasia,
-      dataAbertura: formattedDateAbertura,
-      clienteDesde: formattedDateClienteDesde,
-      observacao: clientData.observacao,
-    });
-
-    setPicture(clientData.logo);
-  }, [clientData]);
-
   const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
+    if (name === "clienteDesde" || name === "dataAbertura") {
+      setValues({ ...values, [name]: formattingToUtcDate(event.target.value) });
+    } else {
+      setValues({ ...values, [name]: event.target.value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const schema = Yup.object().shape({
-        codigo: Yup.string().required("Código do Cliente"),
-        tipo: Yup.string().required("Selecione um Tipo"),
-        cnpj: Yup.string()
-          .required("CNPJ Obrigatório")
-          .min(14, "Mínimo 14 dígitos")
-          .max(14, "Máximo 14 dígitos"),
+        codigoCliente: Yup.string().required("Código do Cliente"),
+        tipoCliente: Yup.string().required("Selecione um Tipo"),
+        cnpj: Yup.string().required("CNPJ Obrigatório"),
+        // .min(14, "Mínimo 14 dígitos")
+        // .max(14, "Máximo 14 dígitos"),
         razaoSocial: Yup.string().required("Qual a Razão Social?"),
         nomeFantasia: Yup.string().required("Requer um Nome Fantasia"),
-        dataAbertura: Yup.string().required("Qual a Data de Abertura?"),
-        clienteDesde: Yup.string().required("Cliente Desde?"),
+        dataAbertura: Yup.date().required("Qual a Data de Abertura?"),
+        clienteDesde: Yup.date().required("Cliente Desde?"),
         observacao: Yup.string(),
+        logo: Yup.string(),
       });
 
       await schema.validate(values, {
@@ -130,6 +178,7 @@ export const InformacoesJuridicasForm = ({
       });
 
       console.log("OKAY");
+      dispatch(setClientes(values));
       dispatch(nextStep(stepRedux));
     } catch (err) {
       const validationErros = {};
@@ -141,7 +190,6 @@ export const InformacoesJuridicasForm = ({
       });
 
       setArrayOfErrors(InputError);
-      console.log(validationErros);
     }
   };
 
@@ -149,6 +197,10 @@ export const InformacoesJuridicasForm = ({
     const find = arrayOfErrors.findIndex((error) => error === name);
     if (find !== -1) return true;
     else return false;
+  };
+
+  const handleBack = () => {
+    dispatch(backStep(stepRedux));
   };
 
   return (
@@ -172,9 +224,9 @@ export const InformacoesJuridicasForm = ({
                 }
                 label="Código do Cliente"
                 fullWidth
-                value={values.nome}
-                onChange={handleChange("codigo")}
-                error={checkingArrayOfErrors("codigo")}
+                value={values.codigoCliente}
+                onChange={handleChange("codigoCliente")}
+                error={checkingArrayOfErrors("codigoCliente")}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -186,9 +238,9 @@ export const InformacoesJuridicasForm = ({
                   managerCustomer === true ? inputState.isDisable : false
                 }
                 fullWidth
-                value={values.tipo}
-                onChange={handleChange("tipo")}
-                error={checkingArrayOfErrors("tipo")}
+                value={values.tipoCliente}
+                onChange={handleChange("tipoCliente")}
+                error={checkingArrayOfErrors("tipoCliente")}
                 className={classes.textField}
                 variant="outlined"
                 id="select"
@@ -245,34 +297,43 @@ export const InformacoesJuridicasForm = ({
                 variant="outlined"
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <TextField
+                id="date"
+                label="Data de Abertura"
+                placeholder="yyyy-mm-dd"
+                type="date"
                 disabled={
                   managerCustomer === true ? inputState.isDisable : false
                 }
-                label="Data de Abertura"
-                fullWidth
-                value={values.dataAbertura}
+                className={classes.textField}
+                // value={formattingDate(values.dataAbertura)}
                 onChange={handleChange("dataAbertura")}
                 error={checkingArrayOfErrors("dataAbertura")}
-                className={classes.textField}
-                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
+              
             </Grid>
-
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <TextField
+                id="date"
+                label="Cliente Desde"
+                placeholder="yyyy-mm-dd"
+                type="date"
                 disabled={
                   managerCustomer === true ? inputState.isDisable : false
                 }
-                label="Cliente Desde"
-                fullWidth
-                value={values.clienteDesde}
+                className={classes.textField}
+                // value={formattingDate(values.clienteDesde)}
                 onChange={handleChange("clienteDesde")}
                 error={checkingArrayOfErrors("clienteDesde")}
-                className={classes.textField}
-                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
+              
             </Grid>
           </Grid>
         </Grid>
@@ -293,21 +354,37 @@ export const InformacoesJuridicasForm = ({
             multiline
             rows={6}
             label="Observações do cliente"
+            value={values.observacao}
+            onChange={handleChange("observacao")}
             variant="outlined"
             style={{ width: "92%" }}
           />
         </Grid>
 
-        <Grid item xs={10}>
+        <Grid item md={6}>
           {managerCustomer === false && (
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              className={classes.button}
-            >
-              EXEMPLO TESTE
-            </Button>
+            <Grid container>
+              <Grid item md={2}>
+                <Button
+                  disabled={stepRedux.step === 0}
+                  onClick={handleBack}
+                  className={classes.button}
+                >
+                  Voltar
+                </Button>
+              </Grid>
+
+              <Grid item md={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  className={classes.button}
+                >
+                  {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
+                </Button>
+              </Grid>
+            </Grid>
           )}
         </Grid>
       </Grid>

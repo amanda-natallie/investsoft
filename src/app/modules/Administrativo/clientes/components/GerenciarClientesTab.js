@@ -218,11 +218,11 @@ const GerenciarClientesTab = ({ clientData }) => {
                   clientData={clientData}
                   managerCustomer={true}
                 />
-                <AlvaraAtividadesForm managerCustomer={true} />
+                <AlvaraAtividadesForm managerCustomer={true} clientData={clientData} />
               </TabPanel>
               <TabPanel value={value} index={1} dir={theme.direction}>
                 <h4>Socios</h4>
-                <SociosForm managerCustomer={true} />
+                <SociosForm managerCustomer={true} clientDataId={clientData.id} />
               </TabPanel>
               <TabPanel value={value} index={2} dir={theme.direction}>
                 <TabelaAtividades data={atividadesMockup} />

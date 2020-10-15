@@ -1,11 +1,19 @@
 /* eslint-disable no-restricted-imports */
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Grid, Fab, Tooltip } from "@material-ui/core";
+import { TextField, Grid, Fab, Tooltip, Button } from "@material-ui/core";
 import * as Yup from "yup";
 
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  nextStep,
+  backStep,
+  resetStep,
+} from "../../../steps/_redux/stepsActions";
+import { setClientes } from "../../_redux/clientesActions";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -38,10 +46,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ContatosForm = () => {
+export const ContatosForm = ({ managerCustomer = false }) => {
   const classes = useStyles();
 
-  const [contatos, setContatos] = useState([
+  const stepRedux = useSelector((state) => state.step);
+  const dispatch = useDispatch();
+
+  const [arrayOfErrors, setArrayOfErrors] = useState([]);
+
+  const [contatosState, setContatosState] = useState([
     {
       id: 0,
       pessoaContato: "",
@@ -51,8 +64,12 @@ export const ContatosForm = () => {
     },
   ]);
 
+  const [contatosRefatorados, setContatosRefatorados] = useState({
+    contatos: [{}],
+  });
+
   const addInformationOption = (type, index, e) => {
-    const newArray = JSON.parse(JSON.stringify(contatos));
+    const newArray = JSON.parse(JSON.stringify(contatosState));
 
     switch (type) {
       case "pessoaContato":
@@ -73,10 +90,12 @@ export const ContatosForm = () => {
         break;
     }
 
-    setContatos(newArray);
+    setContatosRefatorados({ contatos: [...newArray] });
+
+    setContatosState(newArray);
   };
   const addOption = () => {
-    const id = contatos.length;
+    const id = contatosState.length;
     const optionLine = {
       id: id,
       pessoaContato: "",
@@ -85,11 +104,11 @@ export const ContatosForm = () => {
       departamento: "",
     };
 
-    setContatos([...contatos, optionLine]);
+    setContatosState([...contatosState, optionLine]);
   };
 
   const deleteOption = (index) => {
-    setContatos(contatos.filter((_, i) => i !== index));
+    setContatosState(contatosState.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -113,14 +132,37 @@ export const ContatosForm = () => {
         })
       );
 
-      await schema.validate(contatos, {
+      await schema.validate(contatosState, {
         abortEarly: false,
       });
 
       console.log("OKAY");
+      // dispatch(setClientes(contatosRefatorados));
+      dispatch(nextStep(stepRedux));
     } catch (err) {
-      console.log(err);
+      const validationErros = {};
+      let InputError = [];
+
+      err.inner.forEach((error, i) => {
+        validationErros[error.path] = error.message;
+        InputError[i] = error.path;
+      });
+
+      setArrayOfErrors(InputError);
+      console.log(validationErros);
     }
+  };
+
+  const checkingArrayOfErrors = (name, index) => {
+    const find = arrayOfErrors.findIndex(
+      (error) => error === `[${index}].${name}`
+    );
+    if (find !== -1) return true;
+    else return false;
+  };
+
+  const handleBack = () => {
+    dispatch(backStep(stepRedux));
   };
 
   return (
@@ -135,8 +177,8 @@ export const ContatosForm = () => {
         quiser. O primeiro é obrigatório.
       </p>
 
-      {contatos &&
-        contatos.map((item, index) => (
+      {contatosState &&
+        contatosState.map((item, index) => (
           <Grid container key={index} spacing={2} className="mb-5">
             <Grid item xs>
               <TextField
@@ -147,6 +189,7 @@ export const ContatosForm = () => {
                 onChange={(e) =>
                   addInformationOption("pessoaContato", index, e)
                 }
+                error={checkingArrayOfErrors("pessoaContato", index)}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -160,6 +203,7 @@ export const ContatosForm = () => {
                 onChange={(e) =>
                   addInformationOption("telefoneContato", index, e)
                 }
+                error={checkingArrayOfErrors("telefoneContato", index)}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -171,6 +215,7 @@ export const ContatosForm = () => {
                 fullWidth
                 value={item[index]}
                 onChange={(e) => addInformationOption("emailContato", index, e)}
+                error={checkingArrayOfErrors("emailContato", index)}
                 className={classes.textField}
                 variant="outlined"
               />
@@ -182,11 +227,12 @@ export const ContatosForm = () => {
                 fullWidth
                 value={item[index]}
                 onChange={(e) => addInformationOption("departamento", index, e)}
+                error={checkingArrayOfErrors("departamento", index)}
                 className={classes.textField}
                 variant="outlined"
               />
             </Grid>
-            {contatos.length > 1 && (
+            {contatosState.length > 1 && (
               <Grid item xs={1}>
                 <Tooltip title="Deletar Opção">
                   <Fab
@@ -208,6 +254,33 @@ export const ContatosForm = () => {
           </Fab>
           <span className="ml-4">Adicionar novo contato</span>
         </Grid>
+      </Grid>
+
+      <Grid item md={6}>
+        {managerCustomer === false && (
+          <Grid container>
+            <Grid item md={2}>
+              <Button
+                disabled={stepRedux.step === 0}
+                onClick={handleBack}
+                className={classes.button}
+              >
+                Voltar
+              </Button>
+            </Grid>
+
+            <Grid item md={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                className={classes.button}
+              >
+                {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
+              </Button>
+            </Grid>
+          </Grid>
+        )}
       </Grid>
     </form>
   );

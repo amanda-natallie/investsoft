@@ -179,7 +179,8 @@ export const CadastrarClientes = () => {
           ) : (
             <>
               <Grid container>{getStepContent(stepRedux.step)}</Grid>
-              <Grid container>
+
+              {/* <Grid container>
                 <Button
                   disabled={stepRedux.step === 0}
                   onClick={handleBack}
@@ -193,12 +194,10 @@ export const CadastrarClientes = () => {
                   onClick={handleNext}
                   className={classes.button}
                 >
-                  {/* {stepRedux.step === steps.length - 1
-                    ? "Finalizar"
-                    : "Próximo"} */}
+                  
                   {stepRedux.step === 5 ? "Finalizar" : "Próximo"}
                 </Button>
-              </Grid>
+              </Grid> */}
             </>
           )}
         </div>
