@@ -77,41 +77,86 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  const [socios, setSocios] = useState([
-    {
-      id: 0,
-      tipoSocio: "",
-      representanteRbf: false,
-      nome: "",
-      cpf: "",
-      rg: "",
-      orgaoEmissorRg: "",
-      ufRg: "",
-      carteiraProfissional: "",
-      orgaoEmissorCarteiraProfissional: "",
-      ufCarteiraProfissional: "",
-      nacionalidade: "",
-      naturalidade: "",
-      estadoCivil: "",
-      nomeConjuge: "",
-      cpfConjuge: "",
-      profissao: "",
-      dataNascimento: "",
-      cep: "",
-      logradouro: "",
-      numero: "",
-      bairro: "",
-      municipio: "",
-      complemento: "",
-      uf: "",
-      AssociateContacts: [
+  const [socios, setSocios] = useState(() => {
+
+    if(managerCustomer === false && inputState.sociosInformation !== [] && inputState.sociosInformation.length > 0) {
+      return inputState.sociosInformation.map(socio => (
         {
-          telefoneContato: "",
-          emailContato: "",
+          id: socio.id,
+          tipoSocio: socio.tipoSocio,
+          representanteRbf: socio.representanteRbf,
+          nome: socio.nome,
+          cpf: socio.cpf,
+          rg: socio.rg,
+          orgaoEmissorRg: socio.orgaoEmissorRg,
+          ufRg: socio.ufRg,
+          carteiraProfissional: socio.carteiraProfissional,
+          orgaoEmissorCarteiraProfissional: socio.orgaoEmissorCarteiraProfissional,
+          ufCarteiraProfissional: socio.ufCarteiraProfissional,
+          nacionalidade: socio.nacionalidade,
+          naturalidade: socio.naturalidade,
+          estadoCivil: socio.estadoCivil,
+          nomeConjuge: socio.nomeConjuge,
+          cpfConjuge: socio.cpfConjuge,
+          profissao: socio.profissao,
+          dataNascimento: socio.dataNascimento,
+          cep: socio.cep,
+          logradouro: socio.logradouro,
+          numero: socio.numero,
+          bairro: socio.bairro,
+          municipio: socio.municipio,
+          complemento: socio.complemento,
+          uf: socio.uf,
+          AssociateContacts: [
+            {
+              telefoneContato: "",
+              emailContato: "",
+            },
+          ],
+        }
+      ))
+
+    } else {
+      return [
+        {
+          id: 0,
+          tipoSocio: "",
+          representanteRbf: false,
+          nome: "",
+          cpf: "",
+          rg: "",
+          orgaoEmissorRg: "",
+          ufRg: "",
+          carteiraProfissional: "",
+          orgaoEmissorCarteiraProfissional: "",
+          ufCarteiraProfissional: "",
+          nacionalidade: "",
+          naturalidade: "",
+          estadoCivil: "",
+          nomeConjuge: "",
+          cpfConjuge: "",
+          profissao: "",
+          dataNascimento: "",
+          cep: "",
+          logradouro: "",
+          numero: "",
+          bairro: "",
+          municipio: "",
+          complemento: "",
+          uf: "",
+          AssociateContacts: [
+            {
+              telefoneContato: "",
+              emailContato: "",
+            },
+          ],
         },
-      ],
-    },
-  ]);
+      ]
+    }
+    
+    
+
+});
 
   const addInformationOption = (type, index, e) => {
     let newArray = [...socios];
@@ -367,7 +412,6 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
         abortEarly: false,
       });
 
-      console.log("OKAY");
       dispatch(createSocios(socios));
       dispatch(createCliente(inputState.clienteInformation, socios));
       console.log("PÓS SAGA");
@@ -406,6 +450,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
   };
 
   const handleBack = () => {
+    dispatch(createSocios(socios));
     dispatch(backStep(stepRedux));
   };
 
@@ -451,6 +496,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   id="select"
                   label="Escolha um tipo de sócio"
                   onChange={(e) => addInformationOption("tipoSocio", index, e)}
+                  value={item.tipoSocio}
                   error={checkingArrayOfErrors("tipoSocio", index)}
                   select
                 >
@@ -482,6 +528,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("representanteRbf", index, e)
                   }
+                  value={item.representanteRbf}
                   color="default"
                 />
                 <span>Sim</span>
@@ -516,6 +563,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="Nome"
                   fullWidth
                   onChange={(e) => addInformationOption("nome", index, e)}
+                  value={item.nome}
                   error={checkingArrayOfErrors("nome", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -529,6 +577,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="CPF"
                   fullWidth
                   onChange={(e) => addInformationOption("cpf", index, e)}
+                  value={item.cpf}
                   error={checkingArrayOfErrors("cpf", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -544,6 +593,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("dataNascimento", index, e)
                   }
+                  value={item.dataNascimento}
                   error={checkingArrayOfErrors("dataNascimento", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -558,6 +608,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="RG"
                   fullWidth
                   onChange={(e) => addInformationOption("rg", index, e)}
+                  value={item.rg}
                   error={checkingArrayOfErrors("rg", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -573,6 +624,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("orgaoEmissorRg", index, e)
                   }
+                  value={item.orgaoEmissorRg}
                   error={checkingArrayOfErrors("orgaoEmissorRg", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -586,6 +638,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="Uf de origem (RG)"
                   fullWidth
                   onChange={(e) => addInformationOption("ufRg", index, e)}
+                  value={item.ufRg}
                   error={checkingArrayOfErrors("ufRg", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -602,6 +655,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("carteiraProfissional", index, e)
                   }
+                  value={item.carteiraProfissional}
                   error={checkingArrayOfErrors("carteiraProfissional", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -621,6 +675,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                       e
                     )
                   }
+                  value={item.orgaoEmissorCarteiraProfissional}
                   error={checkingArrayOfErrors(
                     "orgaoEmissorCarteiraProfissional",
                     index
@@ -639,6 +694,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("ufCarteiraProfissional", index, e)
                   }
+                  value={item.ufCarteiraProfissional}
                   error={checkingArrayOfErrors("ufCarteiraProfissional", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -655,6 +711,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("nacionalidade", index, e)
                   }
+                  value={item.nacionalidade}
                   error={checkingArrayOfErrors("nacionalidade", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -670,6 +727,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("naturalidade", index, e)
                   }
+                  value={item.naturalidade}
                   error={checkingArrayOfErrors("naturalidade", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -694,6 +752,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("estadoCivil", index, e)
                   }
+                  value={item.estadoCivil}
                   error={checkingArrayOfErrors("estadoCivil", index)}
                   select
                 >
@@ -717,6 +776,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                       onChange={(e) =>
                         addInformationOption("nomeConjuge", index, e)
                       }
+                      value={item.nomeConjuge}
                       error={checkingArrayOfErrors("nomeConjuge", index)}
                       className={classes.textField}
                       variant="outlined"
@@ -732,6 +792,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                       onChange={(e) =>
                         addInformationOption("cpfConjuge", index, e)
                       }
+                      value={item.cpfConjuge}
                       error={checkingArrayOfErrors("cpfConjuge", index)}
                       className={classes.textField}
                       variant="outlined"
@@ -753,6 +814,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="Profissão"
                   fullWidth
                   onChange={(e) => addInformationOption("profissao", index, e)}
+                  value={item.profissao}
                   error={checkingArrayOfErrors("profissao", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -772,6 +834,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="CEP"
                   fullWidth
                   onChange={(e) => addInformationOption("cep", index, e)}
+                  value={item.cep}
                   error={checkingArrayOfErrors("cep", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -787,6 +850,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="Logradouro"
                   fullWidth
                   onChange={(e) => addInformationOption("logradouro", index, e)}
+                  value={item.logradouro}
                   error={checkingArrayOfErrors("logradouro", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -801,6 +865,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="Número"
                   fullWidth
                   onChange={(e) => addInformationOption("numero", index, e)}
+                  value={item.numero}
                   error={checkingArrayOfErrors("numero", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -814,6 +879,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="Bairro"
                   fullWidth
                   onChange={(e) => addInformationOption("bairro", index, e)}
+                  value={item.bairro}
                   error={checkingArrayOfErrors("bairro", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -828,6 +894,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   label="Município"
                   fullWidth
                   onChange={(e) => addInformationOption("municipio", index, e)}
+                  value={item.municipio}
                   error={checkingArrayOfErrors("municipio", index)}
                   className={classes.textField}
                   variant="outlined"
@@ -843,6 +910,7 @@ export const SociosForm = ({ managerCustomer = false, clientDataId = "" }) => {
                   onChange={(e) =>
                     addInformationOption("complemento", index, e)
                   }
+                  value={item.complemento}
                   error={checkingArrayOfErrors("complemento", index)}
                   className={classes.textField}
                   variant="outlined"

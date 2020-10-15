@@ -161,7 +161,6 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false, clientData = "" 
         abortEarly: false,
       });
 
-      console.log("OKAY");
       dispatch(setClientes(values));
       dispatch(nextStep(stepRedux));
     } catch (err) {
@@ -185,6 +184,7 @@ export const AlvaraAtividadesForm = ({ managerCustomer = false, clientData = "" 
   };
 
   const handleBack = () => {
+    dispatch(setClientes(values));
     dispatch(backStep(stepRedux));
   };
 

@@ -103,7 +103,6 @@ export const EnderecoLocalizacaoForm = ({ managerCustomer = false }) => {
         abortEarly: false,
       });
 
-      console.log("OKAY");
       dispatch(setClientes(values));
       dispatch(nextStep(stepRedux));
     } catch (err) {
@@ -127,6 +126,7 @@ export const EnderecoLocalizacaoForm = ({ managerCustomer = false }) => {
   };
 
   const handleBack = () => {
+    dispatch(setClientes(values));
     dispatch(backStep(stepRedux));
   };
 
