@@ -1,5 +1,5 @@
 import React from "react";
-import {createMuiTheme, ThemeProvider} from "@material-ui/core";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 
 const theme = createMuiTheme(
   /**
@@ -8,15 +8,15 @@ const theme = createMuiTheme(
   {
     // direction: "rtl",
     typography: {
-      fontFamily: ["Poppins"].join(",")
+      fontFamily: ["Poppins"].join(","),
     },
 
     palette: {
       primary: {
         // light: will be calculated from palette.primary.main,
-        main: "rgb(55, 168, 224)",
+        main: "#134668",
         // dark: will be calculated from palette.primary.main,
-         contrastText: "#fff" //will be calculated to contrast with palette.primary.main
+        contrastText: "#fff", //will be calculated to contrast with palette.primary.main
       },
       secondary: {
         // light: will be calculated from palette.primary.main,
@@ -29,7 +29,7 @@ const theme = createMuiTheme(
         main: "#f018a6",
         // dark: will be calculated from palette.primary.main,
         // contrastText: "#fff" //will be calculated to contrast with palette.primary.main
-      }
+      },
     },
 
     /**
@@ -39,14 +39,22 @@ const theme = createMuiTheme(
       // Name of the component ⚛️
       MuiButtonBase: {
         // The properties to apply
-        disableRipple: false // No more ripple, on the whole application 💣!
+        disableRipple: false, // No more ripple, on the whole application 💣!
       },
 
       // Set default elevation to 1 for popovers.
       MuiPopover: {
-        elevation: 1
-      }
-    }
+        elevation: 1,
+      },
+
+      MuiTab: {
+        root: {
+          flexContainer: {
+            justifyContent: "space-between",
+          },
+        },
+      },
+    },
   }
 );
 
